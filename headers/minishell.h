@@ -26,8 +26,8 @@ typedef struct s_data
 void	builtin_echo(char *str, char option);
 void	builtin_cd(char *path, char type);
 void	builtin_pwd(t_data *data);
--
--
+
+
 void	builtin_env(char **envp);
 void	builtin_exit(t_data *data);
 
