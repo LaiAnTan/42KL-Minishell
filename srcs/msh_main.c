@@ -14,7 +14,7 @@ void	handle_line()
 			add_history(line);
 			rl_redisplay();
 		}
-		// handle_cmd(line);
+		// lexer(line);
 	}
 	clear_history();
 	free(line);
