@@ -22,6 +22,12 @@ typedef struct s_data
 	
 }			t_data;
 
+/* Lexer */
+char	**lexer(char *line);
+
+/* Lexer helper functions */
+int		count_tokens(char *line);
+
 /* Builtin command functions */
 void	builtin_echo(char *str, char option);
 void	builtin_cd(char *path, char type);
@@ -31,7 +37,14 @@ void	builtin_pwd(t_data *data);
 void	builtin_env(char **envp);
 void	builtin_exit(t_data *data);
 
+
 /* Utility functions */
+void	free_2d_array(char **a);
+
+int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);
+
+char	*ft_strdup(char *str);
+char	*ft_substr(char *s, unsigned int start, size_t len);
 
 #endif
