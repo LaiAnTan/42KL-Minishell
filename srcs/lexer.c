@@ -12,8 +12,7 @@ redirect output			>
 delimiter				<<
 append					>>
 
-variable expansion		
-$
+variable expansion		$
 exec status of last cmd	$?
 else keyword
 
@@ -36,23 +35,57 @@ char	**realloc_append(char **src, char *str)
 	return (new);
 }
 
-char	**lexer(char *line)
+int	*find_token_pos(char *line, int last_token_end_pos)
 {
 	int		i;
-	int		len;
+	int		j;
+	int		*index_pair;
+	char	token[10] = "\'\"|>><<$? ";
 
+	i = last_token_end_pos + 1;
+	j = 0;
+	index_pair = (int *) malloc (sizeof(int) * 2);
+	if (!index_pair)
+		return (NULL);
+	while ((line[i] != '\0') && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	index_pair[0] = i;
+	if (line[i] == '\0')
+		return (NULL);
+	while (line[i] != token[j])
+		j++;
+	if (j == 3 || j == 5 || j == 7) /* > < $ */
+		if (line[i + 1] != '\0' && line[i + 1] == token[j + 1])
+			index_pair[1] = i + 1;
+		else
+			index_pair[1] = i;
+	else
+		index_pair[1] = i;
+	return (index_pair);
+}
+
+char	**lexer(char *line)
+{
+	int		len;
+	int		*token_pos;
 	char	*new_token;
 	char	**tokens;
 
-	i = 0;
-	while (line[i] != '\0')
+	len = ft_strlen(line);
+	token_pos = (int *) malloc (sizeof(int) * 2);
+	if (!token_pos)
+		return (NULL);
+	token_pos[0] = 0;
+	token_pos[1] = 0;
+	while (token_pos[1] <= len)
 	{
-		while (line[i] != '\t' || line[i] != ' ')
-			i++;
-		new_token = ft_substr(line, i, len);
+		token_pos = find_token_pos(line, token_pos[1]);
+		if (!token_pos)
+			break ;	
+		new_token = ft_substr(line, token_pos[0], token_pos[1]);
 		tokens = realloc_append(tokens, new_token);
 		free(new_token);
 	}
-	free(line);
+	free(token_pos);
 	return (tokens);
 }
