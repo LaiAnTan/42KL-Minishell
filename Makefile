@@ -1,6 +1,9 @@
 NAME = minishell
 
-SRCS_C = srcs/msh_main.c
+SRCS_C =	srcs/msh_main.c		\
+			srcs/builtins.c		\
+			srcs/lexer.c		\
+			srcs/utilities.c	\
 
 SRCS_H = headers/minishell.h
 
@@ -18,6 +21,9 @@ all : $(NAME)
 
 $(NAME): $(SRCS_O)
 		@gcc $(CFLAG) -o $(NAME) $(SRCS_O) $(LIB)
+
+vg :
+	valgrind --leak-check=full --track-origins=yes ./$(NAME)
 
 clean :
 		@rm -f ${SRCS_O}

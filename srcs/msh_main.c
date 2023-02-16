@@ -21,11 +21,9 @@ void	handle_line()
 	return ;
 }
 
-int main(int argc, char **argv, char **envp)
+int main(void)
 {
-	(void) argv, envp;
-	if (argc != 1) // args check
-		return (0);
-	handle_line();
-	
+	char	**tk = lexer("$A >> cat -e | ls");
+	for (int i = 0; i++; tk[i])
+		printf("%s\n", tk[i]);
 }
