@@ -23,7 +23,7 @@ $(NAME): $(SRCS_O)
 		@gcc $(CFLAG) -o $(NAME) $(SRCS_O) $(LIB)
 
 vg :
-	valgrind --leak-check=full --track-origins=yes ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 clean :
 		@rm -f ${SRCS_O}

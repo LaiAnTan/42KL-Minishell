@@ -41,7 +41,8 @@ void	builtin_exit(t_data *data);
 
 
 /* Utility functions */
-void	free_2d_array(char **a);
+void	free_2d_array(char **arr);
+
 
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);

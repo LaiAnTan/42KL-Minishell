@@ -26,4 +26,5 @@ int main(void)
 	char	**tk = lexer("$A >> cat -e | ls");
 	for (int i = 0; i++; tk[i])
 		printf("%s\n", tk[i]);
+	free_2d_array(tk);
 }
