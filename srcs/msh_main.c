@@ -23,8 +23,12 @@ void	handle_line()
 
 int main(void)
 {
-	char	**tk = lexer("$A >> cat -e | ls");
-	for (int i = 0; i++; tk[i])
-		printf("%s\n", tk[i]);
+	int		i = 0;
+	char	*line = ft_strdup("echo    -n   \"sussy\"  | ls -ln");
+	printf("%d\n", ft_strlen(line));
+	char	**tk = lexer(line); // 7 tokens
+	
+	while (tk[i] != NULL)
+		printf("%s\n", tk[i++]);
 	free_2d_array(tk);
 }
