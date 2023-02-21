@@ -107,23 +107,25 @@ char	**lexer(char *line)
 	len = ft_strlen(line);
 	
 	token_pos = (int *) malloc (sizeof(int) * 2);
-	tokens = (char **) malloc (sizeof(char *) * 1);
+	tokens = (char **) malloc (sizeof(char *));
 	if (!token_pos || !tokens)
 		return (NULL);
-
-	end_pos = 0;
-	token_pos[0] = 0;
-	token_pos[1] = 0;
-	tokens[0] = NULL;
 	
+	token_pos[1] = 0;
+	end_pos = 0;
+	tokens[0] = NULL;
+
 	while (end_pos <= len)
 	{
 		end_pos = token_pos[1];
 		token_pos = find_token_pos(line, end_pos);
 		if (!token_pos)
-			break ;	
-		new_token = ft_substr(line, token_pos[0], token_pos[1]);
-		token_pos[0] = end_pos + 1;
+			break ;
+		if (token_pos[0] == token_pos[1])
+			new_token = ft_substr(line, token_pos[0], 1);
+		else
+			new_token = ft_substr(line, token_pos[0], token_pos[1] - token_pos[0]);
+		printf("new token created: %s\n", new_token);
 		tokens = realloc_append(tokens, new_token);
 		free(new_token);
 	}
