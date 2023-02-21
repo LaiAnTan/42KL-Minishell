@@ -124,7 +124,7 @@ char	**lexer(char *line)
 			new_token = ft_substr(line, token_pos[0], 1);
 		else
 			new_token = ft_substr(line, token_pos[0], token_pos[1] - token_pos[0]);
-		printf("new token created: %s~\n", new_token);
+		printf("new token created: %s\n", new_token);
 		tokens = realloc_append(tokens, new_token);
 		free(new_token);
 	}

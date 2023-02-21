@@ -4,6 +4,7 @@ void	handle_line()
 {
 	int		stop_sig;
 	char	*line;
+	char	**tk;
 
 	stop_sig = 0;
 	while (stop_sig == 0)
@@ -14,21 +15,24 @@ void	handle_line()
 			add_history(line);
 			rl_redisplay();
 		}
-		// lexer(line);
+		tk = lexer(line);
+		printf("%d\n", ft_strlen(line));
+		for (int i = 0; tk[i] != NULL; i++)
+			printf("%s\n", tk[i]);
+		free_2d_array(tk);
 	}
 	clear_history();
 	free(line);
 	return ;
 }
 
-int main(void)
+int main(int argc, char **argv, char *envp)
 {
 	int		i = 0;
-	char	*line = ft_strdup("echo    -n   \"sussy\"  | ls -ln");
-	printf("%d\n", ft_strlen(line));
-	char	**tk = lexer(line); // 7 tokens
-	
-	while (tk[i] != NULL)
-		printf("%s\n", tk[i++]);
-	free_2d_array(tk);
+	(void *) envp;
+	char	*line;
+
+	if (argc != 1)
+		return (0);
+	handle_line();
 }
