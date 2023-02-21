@@ -28,6 +28,7 @@ void	handle_line()
 
 int main(int argc, char **argv, char *envp)
 {
+<<<<<<< HEAD
 	int		i = 0;
 	(void *) envp;
 	char	*line;
@@ -35,4 +36,10 @@ int main(int argc, char **argv, char *envp)
 	if (argc != 1)
 		return (0);
 	handle_line();
+=======
+	char	**tk = lexer("$A >> cat -e | ls");
+	for (int i = 0; i++; tk[i])
+		printf("%s\n", tk[i]);
+	free_2d_array(tk);
+>>>>>>> refs/remotes/origin/main
 }
