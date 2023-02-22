@@ -26,7 +26,7 @@ typedef struct s_data
 char	**lexer(char *line);
 
 /* Lexer helper functions */
-int	*find_token_pos(char *line, int last_token_end_pos);
+int		*find_token_pos(char *line, int last_end);
 
 char	**realloc_append(char **src, char *str);
 
