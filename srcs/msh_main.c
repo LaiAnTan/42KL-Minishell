@@ -16,9 +16,6 @@ void	handle_line()
 			rl_redisplay();
 		}
 		tk = lexer(line);
-		printf("%d\n", ft_strlen(line));
-		for (int i = 0; tk[i] != NULL; i++)
-			printf("%s\n", tk[i]);
 		free_2d_array(tk);
 	}
 	clear_history();

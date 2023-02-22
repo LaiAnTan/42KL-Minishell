@@ -56,69 +56,59 @@ int	is_token(char c)
 	return (0);
 }
 
-int	*find_token_pos(char *line, int last_token_end_pos)
+int	*find_token_pos(char *line, int last_end)
 {
 	int		i;
 	int		tk_type;
 	int		*index_pair;
 
-	if (last_token_end_pos >= ft_strlen(line))
+	if (last_end >= ft_strlen(line))
 		return (NULL);
-	if (last_token_end_pos != 0)
-		i = last_token_end_pos + 1;
+	i = last_end;
 	index_pair = (int *) malloc (sizeof(int) * 2);
 	while (line[i] != '\0' && line[i] == ' ')
 		i++;
-	if (i == ft_strlen(line))
-		return (NULL);
 	index_pair[0] = i;
 	tk_type = is_token(line[i]);
 	if (tk_type != 0)
 	{
 		if (line[i + 1] != '\0' && (tk_type == 4 || tk_type == 5))
-		{
 			if (tk_type == is_token(line[i + 1]))
 				i++;
-		}
 		else if (line[i + 1] != '\0' && tk_type == 6)
 		{
+			i++;
 			if (line[i + 1] == '?')
 				i++;
 		}
 	}
 	else
-	{
 		while (line[i] != '\0' && line[i] != ' ' && is_token(line[i]) == 0)
 			i++;
-	}
 	index_pair[1] = i;
-	printf("start: %d | end: %d\n", index_pair[0], index_pair[1]);
+	printf(" %d | %d\n", index_pair[0], index_pair[1]);
 	return (index_pair);
 }
 
 char	**lexer(char *line)
 {
-	int		len;
-	int		end_pos;
+	int		end;
 	int		*token_pos;
 	char	*new_token;
 	char	**tokens;
-
-	len = ft_strlen(line);
 	
 	token_pos = (int *) malloc (sizeof(int) * 2);
 	tokens = (char **) malloc (sizeof(char *));
 	if (!token_pos || !tokens)
 		return (NULL);
 	
-	token_pos[1] = 0;
-	end_pos = 0;
+	token_pos[1] = -1;
 	tokens[0] = NULL;
 
-	while (end_pos <= len)
+	while (1)
 	{
-		end_pos = token_pos[1];
-		token_pos = find_token_pos(line, end_pos);
+		end = token_pos[1];
+		token_pos = find_token_pos(line, end + 1);
 		if (!token_pos)
 			break ;
 		if (token_pos[0] == token_pos[1])
