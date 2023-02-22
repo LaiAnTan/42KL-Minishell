@@ -50,7 +50,10 @@ int	is_token(char c)
 	while (token[i] != '\0')
 	{
 		if (token[i] == c)
+		{
+			printf("found token %c\n", token[i]);
 			return (i + 1);
+		}
 		i++;
 	}
 	return (0);
@@ -83,8 +86,14 @@ int	*find_token_pos(char *line, int last_end)
 		}
 	}
 	else
-		while (line[i] != '\0' && line[i] != ' ' && is_token(line[i]) == 0)
+	{
+		while (line[i] != '\0' && line[i] != ' ')
+		{
+			if (line[i] == '\'' || line[i] == '\"')
+				break;
 			i++;
+		}
+	}
 	index_pair[1] = i;
 	printf(" %d | %d\n", index_pair[0], index_pair[1]);
 	return (index_pair);
