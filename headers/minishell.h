@@ -48,6 +48,6 @@ int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);
 
 char	*ft_strdup(char *str);
-char	*ft_substr(char *s, unsigned int start, size_t len);
+char	*ft_substr(char *s, unsigned int start, unsigned int end);
 
 #endif

@@ -55,25 +55,26 @@ char	*ft_strdup(char *str)
 	return (dest);
 }
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, unsigned int end)
 {
 	char		*str;
 	size_t		i;
 
-	i = -1;
+	i = 0;
 	if (!s)
 		return (0);
-	if (len >= ft_strlen(s))
-		len = ft_strlen(s);
-	if (start >= ft_strlen(s) || !len)
+	if (end >= ft_strlen(s))
+		end = ft_strlen(s);
+	if (start >= ft_strlen(s))
 		return (ft_strdup(""));
-	str = (char *) malloc(sizeof(char) * (len + 1));
+	str = (char *) malloc(sizeof(char) * (end - start + 1));
 	if (str == 0)
 		return (0);
-	while (++i < len && s[start] != '\0')
+	while (start <= end && s[start] != '\0')
 	{
 		str[i] = s[start];
 		start++;
+		i++;
 	}
 	str[i] = '\0';
 	return (str);
