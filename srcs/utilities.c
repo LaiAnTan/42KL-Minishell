@@ -79,3 +79,28 @@ char	*ft_substr(char *s, unsigned int start, unsigned int end)
 	str[i] = '\0';
 	return (str);
 }
+
+char	**realloc_append(char **src, char *str)
+{
+	int		i;
+	int		len;
+	char	**new;
+
+	i = 0;
+	len = 0;
+	while (src[len] != NULL)
+		len++;
+	new = (char **) malloc (sizeof(char *) * (len + 2));
+	if (!new)
+		return (NULL);
+	while (i < len)
+	{
+		new[i] = ft_strdup(src[i]);
+		i++;
+	}
+	new[i] = ft_strdup(str);
+	new[i + 1] = NULL;
+	free_2d_array(src);
+	return (new);
+}
+

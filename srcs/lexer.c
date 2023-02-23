@@ -18,30 +18,6 @@ else keyword
 
 */
 
-char	**realloc_append(char **src, char *str)
-{
-	int		i;
-	int		len;
-	char	**new;
-
-	i = 0;
-	len = 0;
-	while (src[len] != NULL)
-		len++;
-	new = (char **) malloc (sizeof(char *) * (len + 2));
-	if (!new)
-		return (NULL);
-	while (i < len)
-	{
-		new[i] = ft_strdup(src[i]);
-		i++;
-	}
-	new[i] = ft_strdup(str);
-	new[i + 1] = NULL;
-	free_2d_array(src);
-	return (new);
-}
-
 int	is_token(char c)
 {
 	int		i = 0;
@@ -50,25 +26,20 @@ int	is_token(char c)
 	while (token[i] != '\0')
 	{
 		if (token[i] == c)
-		{
-			printf("found token %c\n", token[i]);
 			return (i + 1);
-		}
 		i++;
 	}
 	return (0);
 }
 
-int	*find_token_pos(char *line, int last_end)
+int	find_token_pos(char *line, int *index_pair)
 {
 	int		i;
 	int		tk_type;
-	int		*index_pair;
 
-	if (last_end >= ft_strlen(line))
-		return (NULL);
-	i = last_end;
-	index_pair = (int *) malloc (sizeof(int) * 2);
+	if (index_pair[1] >= ft_strlen(line))
+		return (0);
+	i = index_pair[1] + 1;
 	while (line[i] != '\0' && line[i] == ' ')
 		i++;
 	index_pair[0] = i;
@@ -98,36 +69,28 @@ int	*find_token_pos(char *line, int last_end)
 			i++;
 	}
 	index_pair[1] = i;
-	printf(" %d | %d\n", index_pair[0], index_pair[1]);
-	return (index_pair);
+	return (1);
 }
 
-char	**lexer(char *line)
+int	lexer(t_data *data)
 {
-	int		end;
-	int		*token_pos;
+	int		len;
+	int		token_pos[2];
 	char	*new_token;
-	char	**tokens;
 	
-	token_pos = (int *) malloc (sizeof(int) * 2);
-	tokens = (char **) malloc (sizeof(char *));
-	if (!token_pos || !tokens)
-		return (NULL);
-	
+	len = ft_strlen(data->line);
+	data->tokens = (char **) malloc (sizeof(char *));
+	if (!token_pos || !data->tokens)
+		return (0);
 	token_pos[1] = -1;
-	tokens[0] = NULL;
-
+	data->tokens[0] = NULL;
 	while (1)
 	{
-		end = token_pos[1];
-		token_pos = find_token_pos(line, end + 1);
-		if (!token_pos)
+		if (!find_token_pos(data->line, token_pos) || token_pos[1] >= len)
 			break ;
-		new_token = ft_substr(line, token_pos[0], token_pos[1]);
-		printf("new token created: %s\n", new_token);
-		tokens = realloc_append(tokens, new_token);
+		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
+		data->tokens = realloc_append(data->tokens, new_token);
 		free(new_token);
 	}
-	free(token_pos);
-	return (tokens);
+	return (1);
 }
