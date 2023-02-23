@@ -1,8 +1,12 @@
 NAME = minishell
 
 SRCS_C =	srcs/msh_main.c		\
+			srcs/struct.c		\
 			srcs/builtins.c		\
 			srcs/lexer.c		\
+			srcs/expander.c		\
+			srcs/environment.c	\
+			srcs/list.c			\
 			srcs/utilities.c	\
 
 SRCS_H = headers/minishell.h

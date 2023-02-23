@@ -1,35 +1,42 @@
 #include "../headers/minishell.h"
 
-void	handle_line()
-{
-	int		stop_sig;
-	char	*line;
-	char	**tk;
+#define MAGENTA "\x1b[35m"
+#define YELLOW "\x1b[33m"
+#define NORMAL "\x1b[m"
 
-	stop_sig = 0;
-	while (stop_sig == 0)
+int	handle_line(t_data *data)
+{
+	char	*line;
+
+	line = readline(YELLOW "Mini" MAGENTA "shell: " NORMAL);
+	if (line && *line)
 	{
-		line = readline("> ");
-		if (line && *line)
-		{
-			add_history(line);
-			rl_redisplay();
-		}
-		tk = lexer(line);
-		free_2d_array(tk);
+		add_history(line);
+		rl_redisplay();
+		data->line = ft_strdup(line);
+		free(line);
+		return (1);
 	}
-	clear_history();
-	free(line);
-	return ;
+	return (0);
 }
 
-int main(int argc, char **argv, char *envp)
+int main(int argc, char **argv, char **envp)
 {
-	int		i = 0;
 	(void *) envp;
-	char	*line;
-
+	(void **) argv;
 	if (argc != 1)
 		return (0);
-	handle_line();
+
+	t_data data;
+
+	init_data(&data, envp);
+	ft_lstprint(data.vars);
+	while (1)
+	{
+		handle_line(&data);
+		lexer(&data);
+		// expander(&data);
+		for (int i = 0; data.tokens[i]; i++)
+			printf("%d: %s\n", i, data.tokens[i]);
+	}
 }
