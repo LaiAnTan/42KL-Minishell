@@ -19,6 +19,7 @@
 typedef struct s_list
 {
 	char			*str;
+	int				printed;
 	struct s_list	*next;
 
 }		t_list;
