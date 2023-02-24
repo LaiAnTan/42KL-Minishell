@@ -30,5 +30,4 @@ int	get_equal_pos(t_list *node)
 		pos++;
 	}
 	return (-1);
-	
 }
