@@ -17,3 +17,13 @@ t_list	*set_env(char **envp)
 	}
 	return (vars);
 }
+
+int	get_equal_pos(t_list *node)
+{
+	int		pos;
+
+	pos = 0;
+	while (node->str[pos] != '=')
+		pos++;
+	return (pos);
+}

@@ -8,7 +8,7 @@ int	handle_line(t_data *data)
 {
 	char	*line;
 
-	line = readline(YELLOW "Mini" MAGENTA "shell: " NORMAL);
+	line = readline(YELLOW "Mini" MAGENTA "shell$ " NORMAL);
 	if (line && *line)
 	{
 		add_history(line);
@@ -16,6 +16,7 @@ int	handle_line(t_data *data)
 		data->line = ft_strdup(line);
 		free(line);
 		return (1);
+
 	}
 	return (0);
 }
@@ -30,13 +31,13 @@ int main(int argc, char **argv, char **envp)
 	t_data data;
 
 	init_data(&data, envp);
-	ft_lstprint(data.vars);
-	while (1)
-	{
-		handle_line(&data);
-		lexer(&data);
-		// expander(&data);
-		for (int i = 0; data.tokens[i]; i++)
-			printf("%d: %s\n", i, data.tokens[i]);
-	}
+	// while (1)
+	// {
+	// 	handle_line(&data);
+	// 	lexer(&data);
+	// 	// expander(&data);
+	// 	for (int i = 0; data.tokens[i]; i++)
+	// 		printf("%d: %s\n", i, data.tokens[i]);
+	// }
+	builtin_export(&data, NULL);
 }
