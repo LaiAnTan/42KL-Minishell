@@ -50,12 +50,50 @@ void	display_export_line(t_list *node)
 	i = 0;
 	equal_pos = get_equal_pos(node);
 	write(1, "declare -x ", 11);
-	while (i <= equal_pos)
-		write(1, &node->str[i++],1);
-	write(1, "\"", 1);
-	while (node->str[i] != '\0')
-		write(1, &node->str[i++], 1);
-	write(1, "\"\n", 2);
+	if (equal_pos != -1)
+	{
+		while (i <= equal_pos)
+			write(1, &node->str[i++],1);
+		write(1, "\"", 1);
+		while (node->str[i] != '\0')
+			write(1, &node->str[i++], 1);
+		write(1, "\"\n", 2);
+	}
+	else
+		write(1, node->str, ft_strlen(node->str));
+}
+
+void print_asc_export(t_list *lst)
+{
+	int lst_size;
+	t_list *head;
+	t_list *node;
+
+	head = lst;
+	node = lst;
+	lst_size = ft_lstsize(lst);
+	printf("lst size = %d\n", lst_size);
+	while (lst_size)
+	{
+		node = head;
+		lst = head;
+		while (lst != NULL)
+		{
+			if (lst->str[0] < node->str[0] && lst->printed == 0)
+				node = lst;
+			lst = lst->next;
+		}
+		display_export_line(node);
+		node->printed = 1;
+		lst_size--;
+
+	}
+	lst = head;
+	while (lst != NULL)
+	{
+		lst->printed = 0;
+		lst = lst->next;
+	}
 }
 
 void	builtin_export(t_data *data, char **args)
@@ -65,19 +103,9 @@ void	builtin_export(t_data *data, char **args)
 	t_list	*head;
 
 	i = 0;
+	lst = data->vars;
 	if (args == NULL)
-	{
-		lst = ft_lstcpy(data->vars);
-		head = lst;
-		// ft_lstsort(lst);
-		while (lst != NULL)
-		{
-			display_export_line(lst);
-			lst = lst->next;
-		}
-		lst = head;
-		ft_lstfree(lst);
-	}
+		print_asc_export(lst);
 	else
 	{
 		while (args[i] != NULL)
@@ -85,6 +113,23 @@ void	builtin_export(t_data *data, char **args)
 			lst = data->vars;
 			head = ft_lstnew(args[i]);
 			ft_lstadd_back(&lst, head);
+			i++;
+		}
+	}
+}
+
+void	builtin_unset(t_data *data, char **args)
+{
+	int		i;
+
+	i = 0;
+	if (args == NULL)
+		return ;
+	else
+	{
+		while (args[i] != NULL)
+		{
+			//ft_lstdel();
 			i++;
 		}
 	}

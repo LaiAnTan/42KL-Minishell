@@ -1,5 +1,9 @@
 NAME = minishell
 
+CDIR = srcs
+
+ODIR = obj
+
 SRCS_C =	srcs/msh_main.c		\
 			srcs/struct.c		\
 			srcs/builtins.c		\
@@ -13,24 +17,27 @@ SRCS_H = headers/minishell.h
 
 SRCS_O = $(SRCS_C:.c=.o)
 
-CFLAG = 
-# -Wall -Wextra -Werror
+CFLAG =
+#-Wall -Wextra -Werror
 
 LIB = -lreadline
 
-all : $(NAME)
+all : $(NAME) move
 
-%.o: %.c
+%.o:%.c
 		@gcc $(CFLAG) -c $< -o $(<:.c=.o)
 
 $(NAME): $(SRCS_O)
 		@gcc $(CFLAG) -o $(NAME) $(SRCS_O) $(LIB)
 
+move :
+	@mv $(SRCS_O) $(ODIR)
+
 vg :
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 clean :
-		@rm -f ${SRCS_O}
+		@rm -f $(ODIR)/*.o
 
 fclean : clean
 		@rm -f $(NAME)

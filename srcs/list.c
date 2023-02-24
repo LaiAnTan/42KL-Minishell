@@ -4,6 +4,7 @@ t_list *ft_lstnew(char *var)
 {
 	t_list *list = (t_list *) malloc (sizeof(t_list));
 	list ->str = var;
+	list ->printed = 0;
 	list ->next = NULL;
 	return (list);
 }
@@ -24,12 +25,13 @@ t_list	*ft_lstcpy(t_list *lst)
 	t_list	*newlst;
 	t_list	*newnode;
 
+	newlst = NULL;
 	head = lst;
 	newlst = ft_lstnew(ft_strdup(lst->str));
 	while (lst != NULL)
 	{
 		newnode = ft_lstnew(ft_strdup(lst->str));
-		ft_lstadd_back(newlst, newnode);
+		ft_lstadd_back(&newlst, newnode);
 		lst = lst->next;
 	}
 	lst = head;
@@ -70,6 +72,7 @@ void	ft_lstfree(t_list *lst)
 	while (curr != NULL)
 	{
 		next = curr->next;
+		free(curr->str);
 		free(curr);
 		curr = next;
 	}
@@ -81,8 +84,10 @@ int		ft_lstsize(t_list *lst)
 	size_t i;
 
 	i = 0;
-	while (lst[i].next != NULL)
-		++i;
-	return (i + 1);
+	while (lst != NULL)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
 }
-
