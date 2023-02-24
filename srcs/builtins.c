@@ -13,39 +13,32 @@ builtin commands
 
 */
 
-void	builtin_echo(char *str, char option)
+void builtin_echo(char *str, char option)
 {
-	write(STDOUT_FILENO, str, ft_strlen(str));	
+	write(STDOUT_FILENO, str, ft_strlen(str));
 	if (option = 'n')
-		write (STDOUT_FILENO, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
 }
 
-void	builtin_cd(char *path, char type)
+void builtin_cd(char *path, char type)
 {
 	if (type = 'a')
 	{
-
 	}
 	if (type = 'r')
 	{
-
 	}
 }
 
-void	builtin_pwd(t_data *data)
+void builtin_pwd(t_data *data)
 {
 	write(STDOUT_FILENO, data->curr_path, ft_strlen(data->curr_path));
 }
 
-void	ft_lstsort(t_list *lst)
+void display_export_line(t_list *node)
 {
-	return;
-}
-
-void	display_export_line(t_list *node)
-{
-	int		i;
-	int		equal_pos;
+	int i;
+	int equal_pos;
 
 	i = 0;
 	equal_pos = get_equal_pos(node);
@@ -53,7 +46,7 @@ void	display_export_line(t_list *node)
 	if (equal_pos != -1)
 	{
 		while (i <= equal_pos)
-			write(1, &node->str[i++],1);
+			write(1, &node->str[i++], 1);
 		write(1, "\"", 1);
 		while (node->str[i] != '\0')
 			write(1, &node->str[i++], 1);
@@ -65,42 +58,40 @@ void	display_export_line(t_list *node)
 
 void print_asc_export(t_list *lst)
 {
-	int lst_size;
-	t_list *head;
-	t_list *node;
+	int		lst_size;
+	t_list	*curr_node;
+	t_list	*smallest_node;
 
-	head = lst;
-	node = lst;
 	lst_size = ft_lstsize(lst);
-	printf("lst size = %d\n", lst_size);
-	while (lst_size)
+	curr_node = lst;
+	while (curr_node != NULL)
 	{
-		node = head;
-		lst = head;
-		while (lst != NULL)
-		{
-			if (lst->str[0] < node->str[0] && lst->printed == 0)
-				node = lst;
-			lst = lst->next;
-		}
-		display_export_line(node);
-		node->printed = 1;
-		lst_size--;
-
+		curr_node->printed = 0;
+		curr_node = curr_node->next;
 	}
-	lst = head;
-	while (lst != NULL)
+	while (lst_size > 0)
 	{
-		lst->printed = 0;
-		lst = lst->next;
+		curr_node = lst;
+		smallest_node = lst;
+		while (smallest_node->printed)
+			smallest_node = smallest_node->next;
+		while (curr_node != NULL)
+		{
+			if ((curr_node->str[0] < smallest_node->str[0]) && curr_node->printed == 0)
+				smallest_node = curr_node;
+			curr_node = curr_node->next;
+		}
+		smallest_node->printed = 1;
+		display_export_line(smallest_node);
+		lst_size--;
 	}
 }
 
-void	builtin_export(t_data *data, char **args)
+void builtin_export(t_data *data, char **args)
 {
-	int		i;
-	t_list	*lst;
-	t_list	*head;
+	int i;
+	t_list *lst;
+	t_list *head;
 
 	i = 0;
 	lst = data->vars;
@@ -118,30 +109,29 @@ void	builtin_export(t_data *data, char **args)
 	}
 }
 
-void	builtin_unset(t_data *data, char **args)
+void builtin_unset(t_data *data, char **args)
 {
-	int		i;
+	int i;
 
 	i = 0;
 	if (args == NULL)
-		return ;
+		return;
 	else
 	{
 		while (args[i] != NULL)
 		{
-			//ft_lstdel();
+			// ft_lstdel();
 			i++;
 		}
 	}
 }
 
-
-void	builtin_env(t_data *data)
+void builtin_env(t_data *data)
 {
 	ft_lstprint(data->vars);
 }
 
-void	builtin_exit(t_data *data)
+void builtin_exit(t_data *data)
 {
 	// free everything
 	exit(0);

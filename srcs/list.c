@@ -79,6 +79,11 @@ void	ft_lstfree(t_list *lst)
 	lst = NULL;
 }
 
+void	ft_lstdel(t_list *lst)
+{
+	
+}
+
 int		ft_lstsize(t_list *lst)
 {
 	size_t i;
