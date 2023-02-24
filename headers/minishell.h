@@ -51,14 +51,15 @@ int		expander(t_data *data);
 
 /* Environment Variables */
 t_list	*set_env(char **envp);
+int		get_equal_pos(t_list *node);
 
 /* Builtin command functions */
 void	builtin_echo(char *str, char option);
 void	builtin_cd(char *path, char type);
 void	builtin_pwd(t_data *data);
+void	builtin_export(t_data *data, char **args);
 
-
-void	builtin_env(char **envp);
+void	builtin_env(t_data *data);
 void	builtin_exit(t_data *data);
 
 /* Utility functions */
@@ -72,9 +73,14 @@ char	*ft_substr(char *s, unsigned int start, unsigned int end);
 char	**realloc_append(char **src, char *str);
 
 /* Linked List */
-t_list *ft_lstnew(char *var);
+t_list	*ft_lstnew(char *var);
 t_list	*ft_lstlast(t_list *lst);
+t_list	*ft_lstcpy(t_list *lst);
+
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstprint(t_list *lst);
+void	ft_lstfree(t_list *lst);
+
+int		ft_lstsize(t_list *lst);
 
 #endif

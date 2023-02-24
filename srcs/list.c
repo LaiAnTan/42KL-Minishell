@@ -18,6 +18,24 @@ t_list	*ft_lstlast(t_list *lst)
 	return (current);
 }
 
+t_list	*ft_lstcpy(t_list *lst)
+{
+	t_list	*head;
+	t_list	*newlst;
+	t_list	*newnode;
+
+	head = lst;
+	newlst = ft_lstnew(ft_strdup(lst->str));
+	while (lst != NULL)
+	{
+		newnode = ft_lstnew(ft_strdup(lst->str));
+		ft_lstadd_back(newlst, newnode);
+		lst = lst->next;
+	}
+	lst = head;
+	return (newlst);
+}
+
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	if(!new)
@@ -42,3 +60,29 @@ void	ft_lstprint(t_list *lst)
 		node = node->next;
 	}
 }
+
+void	ft_lstfree(t_list *lst)
+{
+	t_list	*curr;
+	t_list	*next;
+
+	curr = lst;
+	while (curr != NULL)
+	{
+		next = curr->next;
+		free(curr);
+		curr = next;
+	}
+	lst = NULL;
+}
+
+int		ft_lstsize(t_list *lst)
+{
+	size_t i;
+
+	i = 0;
+	while (lst[i].next != NULL)
+		++i;
+	return (i + 1);
+}
+
