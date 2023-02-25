@@ -27,50 +27,66 @@ typedef struct s_list
 typedef struct s_data
 {
 
-	// tokens
 	char	*line;
 	char	**tokens;
+	char	**my_envp;
 
-	// variables
 	t_list *vars;
-
-	// directory path
-	char	*curr_path;
 }			t_data;
 
 /* Data */
+void	rebuild_envp(t_data *data);
+
 int 	init_data(t_data *data, char **envp);
 
 /* Lexer */
 int		lexer(t_data *data);
 
-/* Lexer helper functions */
-int		find_token_pos(char *line, int *token_pos);
-
 /* Expander */
 int		expander(t_data *data);
 
+/* Parser */
+
+/* Command Path */
+void	append_stuff(char **paths, char *cmd);
+
+char	*get_path_envp(t_data *data);
+char	**get_cmd_path(t_data *data, char *cmd);
+char	*trim_path(char *path);
+
+/* Commands Execution */
+void	run_cmd(t_data *data, char *cmd_with_params);
+int		exec_cmd(t_data *data, char *cmd, char **cmd_paths, char **args);
+
 /* Environment Variables */
 t_list	*set_env(char **envp);
+
 int		get_equal_pos(t_list *node);
 
 /* Builtin command functions */
-void	builtin_echo(char *str, char option);
-void	builtin_cd(char *path, char type);
-void	builtin_pwd(t_data *data);
-void	builtin_export(t_data *data, char **args);
+void	builtin_echo(int argc, char **args, t_data *data);
+void	builtin_cd(int argc, char **args, t_data *data);
+void	builtin_pwd(int argc, char **args, t_data *data);
+void	builtin_export(int argc, char **args, t_data *data);
+void	builtin_unset(int argc, char **args, t_data *data);
+void	builtin_env(int argc, char **args, t_data *data);
+void	builtin_exit(int argc, char **args, t_data *data);
 
-void	builtin_env(t_data *data);
-void	builtin_exit(t_data *data);
+int		handle_builtins(int argc, char **args, t_data *data);
 
-/* Utility functions */
+/* Error Handling */
+
+
+/* Utility Functions */
 void	free_2d_array(char **arr);
 
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);
 
 char	*ft_strdup(char *str);
+char	*ft_append(char *s1, char *s2);
 char	*ft_substr(char *s, unsigned int start, unsigned int end);
+char	**ft_split(char *s, char c);
 char	**realloc_append(char **src, char *str);
 
 /* Linked List */

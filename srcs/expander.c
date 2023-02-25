@@ -7,6 +7,6 @@ int	expander(t_data *data)
 
 	while (data->tokens[i] != NULL)
 	{
-		
+
 	}
 }

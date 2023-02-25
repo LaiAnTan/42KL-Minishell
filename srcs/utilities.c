@@ -106,3 +106,26 @@ char	**realloc_append(char **src, char *str)
 	return (new);
 }
 
+char	*ft_append(char *s1, char *s2)
+{
+	int		i;
+	int		j;
+	char	*temp;
+
+	i = 0;
+	j = 0;
+	temp = (char *) malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (s1 != NULL)
+	{
+		while (s1[j] != '\0')
+			temp[i++] = s1[j++];
+	}
+	if (s2 != NULL)
+	{
+		while (*s2 != '\0')
+			temp[i++] = *s2++;
+	}
+	temp[i] = '\0';
+	free(s1);
+	return (temp);
+}

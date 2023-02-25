@@ -6,33 +6,63 @@ builtin commands
 *	echo with option -n
 *	cd with only a relative or absolute path
 *	pwd with no options
-!	export with no options
-!	unset with no options
+*	export with no options
+*	unset with no options
 *	env with no options or arguments
 *	exit with no options
 
 */
 
-void builtin_echo(char *str, char option)
+int	handle_builtins(int argc, char **args, t_data *data)
 {
-	write(STDOUT_FILENO, str, ft_strlen(str));
-	if (option = 'n')
-		write(STDOUT_FILENO, "\n", 1);
+	if (!args || !*args)
+		return (0);
+	if (ft_strcmp(args[0], "echo"))
+		builtin_echo(argc, args, data);
+	else if (ft_strcmp(args[0], "cd"))
+		builtin_cd(argc, args, data);
+	else if (ft_strcmp(args[0], "pwd"))
+		builtin_pwd(argc, args, data);
+	else if (ft_strcmp(args[0], "export"))
+		builtin_export(argc, args, data);
+	else if (ft_strcmp(args[0], "unset"))
+		builtin_unset(argc, args, data);
+	else if (ft_strcmp(args[0], "env"))
+		builtin_env(argc, args, data);
+	else if (ft_strcmp(args[0], "exit"))
+		builtin_exit(argc, args, data);
+	else
+		printf("command not found");
+	return (0);
 }
 
-void builtin_cd(char *path, char type)
+void builtin_echo(int argc, char **args, t_data *data)
 {
-	if (type = 'a')
+	int		i;
+	int		nl;
+
+	i = 2;
+	nl = 0;
+	if (ft_strcmp(args[1], "-n"))
+		nl = 1;
+	while (i < argc)
 	{
+		write(1, args[i], ft_strlen(args[i]));
+		i++;
 	}
-	if (type = 'r')
-	{
-	}
+	if (nl)
+		write(1, "\n", 1);
+	return ;
 }
 
-void builtin_pwd(t_data *data)
+void builtin_cd(int argc, char **args, t_data *data)
 {
-	write(STDOUT_FILENO, data->curr_path, ft_strlen(data->curr_path));
+
+}
+
+void builtin_pwd(int argc, char **args, t_data *data)
+{
+	
 }
 
 void display_export_line(t_list *node)
@@ -87,7 +117,7 @@ void print_asc_export(t_list *lst)
 	}
 }
 
-void builtin_export(t_data *data, char **args)
+void builtin_export(int argc, char **args, t_data *data)
 {
 	int i;
 	t_list *lst;
@@ -109,7 +139,7 @@ void builtin_export(t_data *data, char **args)
 	}
 }
 
-void builtin_unset(t_data *data, char **args)
+void builtin_unset(int argc, char **args, t_data *data)
 {
 	int i;
 
@@ -126,12 +156,12 @@ void builtin_unset(t_data *data, char **args)
 	}
 }
 
-void builtin_env(t_data *data)
+void builtin_env(int argc, char **args, t_data *data)
 {
 	ft_lstprint(data->vars);
 }
 
-void builtin_exit(t_data *data)
+void builtin_exit(int argc, char **args, t_data *data)
 {
 	// free everything
 	exit(0);

@@ -73,16 +73,45 @@ void	ft_lstfree(t_list *lst)
 	{
 		next = curr->next;
 		free(curr->str);
+		curr->next = NULL;
 		free(curr);
 		curr = next;
 	}
 	lst = NULL;
 }
 
-void	ft_lstdel(t_list *lst)
+void	ft_lstdel_middle(t_list *lst)
 {
 	
 }
+
+void	ft_lstdel_head(t_list *lst)
+{
+	t_list	*temp;
+
+	if (lst == NULL)
+		return ;
+	temp = lst;
+	lst = lst->next;
+	temp->next = NULL;
+	free(temp->str);
+	free(temp);
+}
+
+void	ft_lstdel_end(t_list *lst)
+{
+	t_list	*head;
+	t_list	*temp;
+
+	head = lst;
+	while (lst->next != NULL)
+		lst = lst->next;
+	temp = lst;
+	free(temp->str);
+	free(temp);
+	lst = head;
+}
+
 
 int		ft_lstsize(t_list *lst)
 {
