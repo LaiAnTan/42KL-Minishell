@@ -8,3 +8,13 @@ tlai-an
 
 -------------------------------------------
 
+To Do:
+
+- expander
+- parser
+- pipes
+- redirection
+- finish builtins
+- signals
+- error handling
+- memory leaks
