@@ -76,14 +76,14 @@ void display_export_line(t_list *node)
 	if (equal_pos != -1)
 	{
 		while (i <= equal_pos)
-			write(1, &node->str[i++], 1);
+			write(1, &node->env.str[i++], 1);
 		write(1, "\"", 1);
-		while (node->str[i] != '\0')
-			write(1, &node->str[i++], 1);
+		while (node->env.str[i] != '\0')
+			write(1, &node->env.str[i++], 1);
 		write(1, "\"\n", 2);
 	}
 	else
-		write(1, node->str, ft_strlen(node->str));
+		write(1, node->env.str, ft_strlen(node->env.str));
 }
 
 void print_asc_export(t_list *lst)
@@ -96,22 +96,22 @@ void print_asc_export(t_list *lst)
 	curr_node = lst;
 	while (curr_node != NULL)
 	{
-		curr_node->printed = 0;
+		curr_node->env.printed = 0;
 		curr_node = curr_node->next;
 	}
 	while (lst_size > 0)
 	{
 		curr_node = lst;
 		smallest_node = lst;
-		while (smallest_node->printed)
+		while (smallest_node->env.printed)
 			smallest_node = smallest_node->next;
 		while (curr_node != NULL)
 		{
-			if ((curr_node->str[0] < smallest_node->str[0]) && curr_node->printed == 0)
+			if ((curr_node->env.str[0] < smallest_node->env.str[0]) && curr_node->env.printed == 0)
 				smallest_node = curr_node;
 			curr_node = curr_node->next;
 		}
-		smallest_node->printed = 1;
+		smallest_node->env.printed = 1;
 		display_export_line(smallest_node);
 		lst_size--;
 	}

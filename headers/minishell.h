@@ -16,10 +16,21 @@
 # define TRUE 1
 # define FALSE 0
 
-typedef struct s_list
+typedef struct s_env
 {
 	char			*str;
 	int				printed;
+}		t_env;
+
+typedef struct s_cmd
+{
+	char			**cmd;
+}		t_cmd;
+
+typedef struct s_list
+{
+	t_env			env;
+	t_cmd			cmd;
 	struct s_list	*next;
 
 }		t_list;
@@ -92,7 +103,6 @@ char	**realloc_append(char **src, char *str);
 /* Linked List */
 t_list	*ft_lstnew(char *var);
 t_list	*ft_lstlast(t_list *lst);
-t_list	*ft_lstcpy(t_list *lst);
 
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstprint(t_list *lst);

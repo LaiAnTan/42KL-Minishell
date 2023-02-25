@@ -3,8 +3,9 @@
 t_list *ft_lstnew(char *var)
 {
 	t_list *list = (t_list *) malloc (sizeof(t_list));
-	list ->str = var;
-	list ->printed = 0;
+	list ->env.str = var;
+	list ->env.printed = 0;
+	list ->cmd.cmd= NULL;
 	list ->next = NULL;
 	return (list);
 }
@@ -17,25 +18,6 @@ t_list	*ft_lstlast(t_list *lst)
 	while (current -> next != NULL)
 		current = current -> next;
 	return (current);
-}
-
-t_list	*ft_lstcpy(t_list *lst)
-{
-	t_list	*head;
-	t_list	*newlst;
-	t_list	*newnode;
-
-	newlst = NULL;
-	head = lst;
-	newlst = ft_lstnew(ft_strdup(lst->str));
-	while (lst != NULL)
-	{
-		newnode = ft_lstnew(ft_strdup(lst->str));
-		ft_lstadd_back(&newlst, newnode);
-		lst = lst->next;
-	}
-	lst = head;
-	return (newlst);
 }
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
@@ -58,7 +40,7 @@ void	ft_lstprint(t_list *lst)
 	node = lst;
 	while (node != NULL)
 	{
-		printf("%s\n", node->str);
+		printf("%s\n", node->env.str);
 		node = node->next;
 	}
 }
@@ -72,7 +54,8 @@ void	ft_lstfree(t_list *lst)
 	while (curr != NULL)
 	{
 		next = curr->next;
-		free(curr->str);
+		free(curr->env.str);
+		free(curr->cmd.cmd);
 		curr->next = NULL;
 		free(curr);
 		curr = next;
@@ -94,7 +77,8 @@ void	ft_lstdel_head(t_list *lst)
 	temp = lst;
 	lst = lst->next;
 	temp->next = NULL;
-	free(temp->str);
+	free(temp->env.str);
+	free(temp->cmd.cmd);
 	free(temp);
 }
 
@@ -107,7 +91,7 @@ void	ft_lstdel_end(t_list *lst)
 	while (lst->next != NULL)
 		lst = lst->next;
 	temp = lst;
-	free(temp->str);
+	free(temp->env.str);
 	free(temp);
 	lst = head;
 }

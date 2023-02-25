@@ -23,9 +23,9 @@ int	get_equal_pos(t_list *node)
 	int		pos;
 
 	pos = 0;
-	while (node->str[pos] != '\0')
+	while (node->env.str[pos] != '\0')
 	{
-		if (node->str[pos] == '=')
+		if (node->env.str[pos] == '=')
 			return (pos);
 		pos++;
 	}

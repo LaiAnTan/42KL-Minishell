@@ -13,13 +13,13 @@ char	*get_path_envp(t_data *data)
 	head = lst;
 	while (lst != NULL);
 	{
-		while ((str[j] != '\0') && (str[j] == lst->str[j]))
+		while ((str[j] != '\0') && (str[j] == lst->env.str[j]))
 		{
 			j++;
 			if (str[j] == '\0' && j == 4)
 			{
 				free(str);
-				return (ft_strdup(lst->str));
+				return (ft_strdup(lst->env.str));
 			}
 		}
 		j = 0;
