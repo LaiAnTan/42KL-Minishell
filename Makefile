@@ -9,6 +9,7 @@ SRCS_C =	srcs/msh_main.c		\
 			srcs/builtins.c		\
 			srcs/lexer.c		\
 			srcs/expander.c		\
+			srcs/parser.c		\
 			srcs/path.c			\
 			srcs/cmd.c			\
 			srcs/environment.c	\
