@@ -24,7 +24,7 @@ void	rebuild_envp(t_data *data)
 	data->my_envp = (char **) malloc(sizeof(char *) * (lst_size + 1));
 	while (lst != NULL)
 	{
-		data->my_envp[i] = ft_strdup(lst->str);
+		data->my_envp[i] = ft_strdup(lst->env.str);
 		i++;
 		lst = lst->next;
 	}
