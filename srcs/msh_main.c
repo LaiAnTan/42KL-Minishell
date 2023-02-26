@@ -19,6 +19,24 @@ int	handle_line(t_data *data)
 	return (0);
 }
 
+// prints out content in lst
+void	print_parsed(t_list *amogus)
+{
+	t_list *iter;
+	int		iter_count;
+
+	iter_count = 1;
+	iter = amogus;
+	while (iter)
+	{
+		printf("%d cmd = \n", iter_count);
+		for (int i = 0; iter->cmd.cmd[i]; ++i)
+			printf("%d | %s\n", i, iter->cmd.cmd[i]);
+		iter = iter->next;
+		++iter_count;
+	}
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	(void *) envp;
@@ -38,6 +56,8 @@ int main(int argc, char **argv, char **envp)
 			printf("%d: %s\n", i, data.tokens[i]);
 		// expander(&data);
 		parser(&data);
+		printf("parsed stuff = \n");
+		print_parsed(data.cmds);
 		ft_lstfree(&data.cmds);
 		free(data.line);
 	}

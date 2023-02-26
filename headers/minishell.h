@@ -22,6 +22,7 @@ typedef struct s_env
 	int				printed;
 }		t_env;
 
+// bro what in ohio is this structure
 typedef struct s_cmd
 {
 	char			**cmd;
