@@ -66,7 +66,7 @@ void	ft_lstfree(t_list **lst)
 		next = curr->next;
 		free(curr->env.str);
 		// isnt this a double array
-		free_2d_array(curr->cmd.cmd);
+		free_2d_array(&curr->cmd.cmd);
 		curr->next = NULL;
 		free(curr);
 		curr = next;

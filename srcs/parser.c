@@ -65,7 +65,7 @@ int	parser(t_data *data)
 		ft_lstadd_back(&lst, node);
 	}
 	// i love data leaks
-	free_2d_array(data->tokens);
+	free_2d_array(&data->tokens);
 	data->cmds = lst;
 	return (1);
 }

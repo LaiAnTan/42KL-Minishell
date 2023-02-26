@@ -1,16 +1,17 @@
 #include "../headers/minishell.h"
 
-void	free_2d_array(char **arr)
+void	free_2d_array(char ***arr)
 {
 	int	i;
 
 	i = 0;
-	while (arr[i] != NULL)
+	while ((*arr)[i] != NULL)
 	{
-		free(arr[i]);
+		free((*arr)[i]);
 		i++;
 	}
-	free(arr);
+	free(*arr);
+	(*arr) = NULL;
 }
 
 int	ft_strlen(char *s)
@@ -106,7 +107,7 @@ char	**realloc_append(char **src, char *str)
 	}
 	new[i] = ft_strdup(str);
 	new[i + 1] = NULL;
-	free_2d_array(src);
+	free_2d_array(&src);
 	return (new);
 }
 

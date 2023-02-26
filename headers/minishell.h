@@ -93,7 +93,7 @@ int		handle_builtins(int argc, char **args, t_data *data);
 
 
 /* Utility Functions */
-void	free_2d_array(char **arr);
+void	free_2d_array(char ***arr);
 
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);
