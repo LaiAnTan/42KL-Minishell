@@ -64,8 +64,10 @@ void	ft_lstfree(t_list *lst)
 	while (curr != NULL)
 	{
 		next = curr->next;
-		free(curr->env.str);
-		free(curr->cmd.cmd);
+		if (curr->env.str != NULL)
+			free(curr->env.str);
+		if(curr->cmd.cmd != NULL)
+			free_2d_array(curr->cmd.cmd);
 		curr->next = NULL;
 		free(curr);
 		curr = next;
@@ -73,39 +75,31 @@ void	ft_lstfree(t_list *lst)
 	lst = NULL;
 }
 
-void	ft_lstdel_middle(t_list *lst)
+void	ft_lstdel_env(t_list *lst, char *to_delete)
 {
-	
+	t_list	*curr;
+	t_list	*prev;
+
+	curr = lst;
+	prev = NULL;
+
+	// head;
+	if (curr != NULL && ft_strcmp_equals(lst->env.str, to_delete) == 0)
+	{
+		lst = curr->next;
+		curr = lst;	
+		
+		free(curr->env.str);
+	}
+	while (curr != NULL && ft_strcmp_equals(lst->env.str, to_delete))
+	{
+		prev = curr;
+		curr = curr->next;
+	}
+	if (curr == NULL)
+
+
 }
-
-void	ft_lstdel_head(t_list *lst)
-{
-	t_list	*temp;
-
-	if (lst == NULL)
-		return ;
-	temp = lst;
-	lst = lst->next;
-	temp->next = NULL;
-	free(temp->env.str);
-	free(temp->cmd.cmd);
-	free(temp);
-}
-
-void	ft_lstdel_end(t_list *lst)
-{
-	t_list	*head;
-	t_list	*temp;
-
-	head = lst;
-	while (lst->next != NULL)
-		lst = lst->next;
-	temp = lst;
-	free(temp->env.str);
-	free(temp);
-	lst = head;
-}
-
 
 int		ft_lstsize(t_list *lst)
 {
