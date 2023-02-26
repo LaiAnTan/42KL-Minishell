@@ -22,11 +22,14 @@ typedef struct s_env
 	int				printed;
 }		t_env;
 
+// bro what in ohio is this structure
 typedef struct s_cmd
 {
 	char			**cmd;
 }		t_cmd;
 
+// PLEASE RENAME THIS INTO SOMETHING ELSE
+// WHAT IN OHIO IS T_LIST
 typedef struct s_list
 {
 	t_env			env;
@@ -91,7 +94,7 @@ int		handle_builtins(int argc, char **args, t_data *data);
 
 
 /* Utility Functions */
-void	free_2d_array(char **arr);
+void	free_2d_array(char ***arr);
 
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);
@@ -111,7 +114,7 @@ t_list	*ft_lstlast(t_list *lst);
 
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstprint(t_list *lst);
-void	ft_lstfree(t_list *lst);
+void	ft_lstfree(t_list **lst);
 
 int		ft_lstsize(t_list *lst);
 
