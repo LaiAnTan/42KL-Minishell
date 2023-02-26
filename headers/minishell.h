@@ -95,6 +95,7 @@ void	free_2d_array(char **arr);
 
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);
+int		ft_strcmp_equals(char *s1, char *s2);
 
 char	*ft_strdup(char *str);
 char	*ft_append(char *s1, char *s2);
