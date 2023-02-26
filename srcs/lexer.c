@@ -37,7 +37,8 @@ int	find_token_pos(char *line, int *index_pair)
 	int		i;
 	int		tk_type;
 
-	if (index_pair[1] >= ft_strlen(line))
+	// check if the index is on '\0' symbol, if it is kill it with fire
+	if (index_pair[1] + 1 >= ft_strlen(line))
 		return (0);
 	i = index_pair[1] + 1;
 	while (line[i] != '\0' && line[i] == ' ')
