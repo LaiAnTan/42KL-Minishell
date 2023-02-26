@@ -21,7 +21,7 @@ void	rebuild_envp(t_data *data)
 	lst_size = ft_lstsize(lst);
 	head = lst;
 	if (data->my_envp != NULL)
-		free_2d_array(data->my_envp);
+		free_2d_array(&data->my_envp);
 	data->my_envp = (char **) malloc(sizeof(char *) * (lst_size + 1));
 	while (lst != NULL)
 	{
