@@ -42,7 +42,8 @@ typedef struct s_data
 	char	**tokens;
 	char	**my_envp;
 
-	t_list *vars;
+	t_list	*vars;
+	t_list	*cmds;
 }			t_data;
 
 /* Data */
@@ -57,6 +58,7 @@ int		lexer(t_data *data);
 int		expander(t_data *data);
 
 /* Parser */
+int		parser(t_data *data);
 
 /* Command Path */
 void	append_stuff(char **paths, char *cmd);
@@ -101,7 +103,9 @@ char	**ft_split(char *s, char c);
 char	**realloc_append(char **src, char *str);
 
 /* Linked List */
-t_list	*ft_lstnew(char *var);
+t_list	*ft_lstnew_env(char *var);
+t_list	*ft_lstnew_cmd(char **cmd);
+
 t_list	*ft_lstlast(t_list *lst);
 
 void	ft_lstadd_back(t_list **lst, t_list *new);

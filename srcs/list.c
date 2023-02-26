@@ -1,11 +1,21 @@
 #include "../headers/minishell.h"
 
-t_list *ft_lstnew(char *var)
+t_list *ft_lstnew_env(char *var)
 {
 	t_list *list = (t_list *) malloc (sizeof(t_list));
 	list ->env.str = var;
 	list ->env.printed = 0;
 	list ->cmd.cmd= NULL;
+	list ->next = NULL;
+	return (list);
+}
+
+t_list *ft_lstnew_cmd(char **cmd)
+{
+	t_list *list = (t_list *) malloc (sizeof(t_list));
+	list ->env.str = NULL;
+	list ->env.printed = 0;
+	list ->cmd.cmd= cmd;
 	list ->next = NULL;
 	return (list);
 }

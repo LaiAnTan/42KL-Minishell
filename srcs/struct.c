@@ -3,6 +3,7 @@
 int init_data(t_data *data, char **envp)
 {
 	data->vars = set_env(envp);
+	data->cmds = NULL;
 	data->my_envp = NULL;
 	rebuild_envp(data);
 	return (1);

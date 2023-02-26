@@ -132,7 +132,7 @@ void builtin_export(int argc, char **args, t_data *data)
 		while (args[i] != NULL)
 		{
 			lst = data->vars;
-			head = ft_lstnew(args[i]);
+			head = ft_lstnew_env(args[i]);
 			ft_lstadd_back(&lst, head);
 			i++;
 		}
