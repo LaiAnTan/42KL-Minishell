@@ -34,7 +34,7 @@ int main(int argc, char **argv, char **envp)
 		handle_line(&data);
 		lexer(&data);
 		// expander(&data);
-		// parser(&data);
+		parser(&data);
 		for (int i = 0; data.tokens[i]; i++)
 			printf("%d: %s\n", i, data.tokens[i]);
 	}

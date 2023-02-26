@@ -8,10 +8,10 @@ t_list	*set_env(char **envp)
 
 
 	i = 1;	
-	vars = ft_lstnew(envp[0]);
+	vars = ft_lstnew_env(envp[0]);
 	while (envp[i] != NULL)
 	{
-		node = ft_lstnew(envp[i]);
+		node = ft_lstnew_env(envp[i]);
 		ft_lstadd_back(&vars, node);
 		i++;
 	}
