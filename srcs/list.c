@@ -67,7 +67,7 @@ void	ft_lstfree(t_list **lst)
 		if (curr->env.str != NULL)
 			free(curr->env.str);
 		if(curr->cmd.cmd != NULL)
-			free_2d_array(curr->cmd.cmd);
+			free_2d_array(&curr->cmd.cmd);
 		curr->next = NULL;
 		free(curr);
 		curr = next;
@@ -97,7 +97,7 @@ void	ft_lstdel_env(t_list *lst, char *to_delete)
 		curr = curr->next;
 	}
 	if (curr == NULL)
-
+	{}
 
 }
 
