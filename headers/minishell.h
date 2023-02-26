@@ -27,6 +27,8 @@ typedef struct s_cmd
 	char			**cmd;
 }		t_cmd;
 
+// PLEASE RENAME THIS INTO SOMETHING ELSE
+// WHAT IN OHIO IS T_LIST
 typedef struct s_list
 {
 	t_env			env;
@@ -110,7 +112,7 @@ t_list	*ft_lstlast(t_list *lst);
 
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstprint(t_list *lst);
-void	ft_lstfree(t_list *lst);
+void	ft_lstfree(t_list **lst);
 
 int		ft_lstsize(t_list *lst);
 

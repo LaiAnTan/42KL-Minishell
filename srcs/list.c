@@ -55,22 +55,23 @@ void	ft_lstprint(t_list *lst)
 	}
 }
 
-void	ft_lstfree(t_list *lst)
+void	ft_lstfree(t_list **lst)
 {
 	t_list	*curr;
 	t_list	*next;
 
-	curr = lst;
+	curr = (*lst);
 	while (curr != NULL)
 	{
 		next = curr->next;
 		free(curr->env.str);
-		free(curr->cmd.cmd);
+		// isnt this a double array
+		free_2d_array(curr->cmd.cmd);
 		curr->next = NULL;
 		free(curr);
 		curr = next;
 	}
-	lst = NULL;
+	(*lst) = NULL;
 }
 
 void	ft_lstdel_middle(t_list *lst)

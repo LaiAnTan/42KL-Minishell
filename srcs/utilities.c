@@ -27,6 +27,9 @@ int	ft_strcmp(char *s1, char *s2)
 	int		i;
 
 	i = 0;
+	// maybe i should include a failswitch as well~
+	if (!s1 || !s2)
+		return (!(!s1 && !s2));
 	while (s1[i] != '\0' && s2[i] != '\0')
 	{
 		if (s1[i] > s2[i])
@@ -63,13 +66,14 @@ char	*ft_substr(char *s, unsigned int start, unsigned int end)
 	size_t		i;
 
 	i = 0;
-	if (!s)
+	if (!s && start > end)
 		return (0);
 	if (end >= ft_strlen(s))
 		end = ft_strlen(s);
 	if (start >= ft_strlen(s))
 		return (ft_strdup(""));
-	str = (char *) malloc(sizeof(char) * (end - start + 1));
+	// you did not include space for the end character
+	str = (char *) malloc(sizeof(char) * ((end - start) + 2));
 	if (str == 0)
 		return (0);
 	while (start <= end && s[start] != '\0')

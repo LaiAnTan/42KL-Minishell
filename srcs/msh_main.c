@@ -4,7 +4,7 @@ int	handle_line(t_data *data)
 {
 	char	*line;
 
-	line = readline("\x1b[31;1m" "Mi" "\x1b[33;1m" "ni" 
+	line = readline("\x1b[31;1m" "Gay" "\x1b[33;1m" "as" 
 					"\x1b[32;1m" "sh" "\x1b[36;1m" "el" 
 					"\x1b[35m" "l$ " "\x1b[m");
 	if (line && *line)
@@ -31,11 +31,14 @@ int main(int argc, char **argv, char **envp)
 	init_data(&data, envp);
 	while (1)
 	{
-		handle_line(&data);
+		if (!handle_line(&data))
+			continue;
 		lexer(&data);
-		// expander(&data);
-		parser(&data);
 		for (int i = 0; data.tokens[i]; i++)
 			printf("%d: %s\n", i, data.tokens[i]);
+		// expander(&data);
+		parser(&data);
+		ft_lstfree(&data.cmds);
+		free(data.line);
 	}
 }

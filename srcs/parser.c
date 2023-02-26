@@ -2,11 +2,18 @@
 
 int	find_next_cmd(char **tokens, int *index_pair)
 {
-	int		i;
+	int	i;
+
+	// epic fail safe moment
+	if (!tokens)
+		return (0);
+	// ohio swap
 	index_pair[0] = index_pair[1];
-	i = index_pair[1] + 1;
+	// i forsee this + 1 is the root of our problems
+	i = index_pair[1];
 	index_pair[0] = i;
-	while (tokens[i] != NULL)
+	// check for next = NULL sia, anot ft_strcmp get depression
+	while (tokens[i + 1] != NULL)
 	{
 		if (ft_strcmp(tokens[i + 1], "|") == 0)
 		{
@@ -45,7 +52,8 @@ int	parser(t_data *data)
 	t_list	*lst;
 	t_list	*node;
 
-	index_pair[1] = -1;
+	// why was this -1????
+	index_pair[1] = 0;
 	cmd = extract_cmd(data->tokens, index_pair);
 	lst = ft_lstnew_cmd(cmd);
 	while (1)
@@ -56,6 +64,8 @@ int	parser(t_data *data)
 		node = ft_lstnew_cmd(cmd);
 		ft_lstadd_back(&lst, node);
 	}
+	// i love data leaks
+	free_2d_array(data->tokens);
 	data->cmds = lst;
 	return (1);
 }
