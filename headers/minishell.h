@@ -26,6 +26,7 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char			**cmd;
+
 }		t_cmd;
 
 // PLEASE RENAME THIS INTO SOMETHING ELSE
@@ -40,13 +41,13 @@ typedef struct s_list
 
 typedef struct s_data
 {
-
 	char	*line;
 	char	**tokens;
 	char	**my_envp;
 
 	t_list	*vars;
 	t_list	*cmds;
+
 }			t_data;
 
 /* Data */
@@ -71,13 +72,15 @@ char	**get_cmd_path(t_data *data, char *cmd);
 char	*trim_path(char *path);
 
 /* Commands Execution */
-void	run_cmd(t_data *data, char *cmd_with_params);
+void	run_cmd(t_data *data);
 int		exec_cmd(t_data *data, char *cmd, char **cmd_paths, char **args);
 
 /* Environment Variables */
 t_list	*set_env(char **envp);
 
 int		get_equal_pos(t_list *node);
+
+char	*get_val(t_list *node);
 
 /* Builtin command functions */
 void	builtin_echo(int argc, char **args, t_data *data);
@@ -97,7 +100,7 @@ int		handle_builtins(int argc, char **args, t_data *data);
 void	free_2d_array(char ***arr);
 
 int		ft_strlen(char *s);
-int		ft_strcmp(char *s1, char *s2);
+int		ft_strcmp(char *s1, char *s2); // returns 0 if same
 int		ft_strcmp_equals(char *s1, char *s2);
 
 char	*ft_strdup(char *str);

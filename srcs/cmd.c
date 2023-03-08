@@ -14,16 +14,17 @@ void	free_2d_arrays(char **a, char **b)
 	free(b);
 }
 
-void	run_cmd(t_data *data, char *cmd_with_params)
+void	run_cmd(t_data *data)
 {
 	char	*cmd;
 	char	**args;
 	char	**cmd_paths;
 
-	args = ft_split(cmd_with_params, ' ');
-	cmd = ft_strdup(args[0]);
+	cmd = ft_strdup(data->cmds->cmd.cmd[0]);
 	cmd_paths = get_cmd_path(data, cmd);
-	exec_cmd(data, cmd, cmd_paths, args);
+	// for (int i = 0; cmd_paths[i]; i++)
+	// 	printf("path %d = %s\n", i, cmd_paths[i]);
+	exec_cmd(data, cmd, cmd_paths, data->cmds->cmd.cmd);
 }
 
 int	exec_cmd(t_data *data, char *cmd, char **cmd_paths, char **args)

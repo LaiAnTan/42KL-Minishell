@@ -9,8 +9,6 @@ tlai-an
 -------------------------------------------
 
 To Do
-
-- expander
 - parser
 - pipes
 - redirection
@@ -19,8 +17,10 @@ To Do
 - error handling
 - memory leaks
 
-Done (not tested)
+In Progress
+- expander
 
+Done (not tested)
 - base data structure
 - lexer
 - some builtins

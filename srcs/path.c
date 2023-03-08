@@ -8,21 +8,16 @@ char	*get_path_envp(t_data *data)
 	t_list	*head;
 
 	j = 0;
-	str = ft_strdup("PATH");
+	str = ft_strdup("PATH=");
 	lst = data->vars;
 	head = lst;
 	while (lst != NULL);
 	{
-		while ((str[j] != '\0') && (str[j] == lst->env.str[j]))
+		if (ft_strcmp_equals(str, lst->env.str) == 0)
 		{
-			j++;
-			if (str[j] == '\0' && j == 4)
-			{
-				free(str);
-				return (ft_strdup(lst->env.str));
-			}
+			free(str);
+			return (ft_strdup(lst->env.str));
 		}
-		j = 0;
 		lst = lst->next;
 	}
 	lst = head;
@@ -36,6 +31,7 @@ char	**get_cmd_path(t_data *data, char *cmd)
 	char	**cmd_paths;
 
 	full_path = get_path_envp(data);
+	printf("full path = %s\n", full_path);
 	cmd_paths = ft_split(full_path, ':');
 	free(full_path);
 	cmd_paths[0] = trim_path(cmd_paths[0]);

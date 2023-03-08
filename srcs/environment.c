@@ -31,3 +31,21 @@ int	get_equal_pos(t_list *node)
 	}
 	return (-1);
 }
+
+char	*get_val(t_list *node)
+{
+	int		i;
+	int		pos;
+	char	*val;
+
+	pos = get_equal_pos(node) + 1; // 1st char after =
+	val = (char *) malloc (sizeof(char) * (ft_strlen(node->env.str) - pos + 1));
+	while (node->env.str[pos] != '\0')
+	{
+		val[i] = node->env.str[pos];
+		i++;
+		pos++;
+	}
+	val[i] = '\0';
+	return (val);
+}

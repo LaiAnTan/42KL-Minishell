@@ -4,7 +4,7 @@ int	handle_line(t_data *data)
 {
 	char	*line;
 
-	line = readline("\x1b[31;1m" "Gay" "\x1b[33;1m" "as" 
+	line = readline("\x1b[31;1m" "Mi" "\x1b[33;1m" "ni" 
 					"\x1b[32;1m" "sh" "\x1b[36;1m" "el" 
 					"\x1b[35m" "l$ " "\x1b[m");
 	if (line && *line)
@@ -29,7 +29,7 @@ void	print_parsed(t_list *amogus)
 	iter = amogus;
 	while (iter)
 	{
-		printf("%d cmd = \n", iter_count);
+		printf("<Cmd %d>\n", iter_count);
 		for (int i = 0; iter->cmd.cmd[i]; ++i)
 			printf("%d | %s\n", i, iter->cmd.cmd[i]);
 		iter = iter->next;
@@ -52,13 +52,14 @@ int main(int argc, char **argv, char **envp)
 		if (!handle_line(&data))
 			continue;
 		lexer(&data);
-		for (int i = 0; data.tokens[i]; i++)
-			printf("%d: %s\n", i, data.tokens[i]);
-		// expander(&data);
+		printf("tokenized\n");
 		parser(&data);
-		printf("parsed stuff = \n");
+		printf("parsed\n");
 		print_parsed(data.cmds);
+		expander(&data);
+		// run_cmd(&data);
 		ft_lstfree(&data.cmds);
 		free(data.line);
 	}
+	ft_lstfree(&data.vars);
 }
