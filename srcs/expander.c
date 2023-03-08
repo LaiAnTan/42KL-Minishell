@@ -20,13 +20,18 @@ void	handle_dollar(t_data *data, char ***new, int dollar_pos)
 {
 	char	*val;
 
-	if (data->tokens[dollar_pos + 1] != NULL)
+	if (ft_strcmp(data->tokens[dollar_pos], "$") == 0)
 	{
-		val = find_var(data, data->tokens[dollar_pos + 1]);
-		if (val != NULL)
-			*new = realloc_append(*new, val);
-		free(val);
+		if (data->tokens[dollar_pos + 1] != NULL)
+		{
+			val = find_var(data, data->tokens[dollar_pos + 1]);
+			if (val != NULL)
+				*new = realloc_append(*new, val);
+			free(val);
+		}
 	}
+	else
+		*new = realloc_append(*new, data->tokens[dollar_pos]);
 }
 
 int	expander(t_data *data)
@@ -48,17 +53,9 @@ int	expander(t_data *data)
 		else if (ft_strcmp(data->tokens[i], "\"") == 0)
 		{
 			while (ft_strcmp(data->tokens[++i], "\"") != 0)
-			{
-				if (ft_strcmp(data->tokens[i], "$") == 0)
-					handle_dollar(data, &new, i);
-				else
-					new = realloc_append(new, data->tokens[i]);
-			}
+				handle_dollar(data, &new, i);
 		}
-		else if (ft_strcmp(data->tokens[i], "$") == 0)
-			handle_dollar(data, &new, i);
-		else
-			new = realloc_append(new, data->tokens[i]);
+		handle_dollar(data, &new, i);
 		i++;
 	}
 	free_2d_array(&data->tokens);
