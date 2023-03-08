@@ -42,7 +42,13 @@ int	expander(t_data *data)
 
 	i = 0;
 	expanded = NULL;
+	// where malloc :skull
+	new = malloc (sizeof(char *));
 	new[0] = NULL;
+	if (!data)
+		return (printf("data given is empty\n"));
+	if (!data->tokens)
+		return (printf("token given in data is empty\n"));
 	while (data->tokens[i] != NULL)
 	{
 		if(ft_strcmp(data->tokens[i], "\'") == 0)
