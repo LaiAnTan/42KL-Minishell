@@ -37,7 +37,6 @@ char	**extract_cmd(char **tokens, int *index_pair)
 	char	**cmd;
 	
 	find_next_cmd(tokens, index_pair);
-	printf("%d | %d\n", index_pair[0], index_pair[1]);
 	i = 0;
 	j = index_pair[0];
 	cmd = (char **) malloc (sizeof(char *) * (index_pair[1] - index_pair[0] + 1));
