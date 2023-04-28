@@ -16,53 +16,78 @@ char	*find_var(t_data *data, char *name)
 	return (NULL);
 }
 
-void	handle_dollar(t_data *data, char ***new, int dollar_pos)
+void	handle_dollar(t_data *data, char ***new, int *dollar_pos)
 {
 	char	*val;
 
-	if (ft_strcmp(data->tokens[dollar_pos], "$") == 0)
+	if (data->tokens[*dollar_pos] == NULL)
+		return ;
+	if (ft_strcmp(data->tokens[*dollar_pos], "$") == 0)
 	{
-		if (data->tokens[dollar_pos + 1] != NULL)
+		*dollar_pos++;
+		if (data->tokens[*dollar_pos] != NULL)
 		{
-			val = find_var(data, data->tokens[dollar_pos + 1]);
-			if (val != NULL)
-				*new = realloc_append(*new, val);
+			val = find_var(data, data->tokens[*dollar_pos]);
+			*dollar_pos++;
+			if (val == NULL)
+				return ;
+			*new = realloc_append(*new, val);
 			free(val);
 		}
 	}
 	else
-		*new = realloc_append(*new, data->tokens[dollar_pos]);
+		*new = realloc_append(*new, data->tokens[*dollar_pos]);
 }
 
+int	count_double(char **e)
+{
+	int	i = 0;
+
+	while (e[i])
+		++i;
+	return (i);
+}
+
+// how do i fix this
 int	expander(t_data *data)
 {
 	int		i;
 	char	*expanded;
 	char	**new;
+	int		tokencount = count_double(data->tokens);
 
 	i = 0;
 	expanded = NULL;
-	// where malloc :skull
 	new = malloc (sizeof(char *));
 	new[0] = NULL;
-	if (!data)
-		return (printf("data given is empty\n"));
-	if (!data->tokens)
-		return (printf("token given in data is empty\n"));
-	while (data->tokens[i] != NULL)
+	if (!data || !data->tokens)
+		return (0);
+	while (i < tokencount)
 	{
-		if(ft_strcmp(data->tokens[i], "\'") == 0)
+		if (ft_strcmp(data->tokens[i], "\'") == 0)
 		{
-			while (ft_strcmp(data->tokens[++i], "\'") != 0)
+			i++;
+			// printf("found single at %d\n", i);
+			while (ft_strcmp(data->tokens[i], "\'") != 0)
+			{
 				new = realloc_append(new, data->tokens[i]);
+				i++;
+			}
+			++i;
 		}
 		else if (ft_strcmp(data->tokens[i], "\"") == 0)
 		{
-			while (ft_strcmp(data->tokens[++i], "\"") != 0)
-				handle_dollar(data, &new, i);
+			i++;
+			// printf("found double at %d\n", i);
+			while (ft_strcmp(data->tokens[i], "\"") != 0)
+			{
+				handle_dollar(data, &new, &i);
+				i++;
+			}
+			++i;
 		}
-		handle_dollar(data, &new, i);
-		i++;
+		handle_dollar(data, &new, &i);
+		++i;
 	}
 	free_2d_array(&data->tokens);
 	data->tokens = new;
