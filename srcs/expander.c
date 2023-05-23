@@ -48,7 +48,7 @@ int	count_double(char **e)
 	return (i);
 }
 
-// how do i fix this
+// ? trying to fix this now
 int	expander(t_data *data)
 {
 	int		i;
@@ -66,28 +66,29 @@ int	expander(t_data *data)
 	{
 		if (ft_strcmp(data->tokens[i], "\'") == 0)
 		{
+			printf("Found sq\n");
 			i++;
-			// printf("found single at %d\n", i);
-			while (ft_strcmp(data->tokens[i], "\'") != 0)
+			while (data->tokens[i] != NULL && ft_strcmp(data->tokens[i], "\'") != 0)
 			{
 				new = realloc_append(new, data->tokens[i]);
 				i++;
 			}
-			++i;
 		}
 		else if (ft_strcmp(data->tokens[i], "\"") == 0)
 		{
+			printf("Found dq\n");
 			i++;
-			// printf("found double at %d\n", i);
-			while (ft_strcmp(data->tokens[i], "\"") != 0)
+			while (data->tokens[i] != NULL && ft_strcmp(data->tokens[i], "\"") != 0)
 			{
 				handle_dollar(data, &new, &i);
 				i++;
 			}
-			++i;
 		}
-		handle_dollar(data, &new, &i);
-		++i;
+		else
+		{
+			handle_dollar(data, &new, &i);
+			i++;
+		}
 	}
 	free_2d_array(&data->tokens);
 	data->tokens = new;
