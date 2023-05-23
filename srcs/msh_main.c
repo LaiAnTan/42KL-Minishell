@@ -55,9 +55,11 @@ int main(int argc, char **argv, char **envp)
 		parser(&data);
 		printf("parsed\n");
 		print_parsed(data.cmds);
-		// run_cmd(&data);
+		run_cmd(&data);
+		printf("cmd ran");
 		ft_lstfree(&data.cmds);
 		free(data.line);
 	}
 	ft_lstfree(&data.vars);
+	return (0);
 }
