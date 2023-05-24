@@ -50,7 +50,6 @@ int main(int argc, char **argv, char **envp)
 		expander(&data);
 		parser(&data);
 		print_parsed(data.cmds);
-		// need to fork here before run command
 		run_cmd(&data);
 		ft_lstfree(&data.cmds);
 		free(data.line);
