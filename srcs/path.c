@@ -26,8 +26,10 @@ char	**get_cmd_path(t_data *data, char *cmd)
 	char	**cmd_paths;
 
 	full_path = get_path_envp(data);
-	printf("full path = %s\n", full_path);
+	// printf("full path = %s\n", full_path);
 	cmd_paths = ft_split(full_path, ':');
+	// for (int i = 0; cmd_paths[i]; i++)
+	// 	printf("%d =  %s\n", i, cmd_paths[i]);
 	free(full_path);
 	cmd_paths[0] = trim_path(cmd_paths[0]);
 	append_stuff(cmd_paths, cmd);

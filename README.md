@@ -9,8 +9,6 @@ Team members:
 -------------------------------------------
 
 To Do
-- parser
-- pipes
 - redirection
 - finish builtins (unset, cd)
 - signals
@@ -18,9 +16,11 @@ To Do
 - memory leaks
 
 In Progress
-- expander
+- parser
+- pipes
 
-Done (not tested)
+Done (probably)
+- expander
 - base data structure
 - lexer
 - some builtins

@@ -50,6 +50,8 @@ char	**extract_cmd(char **tokens, int *index_pair)
 	return (cmd);
 }
 
+
+// ? parser needs to combine the quotation marks into a single arg
 int	parser(t_data *data)
 {
 	int		index_pair[2];
