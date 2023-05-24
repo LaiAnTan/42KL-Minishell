@@ -55,15 +55,15 @@ void builtin_echo(int argc, char **args, t_data *data)
 	return ;
 }
 
-void builtin_cd(int argc, char **args, t_data *data)
-{
+// void builtin_cd(int argc, char **args, t_data *data)
+// {
 
-}
+// }
 
-void builtin_pwd(int argc, char **args, t_data *data)
-{
+// void builtin_pwd(int argc, char **args, t_data *data)
+// {
 	
-}
+// }
 
 void display_export_line(t_list *node)
 {

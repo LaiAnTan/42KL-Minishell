@@ -2,8 +2,6 @@
 
 char	*find_var(t_data *data, char *name)
 {
-	int		pos;
-	char	*val;
 	t_list	*lst;
 
 	lst = data->vars;
@@ -24,11 +22,11 @@ void	handle_dollar(t_data *data, char ***new, int *dollar_pos)
 		return ;
 	if (ft_strcmp(data->tokens[*dollar_pos], "$") == 0)
 	{
-		*dollar_pos++;
+		dollar_pos++;
 		if (data->tokens[*dollar_pos] != NULL)
 		{
 			val = find_var(data, data->tokens[*dollar_pos]);
-			*dollar_pos++;
+			dollar_pos++;
 			if (val == NULL)
 				return ;
 			*new = realloc_append(*new, val);
@@ -52,12 +50,10 @@ int	count_double(char **e)
 int	expander(t_data *data)
 {
 	int		i;
-	char	*expanded;
 	char	**new;
 	int		tokencount = count_double(data->tokens);
 
 	i = 0;
-	expanded = NULL;
 	new = malloc (sizeof(char *));
 	new[0] = NULL;
 	if (!data || !data->tokens)

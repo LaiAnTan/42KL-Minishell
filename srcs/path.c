@@ -2,16 +2,12 @@
 
 char	*get_path_envp(t_data *data)
 {
-	int		j;
 	char	*str;
 	t_list	*lst;
-	t_list	*head;
 
-	j = 0;
 	str = ft_strdup("PATH=");
 	lst = data->vars;
-	head = lst;
-	while (lst != NULL);
+	while (lst != NULL)
 	{
 		if (ft_strcmp_equals(str, lst->env.str) == 0)
 		{
@@ -20,7 +16,6 @@ char	*get_path_envp(t_data *data)
 		}
 		lst = lst->next;
 	}
-	lst = head;
 	free(str);
 	return (NULL);
 }

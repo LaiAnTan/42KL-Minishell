@@ -73,7 +73,7 @@ char	*trim_path(char *path);
 
 /* Commands Execution */
 void	run_cmd(t_data *data);
-int		exec_cmd(t_data *data, char *cmd, char **cmd_paths, char **args);
+int		exec_cmd(t_data *data, char **cmd_paths, char **args);
 
 /* Environment Variables */
 t_list	*set_env(char **envp);

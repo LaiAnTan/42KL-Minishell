@@ -32,12 +32,13 @@ void	print_parsed(t_list *amogus)
 		iter = iter->next;
 		++iter_count;
 	}
+	printf("End\n");
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	(void *) envp;
-	(void **) argv;
+	(void) argv;
+
 	if (argc != 1)
 		return (0);
 
