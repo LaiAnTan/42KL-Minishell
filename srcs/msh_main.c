@@ -16,7 +16,7 @@ int	handle_line(t_data *data)
 	return (0);
 }
 
-// prints out content in lst
+// debug function for printing commands
 void	print_parsed(t_list *amogus)
 {
 	t_list *iter;
@@ -32,32 +32,26 @@ void	print_parsed(t_list *amogus)
 		iter = iter->next;
 		++iter_count;
 	}
-	printf("End\n");
 }
 
 int main(int argc, char **argv, char **envp)
 {
 	(void) argv;
+	t_data data;
 
 	if (argc != 1)
 		return (0);
-
-	t_data data;
-
 	init_data(&data, envp);
 	while (1)
 	{
 		if (!handle_line(&data))
 			continue;
 		lexer(&data);
-		printf("tokenized\n");
 		expander(&data);
-		printf("expanded\n");
 		parser(&data);
-		printf("parsed\n");
 		print_parsed(data.cmds);
+		// need to fork here before run command
 		run_cmd(&data);
-		printf("cmd ran");
 		ft_lstfree(&data.cmds);
 		free(data.line);
 	}

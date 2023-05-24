@@ -24,8 +24,6 @@ void	run_cmd(t_data *data)
 	exec_cmd(data, cmd_paths, data->cmds->cmd.cmd);
 }
 
-
-// ! here broken
 int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 {
 	int		i;
@@ -35,7 +33,7 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 	rebuild_envp(data);
 	while (cmd_paths[i] != NULL)
 	{
-		if (args[0])
+		if (args[0] != NULL)
 			free(args[0]);
 		args[0] = ft_strdup(cmd_paths[i]);
 		status = access(args[0], X_OK);

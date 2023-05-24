@@ -73,6 +73,7 @@ char	*trim_path(char *path);
 
 /* Commands Execution */
 void	run_cmd(t_data *data);
+
 int		exec_cmd(t_data *data, char **cmd_paths, char **args);
 
 /* Environment Variables */
@@ -112,7 +113,6 @@ char	**realloc_append(char **src, char *str);
 /* Linked List */
 t_list	*ft_lstnew_env(char *var);
 t_list	*ft_lstnew_cmd(char **cmd);
-
 t_list	*ft_lstlast(t_list *lst);
 
 void	ft_lstadd_back(t_list **lst, t_list *new);

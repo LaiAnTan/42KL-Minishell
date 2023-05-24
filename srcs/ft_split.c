@@ -54,7 +54,7 @@ char	**insertwords(char **strs, char *s, char c, int wordcount)
 			if ((s[start] == '\0'))
 				return (strs);
 		}
-		strs[j] = ft_substr(s, start, start + countletters(s, c, start));
+		strs[j] = ft_substr(s, start, start + countletters(s, c, start) - 1);
 		j++;
 		start += countletters(s, c, start);
 	}

@@ -62,7 +62,6 @@ int	expander(t_data *data)
 	{
 		if (ft_strcmp(data->tokens[i], "\'") == 0)
 		{
-			printf("Found sq\n");
 			i++;
 			while (data->tokens[i] != NULL && ft_strcmp(data->tokens[i], "\'") != 0)
 			{
@@ -72,7 +71,6 @@ int	expander(t_data *data)
 		}
 		else if (ft_strcmp(data->tokens[i], "\"") == 0)
 		{
-			printf("Found dq\n");
 			i++;
 			while (data->tokens[i] != NULL && ft_strcmp(data->tokens[i], "\"") != 0)
 			{
