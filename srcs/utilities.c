@@ -85,11 +85,10 @@ char	*ft_substr(char *s, unsigned int start, unsigned int end)
 	i = 0;
 	if (!s && start > end)
 		return (0);
-	if (end >= ft_strlen(s))
+	if (end >= (unsigned int) ft_strlen(s))
 		end = ft_strlen(s);
-	if (start >= ft_strlen(s))
+	if (start >= (unsigned int) ft_strlen(s))
 		return (ft_strdup(""));
-	// you did not include space for the end character
 	str = (char *) malloc(sizeof(char) * ((end - start) + 2));
 	if (str == 0)
 		return (0);

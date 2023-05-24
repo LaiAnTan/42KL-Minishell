@@ -75,31 +75,32 @@ void	ft_lstfree(t_list **lst)
 	(*lst) = NULL;
 }
 
-void	ft_lstdel_env(t_list *lst, char *to_delete)
-{
-	t_list	*curr;
-	t_list	*prev;
+// ! fix this
+// void	ft_lstdel_env(t_list *lst, char *to_delete)
+// {
+// 	t_list	*curr;
+// 	t_list	*prev;
 
-	curr = lst;
-	prev = NULL;
+// 	curr = lst;
+// 	prev = NULL;
 
-	// head;
-	if (curr != NULL && ft_strcmp_equals(lst->env.str, to_delete) == 0)
-	{
-		lst = curr->next;
-		curr = lst;	
+// 	// head;
+// 	if (curr != NULL && ft_strcmp_equals(lst->env.str, to_delete) == 0)
+// 	{
+// 		lst = curr->next;
+// 		curr = lst;	
 		
-		free(curr->env.str);
-	}
-	while (curr != NULL && ft_strcmp_equals(lst->env.str, to_delete))
-	{
-		prev = curr;
-		curr = curr->next;
-	}
-	if (curr == NULL)
-	{}
+// 		free(curr->env.str);
+// 	}
+// 	while (curr != NULL && ft_strcmp_equals(lst->env.str, to_delete))
+// 	{
+// 		prev = curr;
+// 		curr = curr->next;
+// 	}
+// 	if (curr == NULL)
+// 	{}
 
-}
+// }
 
 int		ft_lstsize(t_list *lst)
 {

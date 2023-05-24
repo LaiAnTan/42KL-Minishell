@@ -81,7 +81,7 @@ int	lexer(t_data *data)
 	
 	len = ft_strlen(data->line);
 	data->tokens = (char **) malloc (sizeof(char *));
-	if (!token_pos || !data->tokens)
+	if (!data->tokens)
 		return (0);
 	token_pos[1] = -1;
 	data->tokens[0] = NULL;

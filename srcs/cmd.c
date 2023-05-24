@@ -17,24 +17,23 @@ void	free_2d_arrays(char **a, char **b)
 void	run_cmd(t_data *data)
 {
 	char	*cmd;
-	char	**args;
 	char	**cmd_paths;
 
 	cmd = ft_strdup(data->cmds->cmd.cmd[0]);
 	cmd_paths = get_cmd_path(data, cmd);
-	// for (int i = 0; cmd_paths[i]; i++)
-	// 	printf("path %d = %s\n", i, cmd_paths[i]);
-	exec_cmd(data, cmd, cmd_paths, data->cmds->cmd.cmd);
+	exec_cmd(data, cmd_paths, data->cmds->cmd.cmd);
 }
 
-int	exec_cmd(t_data *data, char *cmd, char **cmd_paths, char **args)
+
+// ! here broken
+int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 {
 	int		i;
 	int		status;
 
 	i = 0;
 	rebuild_envp(data);
-	while (cmd_paths[i])
+	while (cmd_paths[i] != NULL)
 	{
 		if (args[0])
 			free(args[0]);

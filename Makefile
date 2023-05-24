@@ -6,7 +6,6 @@ ODIR = obj
 
 SRCS_C =	srcs/msh_main.c		\
 			srcs/struct.c		\
-			srcs/builtins.c		\
 			srcs/lexer.c		\
 			srcs/expander.c		\
 			srcs/parser.c		\
@@ -17,12 +16,13 @@ SRCS_C =	srcs/msh_main.c		\
 			srcs/ft_split.c		\
 			srcs/utilities.c	\
 
+# srcs/builtins.c
+
 SRCS_H = headers/minishell.h
 
 SRCS_O = $(SRCS_C:.c=.o)
 
-CFLAG =
-#-Wall -Wextra -Werror
+CFLAG = -Wall -Wextra -Werror
 
 LIB = -lreadline
 
