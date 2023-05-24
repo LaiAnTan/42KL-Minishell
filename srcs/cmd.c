@@ -4,12 +4,12 @@ void	free_2d_arrays(char **a, char **b)
 {
 	int		i;
 
-	i = 0;
-	while (a[i])
-		free(a[i++]);
-	i = 0;
-	while (b[i])
-		free(b[i++]);
+	i = -1;
+	while (a[++i])
+		free(a[i]);
+	i = -1;
+	while (b[++i])
+		free(b[i]);
 	free(a);
 	free(b);
 }
@@ -39,17 +39,28 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 		status = access(args[0], X_OK);
 		if (!status)
 		{
-			if (execve(cmd_paths[i], args, data->my_envp) == -1)
+			// fork you
+			// 0 means child btw
+			if (!fork())
 			{
-				free_2d_arrays(cmd_paths, args);
-				//failed
-				return (0);
+				if (execve(cmd_paths[i], args, data->my_envp) == -1)
+				{
+					// failed
+					free_2d_arrays(cmd_paths, args);
+					return (0);
+				}
+			}
+			else
+			{
+				// wait for the forked child
+				// -1 means wait for anyone btw
+				waitpid(-1, NULL, 0);
+				break;
 			}
 		}
-		else
-			i++;
+		i++;
 	}
-	free_2d_arrays(cmd_paths, args);
-	//failed
+	// free_2d_arrays(cmd_paths, args);
+	// failed
 	return (0);
 }
