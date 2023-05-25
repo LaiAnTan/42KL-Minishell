@@ -24,7 +24,8 @@ SRCS_H = headers/minishell.h
 
 SRCS_O = $(SRCS_C:.c=.o)
 
-CFLAG = -Wall -Wextra -Werror
+# cringe ahh flags
+# CFLAG = -Wall -Wextra -Werror
 
 LIB = -lreadline
 
