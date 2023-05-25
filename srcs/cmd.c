@@ -1,19 +1,5 @@
 #include "../headers/minishell.h"
 
-void	free_2d_arrays(char **a, char **b)
-{
-	int		i;
-
-	i = -1;
-	while (a[++i])
-		free(a[i]);
-	i = -1;
-	while (b[++i])
-		free(b[i]);
-	free(a);
-	free(b);
-}
-
 void	run_cmd(t_data *data)
 {
 	char	*cmd;
@@ -43,15 +29,15 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 			{
 				if (execve(cmd_paths[i], args, data->my_envp) == -1)
 				{
-					// failed
-					free_2d_arrays(cmd_paths, args);
+					free_2d_array(&cmd_paths);
+					free_2d_array(&args);
 					return (0);
 				}
 			}
 			else
 			{
 				waitpid(-1, NULL, 0);
-				break;
+				return (0);
 			}
 		}
 		i++;

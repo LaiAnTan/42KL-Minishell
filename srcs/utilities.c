@@ -16,7 +16,7 @@ void	free_2d_array(char ***arr)
 
 int	is_numeric(char *str)
 {
-	while (*str != NULL)
+	while (*str != '\0')
 		if ((*str < '0' || *str > '9') && str++)
 			return (0);
 	return (1);
@@ -74,6 +74,35 @@ int	ft_strcmp_equals(char *s1, char *s2)
 		i++;
 	}
 	return (0);
+}
+
+int	ft_atoi(const char *s)
+{
+	int		sign;
+	long	rtval;
+	char	*str;
+
+	sign = 1;
+	rtval = 0;
+	str = (char *) s;
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		++str;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign *= -1;
+		++str;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		if (rtval >= 214748364 && *str > '7' && sign == 1)
+			return (-1);
+		if (rtval >= 214748364 && *str > '8' && sign == -1)
+			return (0);
+		rtval = (rtval * 10) + (*str - '0');
+		str++;
+	}
+	return ((int)(rtval * sign));
 }
 
 char	*ft_strdup(char *str)
