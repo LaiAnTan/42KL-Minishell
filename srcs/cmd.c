@@ -7,7 +7,8 @@ void	run_cmd(t_data *data)
 
 	cmd = ft_strdup(data->cmds->cmd.cmd[0]);
 	cmd_paths = get_cmd_path(data, cmd);
-	exec_cmd(data, cmd_paths, data->cmds->cmd.cmd);
+	if (handle_builtins(cmd, data->cmds->cmd.cmd, data) == 0)
+		exec_cmd(data, cmd_paths, data->cmds->cmd.cmd);
 }
 
 int	exec_cmd(t_data *data, char **cmd_paths, char **args)
@@ -42,6 +43,5 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 		}
 		i++;
 	}
-	handle_builtins(args, data);
 	return (0);
 }

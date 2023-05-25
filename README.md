@@ -10,18 +10,18 @@ Team members:
 
 To Do
 - pipes
+- redirections
 - signals
 - error handling
 - memory leaks
 
 In Progress
-- parser
 - builtins
 
 Done (probably)
-- expander
 - base data structure
 - lexer
-- command path
-- command execution
-- environment variable storage
+- expander
+- parser
+- command runner
+- environment variable stuff

@@ -18,10 +18,13 @@ void builtin_echo(char **args, t_data *data)
 	int		i;
 	int		nl;
 
-	i = 2;
+	i = 1;
 	nl = 0;
-	if (ft_strcmp(args[1], "-n"))
+	if (ft_strcmp(args[1], "-n") == 0)
+	{
 		nl = 1;
+		i = 2;
+	}
 	while (args[i] != NULL)
 	{
 		write(1, args[i], ft_strlen(args[i]));
@@ -35,13 +38,13 @@ void builtin_echo(char **args, t_data *data)
 void builtin_cd(char **args, t_data *data)
 {
 	char	*buf_path;
-
+	// do this please
 
 }
 
 void builtin_pwd(char **args, t_data *data)
 {
-	printf("%s", data->cwd);
+	printf("%s\n", data->cwd);
 }
 
 void display_export_line(t_list *node)
@@ -100,7 +103,7 @@ void builtin_export(char **args, t_data *data)
 {
 	int i;
 	t_list *lst;
-	t_list *head;
+	t_list *node;
 
 	i = 0;
 	lst = data->vars;
@@ -110,10 +113,10 @@ void builtin_export(char **args, t_data *data)
 	{
 		while (args[i] != NULL)
 		{
-			lst = data->vars;
-			head = ft_lstnew_env(args[i]);
-			ft_lstadd_back(&lst, head);
+			node = ft_lstnew_env(args[i]);
+			ft_lstadd_back(&lst, node);
 			i++;
+			// export dont work for shit fix this later
 		}
 	}
 }
@@ -132,7 +135,7 @@ void builtin_unset(char **args, t_data *data)
 
 void builtin_env(t_data *data)
 {
-	ft_lstprint(data->vars);
+	ft_lstprint_env(data->vars);
 }
 
 void builtin_exit(char **args, t_data *data)
@@ -154,36 +157,10 @@ void builtin_exit(char **args, t_data *data)
 	exit(exit_code);
 }
 
-char	*strip_cmd_path(char *cmd_path)
+int	handle_builtins(char *cmd, char **args, t_data *data)
 {
-	int		i;
-	int		j;
-	int		len;
-	char	*cmd;
-
-	len = ft_strlen(cmd_path);
-	i = len;
-	j = 0;
-	while (cmd_path[i - 1] != '/')
-		--i;
-	cmd = (char *) malloc (sizeof(char) * (len - i + 1));
-	while (i <= len)
-	{
-		cmd[j] = cmd_path[i];
-		i++;
-		j++;
-	}
-	cmd[j] == '\0';
-	return (cmd);
-}
-
-int	handle_builtins(char **args, t_data *data) // args[0] is with path
-{
-	char	*cmd;
-
 	if (!args || !*args)
 		return (0);
-	cmd = strip_cmd_path(args[0]); // strip to get cmd name only
 	if (ft_strcmp(cmd, "echo") == 0)
 		builtin_echo(args, data);
 	else if (ft_strcmp(cmd, "cd") == 0)
@@ -199,6 +176,6 @@ int	handle_builtins(char **args, t_data *data) // args[0] is with path
 	else if (ft_strcmp(cmd, "exit") == 0)
 		builtin_exit(args, data);
 	else
-		printf("command not found\n");
-	return (0);
+		return (0);
+	return (1);
 }
