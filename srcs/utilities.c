@@ -162,6 +162,8 @@ char	**realloc_append(char **src, char *str)
 
 	i = 0;
 	len = 0;
+	if (!str)
+		return src;
 	while (src[len] != NULL)
 		len++;
 	new = (char **) malloc (sizeof(char *) * (len + 2));

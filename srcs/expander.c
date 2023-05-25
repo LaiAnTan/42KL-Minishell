@@ -30,7 +30,6 @@ char	*handle_dollar(t_data *data, char ***new, int *dollar_pos)
 		if (data->tokens[*dollar_pos] != NULL)
 		{
 			val = find_var(data, data->tokens[*dollar_pos]);
-			(*dollar_pos)++;
 			if (val == NULL)
 				return (NULL);
 			// note to me, free val
