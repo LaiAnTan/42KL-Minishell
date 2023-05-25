@@ -18,21 +18,21 @@
 # define TRUE 1
 # define FALSE 0
 
+// struct for environment variables
 typedef struct s_env
 {
 	char			*str;
 	int				printed;
 }		t_env;
 
-// bro what in ohio is this structure
+// struct for commands
 typedef struct s_cmd
 {
 	char			**cmd;
 
 }		t_cmd;
 
-// PLEASE RENAME THIS INTO SOMETHING ELSE
-// WHAT IN OHIO IS T_LIST
+// linked list that holds environmental variables and commands (shit name)
 typedef struct s_list
 {
 	t_env			env;
@@ -41,6 +41,7 @@ typedef struct s_list
 
 }		t_list;
 
+// all data for program
 typedef struct s_data
 {
 	char	*line;
@@ -74,7 +75,7 @@ char	*get_path_envp(t_data *data);
 char	**get_cmd_path(t_data *data, char *cmd);
 char	*trim_path(char *path);
 
-/* Commands Execution */
+/* Command Execution */
 void	run_cmd(t_data *data);
 
 int		exec_cmd(t_data *data, char **cmd_paths, char **args);
@@ -95,7 +96,7 @@ void	builtin_unset(char **args, t_data *data);
 void	builtin_env(t_data *data);
 void	builtin_exit(char **args, t_data *data);
 
-int		handle_builtins(char **args, t_data *data);
+int		handle_builtins(char *cmd, char **args, t_data *data);
 
 /* Error Handling */
 
@@ -122,7 +123,7 @@ t_list	*ft_lstnew_cmd(char **cmd);
 t_list	*ft_lstlast(t_list *lst);
 
 void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstprint(t_list *lst);
+void	ft_lstprint_env(t_list *lst);
 void	ft_lstfree(t_list **lst);
 
 int		ft_lstsize(t_list *lst);

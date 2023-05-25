@@ -18,8 +18,6 @@ SRCS_C =	srcs/msh_main.c		\
 			srcs/ft_split.c		\
 			srcs/utilities.c	\
 
-# srcs/builtins.c
-
 SRCS_H = headers/minishell.h
 
 SRCS_O = $(SRCS_C:.c=.o)
