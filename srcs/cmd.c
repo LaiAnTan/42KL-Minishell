@@ -39,8 +39,6 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 		status = access(args[0], X_OK);
 		if (!status)
 		{
-			// fork you
-			// 0 means child btw
 			if (!fork())
 			{
 				if (execve(cmd_paths[i], args, data->my_envp) == -1)
@@ -52,15 +50,12 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 			}
 			else
 			{
-				// wait for the forked child
-				// -1 means wait for anyone btw
 				waitpid(-1, NULL, 0);
 				break;
 			}
 		}
 		i++;
 	}
-	// free_2d_arrays(cmd_paths, args);
-	// failed
+	handle_builtins(args, data);
 	return (0);
 }

@@ -13,30 +13,7 @@ builtin commands
 
 */
 
-int	handle_builtins(int argc, char **args, t_data *data)
-{
-	if (!args || !*args)
-		return (0);
-	if (ft_strcmp(args[0], "echo"))
-		builtin_echo(argc, args, data);
-	else if (ft_strcmp(args[0], "cd"))
-		builtin_cd(argc, args, data);
-	else if (ft_strcmp(args[0], "pwd"))
-		builtin_pwd(argc, args, data);
-	else if (ft_strcmp(args[0], "export"))
-		builtin_export(argc, args, data);
-	else if (ft_strcmp(args[0], "unset"))
-		builtin_unset(argc, args, data);
-	else if (ft_strcmp(args[0], "env"))
-		builtin_env(argc, args, data);
-	else if (ft_strcmp(args[0], "exit"))
-		builtin_exit(argc, args, data);
-	else
-		printf("command not found");
-	return (0);
-}
-
-void builtin_echo(int argc, char **args, t_data *data)
+void builtin_echo(char **args, t_data *data)
 {
 	int		i;
 	int		nl;
@@ -45,7 +22,7 @@ void builtin_echo(int argc, char **args, t_data *data)
 	nl = 0;
 	if (ft_strcmp(args[1], "-n"))
 		nl = 1;
-	while (i < argc)
+	while (args[i] != NULL)
 	{
 		write(1, args[i], ft_strlen(args[i]));
 		i++;
@@ -55,15 +32,16 @@ void builtin_echo(int argc, char **args, t_data *data)
 	return ;
 }
 
-// void builtin_cd(int argc, char **args, t_data *data)
-// {
-
-// }
-
-// void builtin_pwd(int argc, char **args, t_data *data)
-// {
+void builtin_cd(char **args, t_data *data)
+{
+	char	buf_path[PATH_MAX];
 	
-// }
+}
+
+void builtin_pwd(char **args, t_data *data)
+{
+	
+}
 
 void display_export_line(t_list *node)
 {
@@ -117,7 +95,7 @@ void print_asc_export(t_list *lst)
 	}
 }
 
-void builtin_export(int argc, char **args, t_data *data)
+void builtin_export(char **args, t_data *data)
 {
 	int i;
 	t_list *lst;
@@ -139,7 +117,7 @@ void builtin_export(int argc, char **args, t_data *data)
 	}
 }
 
-void builtin_unset(int argc, char **args, t_data *data)
+void builtin_unset(char **args, t_data *data)
 {
 	int i;
 
@@ -156,13 +134,44 @@ void builtin_unset(int argc, char **args, t_data *data)
 	}
 }
 
-void builtin_env(int argc, char **args, t_data *data)
+void builtin_env(t_data *data)
 {
 	ft_lstprint(data->vars);
 }
 
-void builtin_exit(int argc, char **args, t_data *data)
+void builtin_exit(char **args, t_data *data)
 {
-	// free everything
-	exit(0);
+	int		size;
+	int		exit_code;
+
+	size = count_double(args);
+	if (size > 2);
+		exit_code = 2;
+	if (is_numeric(args[1]) == 1)
+		exit_code = ft_atoi(args[1]); // need to make atoi
+	// free stuff here
+	exit(exit_code);
+}
+
+int	handle_builtins(char **args, t_data *data)
+{
+	if (!args || !*args)
+		return (0);
+	if (ft_strcmp(args[0], "echo"))
+		builtin_echo(args, data);
+	else if (ft_strcmp(args[0], "cd"))
+		builtin_cd(args, data);
+	else if (ft_strcmp(args[0], "pwd"))
+		builtin_pwd(args, data);
+	else if (ft_strcmp(args[0], "export"))
+		builtin_export(args, data);
+	else if (ft_strcmp(args[0], "unset"))
+		builtin_unset(args, data);
+	else if (ft_strcmp(args[0], "env"))
+		builtin_env(data);
+	else if (ft_strcmp(args[0], "exit"))
+		builtin_exit(args, data);
+	else
+		printf("command not found");
+	return (0);
 }

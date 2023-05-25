@@ -14,6 +14,24 @@ void	free_2d_array(char ***arr)
 	(*arr) = NULL;
 }
 
+int	is_numeric(char *str)
+{
+	while (*str != NULL)
+		if ((*str < '0' || *str > '9') && str++)
+			return (0);
+	return (1);
+}
+
+int	count_double(char **e)
+{
+	int	i;
+
+	i = 0;
+	while (e[i])
+		++i;
+	return (i);
+}
+
 int	ft_strlen(char *s)
 {
 	int	i;

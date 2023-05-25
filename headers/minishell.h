@@ -11,6 +11,7 @@
 # include <errno.h>
 # include <string.h>
 # include <limits.h>
+# include <linux/limits.h>
 # include <signal.h>
 # include <termios.h>
 
@@ -43,6 +44,7 @@ typedef struct s_list
 typedef struct s_data
 {
 	char	*line;
+	char	*cwd;
 	char	**tokens;
 	char	**my_envp;
 
@@ -85,15 +87,15 @@ int		get_equal_pos(t_list *node);
 char	*get_val(t_list *node);
 
 /* Builtin command functions */
-void	builtin_echo(int argc, char **args, t_data *data);
-void	builtin_cd(int argc, char **args, t_data *data);
-void	builtin_pwd(int argc, char **args, t_data *data);
-void	builtin_export(int argc, char **args, t_data *data);
-void	builtin_unset(int argc, char **args, t_data *data);
-void	builtin_env(int argc, char **args, t_data *data);
-void	builtin_exit(int argc, char **args, t_data *data);
+void	builtin_echo(char **args, t_data *data);
+void	builtin_cd(char **args, t_data *data);
+void	builtin_pwd(char **args, t_data *data);
+void	builtin_export(char **args, t_data *data);
+void	builtin_unset(char **args, t_data *data);
+void	builtin_env(t_data *data);
+void	builtin_exit(char **args, t_data *data);
 
-int		handle_builtins(int argc, char **args, t_data *data);
+int		handle_builtins(char **args, t_data *data);
 
 /* Error Handling */
 
@@ -101,6 +103,8 @@ int		handle_builtins(int argc, char **args, t_data *data);
 /* Utility Functions */
 void	free_2d_array(char ***arr);
 
+int		is_numeric(char *str);
+int		count_double(char **e);
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2); // returns 0 if same
 int		ft_strcmp_equals(char *s1, char *s2);
