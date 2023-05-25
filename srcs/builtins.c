@@ -135,12 +135,6 @@ void builtin_env(t_data *data)
 	ft_lstprint(data->vars);
 }
 
-int	ft_atoi(char *str)
-{
-	// fuck you
-	return (atoi(str));
-}
-
 void builtin_exit(char **args, t_data *data)
 {
 	int		size;
