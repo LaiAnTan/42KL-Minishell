@@ -34,13 +34,14 @@ void builtin_echo(char **args, t_data *data)
 
 void builtin_cd(char **args, t_data *data)
 {
-	char	buf_path[PATH_MAX];
-	
+	char	*buf_path;
+
+
 }
 
 void builtin_pwd(char **args, t_data *data)
 {
-	
+	printf("%s", data->cwd);
 }
 
 void display_export_line(t_list *node)
@@ -103,7 +104,7 @@ void builtin_export(char **args, t_data *data)
 
 	i = 0;
 	lst = data->vars;
-	if (args == NULL)
+	if (args[1] == NULL)
 		print_asc_export(lst);
 	else
 	{
@@ -122,15 +123,10 @@ void builtin_unset(char **args, t_data *data)
 	int i;
 
 	i = 0;
-	if (args == NULL)
-		return;
-	else
+	while (args[i] != NULL)
 	{
-		while (args[i] != NULL)
-		{
-			// ft_lstdel();
-			i++;
-		}
+		// ft_lstdel();
+		i++;
 	}
 }
 
@@ -144,34 +140,65 @@ void builtin_exit(char **args, t_data *data)
 	int		size;
 	int		exit_code;
 
-	size = count_double(args);
-	if (size > 2);
+	if (count_double(args) > 2)
+		printf("exit: too many arguements\n");
+	if (args[1] == NULL)
+		exit_code = 0;
+	else if (is_numeric(args[1]) == 1)
+		exit_code = ft_atoi(args[1]);
+	else
 		exit_code = 2;
-	if (is_numeric(args[1]) == 1)
-		exit_code = ft_atoi(args[1]); // need to make atoi
-	// free stuff here
+	while (exit_code >= 256) // overflow protection
+		exit_code = exit_code - 256;
+	// remember to free stuff here
 	exit(exit_code);
 }
 
-int	handle_builtins(char **args, t_data *data)
+char	*strip_cmd_path(char *cmd_path)
 {
+	int		i;
+	int		j;
+	int		len;
+	char	*cmd;
+
+	len = ft_strlen(cmd_path);
+	i = len;
+	j = 0;
+	while (cmd_path[i - 1] != '/')
+		--i;
+	cmd = (char *) malloc (sizeof(char) * (len - i + 1));
+	while (i <= len)
+	{
+		cmd[j] = cmd_path[i];
+		i++;
+		j++;
+	}
+	cmd[j] == '\0';
+	return (cmd);
+}
+
+int	handle_builtins(char **args, t_data *data) // args[0] is with path
+{
+	char	*cmd;
+
 	if (!args || !*args)
 		return (0);
-	if (ft_strcmp(args[0], "echo"))
+	cmd = strip_cmd_path(args[0]); // strip to get cmd name only
+	if (ft_strcmp(cmd, "echo") == 0)
 		builtin_echo(args, data);
-	else if (ft_strcmp(args[0], "cd"))
+	else if (ft_strcmp(cmd, "cd") == 0)
 		builtin_cd(args, data);
-	else if (ft_strcmp(args[0], "pwd"))
+	else if (ft_strcmp(cmd, "pwd") == 0)
 		builtin_pwd(args, data);
-	else if (ft_strcmp(args[0], "export"))
+	else if (ft_strcmp(cmd, "export") == 0)
 		builtin_export(args, data);
-	else if (ft_strcmp(args[0], "unset"))
+	else if (ft_strcmp(cmd, "unset") == 0)
 		builtin_unset(args, data);
-	else if (ft_strcmp(args[0], "env"))
+	else if (ft_strcmp(cmd, "env") == 0)
 		builtin_env(data);
-	else if (ft_strcmp(args[0], "exit"))
+	else if (ft_strcmp(cmd, "exit") == 0)
 		builtin_exit(args, data);
 	else
-		printf("command not found");
+		printf("command not found\n");
 	return (0);
 }

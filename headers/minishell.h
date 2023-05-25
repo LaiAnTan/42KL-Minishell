@@ -108,6 +108,7 @@ int		count_double(char **e);
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2); // returns 0 if same
 int		ft_strcmp_equals(char *s1, char *s2);
+int		ft_atoi(const char *s);
 
 char	*ft_strdup(char *str);
 char	*ft_append(char *s1, char *s2);

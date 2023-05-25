@@ -24,7 +24,9 @@ SRCS_H = headers/minishell.h
 
 SRCS_O = $(SRCS_C:.c=.o)
 
-CFLAG = -Wall -Wextra -Werror
+CFLAG = 
+
+# -Wall -Wextra -Werror
 
 LIB = -lreadline
 
@@ -34,7 +36,7 @@ all : $(NAME) move run
 		@gcc $(CFLAG) -c $< -o $(<:.c=.o)
 
 $(NAME): $(SRCS_O)
-		@gcc $(CFLAG) -o $(NAME) $(SRCS_O) $(LIB)
+		@gcc $(CFLAG) -o $(NAME) $(SRCS_O) $(LIB) -fsanitize=address -g
 
 $(ODIR) :
 	@echo "Folder $(ODIR) does not exist, making a new one..."
