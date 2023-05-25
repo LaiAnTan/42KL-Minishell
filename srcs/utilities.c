@@ -16,7 +16,7 @@ void	free_2d_array(char ***arr)
 
 int	is_numeric(char *str)
 {
-	while (*str != NULL)
+	while (*str != '\0')
 		if ((*str < '0' || *str > '9') && str++)
 			return (0);
 	return (1);
@@ -35,6 +35,9 @@ int	count_double(char **e)
 int	ft_strlen(char *s)
 {
 	int	i;
+
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i] != '\0')
 		i++;
@@ -82,6 +85,8 @@ char	*ft_strdup(char *str)
 	char	*dest;
 
 	i = 0;
+	if (str == NULL)
+		return NULL;
 	dest = (char *) malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (dest == NULL)
 		return (0);

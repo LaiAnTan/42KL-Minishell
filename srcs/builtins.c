@@ -139,6 +139,12 @@ void builtin_env(t_data *data)
 	ft_lstprint(data->vars);
 }
 
+int	ft_atoi(char *str)
+{
+	// fuck you
+	return (atoi(str));
+}
+
 void builtin_exit(char **args, t_data *data)
 {
 	int		size;
@@ -155,23 +161,25 @@ void builtin_exit(char **args, t_data *data)
 
 int	handle_builtins(char **args, t_data *data)
 {
+	// WHY IN SWEET JESUS IS BUILTIN_ECHO CRASHING
+	// also ft_strcmp returns 0 if they are the same so
 	if (!args || !*args)
 		return (0);
-	if (ft_strcmp(args[0], "echo"))
+	if (!ft_strcmp(args[0], "echo"))
 		builtin_echo(args, data);
-	else if (ft_strcmp(args[0], "cd"))
+	else if (!ft_strcmp(args[0], "cd"))
 		builtin_cd(args, data);
-	else if (ft_strcmp(args[0], "pwd"))
+	else if (!ft_strcmp(args[0], "pwd"))
 		builtin_pwd(args, data);
-	else if (ft_strcmp(args[0], "export"))
+	else if (!ft_strcmp(args[0], "export"))
 		builtin_export(args, data);
-	else if (ft_strcmp(args[0], "unset"))
+	else if (!ft_strcmp(args[0], "unset"))
 		builtin_unset(args, data);
-	else if (ft_strcmp(args[0], "env"))
+	else if (!ft_strcmp(args[0], "env"))
 		builtin_env(data);
-	else if (ft_strcmp(args[0], "exit"))
+	else if (!ft_strcmp(args[0], "exit"))
 		builtin_exit(args, data);
 	else
-		printf("command not found");
+		printf("command not found\n");
 	return (0);
 }
