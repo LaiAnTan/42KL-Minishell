@@ -9,7 +9,7 @@ Team members:
 -------------------------------------------
 
 To Do
-- redirection
+- pipes
 - finish builtins (unset, cd)
 - signals
 - error handling
@@ -17,7 +17,7 @@ To Do
 
 In Progress
 - parser
-- pipes
+- redirection (filesystem)
 
 Done (probably)
 - expander

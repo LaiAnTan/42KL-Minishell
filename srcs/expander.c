@@ -37,16 +37,6 @@ void	handle_dollar(t_data *data, char ***new, int *dollar_pos)
 		*new = realloc_append(*new, data->tokens[*dollar_pos]);
 }
 
-int	count_double(char **e)
-{
-	int	i = 0;
-
-	while (e[i])
-		++i;
-	return (i);
-}
-
-// ? trying to fix this now
 int	expander(t_data *data)
 {
 	int		i;

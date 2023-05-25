@@ -2,6 +2,9 @@
 
 int init_data(t_data *data, char **envp)
 {
+	char	buf_path[PATH_MAX];
+
+	data->cwd = getcwd(buf_path, sizeof(buf_path));
 	data->vars = set_env(envp);
 	data->cmds = NULL;
 	data->my_envp = NULL;

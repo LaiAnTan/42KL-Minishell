@@ -4,19 +4,14 @@ int	find_next_cmd(char **tokens, int *index_pair)
 {
 	int	i;
 
-	// epic fail safe moment
 	if (!tokens)
 		return (0);
-
-	// skip the damn "|"
 	if (ft_strcmp(tokens[index_pair[1]], "|") == 0)
 		++index_pair[1];
-	// ohio swap
+
 	index_pair[0] = index_pair[1];
-	// i forsee this + 1 is the root of our problems
 	i = index_pair[1];
 
-	// ...lets not use i + 1
 	while (tokens[i] != NULL)
 	{
 		if (ft_strcmp(tokens[i], "|") == 0)
@@ -43,15 +38,13 @@ char	**extract_cmd(char **tokens, int *index_pair)
 	while (j < index_pair[1])
 	{
 		cmd[i] = ft_strdup(tokens[j]);
-		i++;
+		++i;
 		++j;
 	}
 	cmd[i] = NULL;
 	return (cmd);
 }
 
-
-// ? parser needs to combine the quotation marks into a single arg
 int	parser(t_data *data)
 {
 	int		index_pair[2];
@@ -59,7 +52,6 @@ int	parser(t_data *data)
 	t_list	*lst;
 	t_list	*node;
 
-	// why was this -1????
 	index_pair[1] = 0;
 	cmd = extract_cmd(data->tokens, index_pair);
 	lst = ft_lstnew_cmd(cmd);
