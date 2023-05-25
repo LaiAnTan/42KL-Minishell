@@ -10,20 +10,18 @@ Team members:
 
 To Do
 - pipes
-- finish builtins (unset, cd)
 - signals
 - error handling
 - memory leaks
 
 In Progress
 - parser
-- redirection (filesystem)
+- builtins
 
 Done (probably)
 - expander
 - base data structure
 - lexer
-- some builtins
 - command path
 - command execution
 - environment variable storage
