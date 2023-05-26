@@ -1,6 +1,6 @@
 #include "../headers/minishell.h"
 
-char	*find_var(t_data *data, char *name)
+char	*find_var_and_ret_value(t_data *data, char *name)
 {
 	t_list	*lst;
 
@@ -125,7 +125,7 @@ char	*handle_dollar(t_data *data, char *line)
 		indexes[2] = get_keyword(ret, indexes[1]);
 		break_down(ret, indexes, temp_strings);
 
-		temp_strings[3] = find_var(data, temp_strings[1]);
+		temp_strings[3] = find_var_and_ret_value(data, temp_strings[1]);
 
 		free(ret);
 		ret = NULL;
@@ -139,7 +139,7 @@ int	expander(t_data *data)
 {
 	int		i;
 	char	**new;
-	int		tokencount = count_double(data->tokens);
+	int		tokencount = count_2d_array(data->tokens);
 
 	i = 0;
 	new = malloc (sizeof(char *));

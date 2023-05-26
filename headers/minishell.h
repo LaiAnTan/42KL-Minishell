@@ -83,6 +83,7 @@ int		exec_cmd(t_data *data, char **cmd_paths, char **args);
 /* Environment Variables */
 t_list	*set_env(char **envp);
 t_list	*find_var(t_list *vars, char *to_find);
+char	*find_var_and_ret_value(t_data *data, char *name);
 
 int		get_equal_pos(t_list *node);
 
