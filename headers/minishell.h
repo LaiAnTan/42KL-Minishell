@@ -82,6 +82,7 @@ int		exec_cmd(t_data *data, char **cmd_paths, char **args);
 
 /* Environment Variables */
 t_list	*set_env(char **envp);
+t_list	*find_var(t_list *vars, char *to_find);
 
 int		get_equal_pos(t_list *node);
 
@@ -105,7 +106,7 @@ int		handle_builtins(char *cmd, char **args, t_data *data);
 void	free_2d_array(char ***arr);
 
 int		is_numeric(char *str);
-int		count_double(char **e);
+int		count_2d_array(char **e);
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2); // returns 0 if same
 int		ft_strcmp_equals(char *s1, char *s2);

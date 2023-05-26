@@ -37,8 +37,8 @@ void	builtin_echo(char **args, t_data *data)
 
 void	builtin_cd(char **args, t_data *data)
 {
-	char	*buf_path;
-	// do this please
+	// chdir();
+
 
 }
 
@@ -135,37 +135,6 @@ char	*get_var_name(char *str)
 	return (var_name);
 }
 
-int	check_name(char *var, char *name)
-{
-	int	i;
-
-	i = 0;
-	
-	while (name[i] != '\0')
-	{
-		if (name[i] != var[i])
-			return (0);
-		++i;
-	}
-	if (var[i + 1] == '=')
-		return (1);
-	return (0);
-}
-
-t_list	*locate_in_list(t_list *vars, char *to_find)
-{
-	t_list *node;
-
-	node = vars;
-	while (node->next != NULL)
-	{
-		if (check_name(node->env.str, to_find) == 1)
-			return (node);
-		node = node->next;
-	}
-	return (NULL);
-}
-
 void	builtin_export(char **args, t_data *data)
 {
 	int i;
@@ -185,7 +154,7 @@ void	builtin_export(char **args, t_data *data)
 		if (valid_assign(args[i]) == 1)
 		{
 			var_name = get_var_name(args[i]);
-			node = locate_in_list(lst, var_name);
+			node = find_var(lst, var_name);
 			free(var_name);
 			if (node == NULL)
 			{
@@ -227,7 +196,7 @@ void builtin_exit(char **args, t_data *data)
 	int		size;
 	int		exit_code;
 
-	if (count_double(args) > 2)
+	if (count_2d_array(args) > 2)
 		printf("exit: too many arguements\n");
 	if (args[1] == NULL)
 		exit_code = 0;

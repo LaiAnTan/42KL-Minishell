@@ -22,7 +22,7 @@ int	is_numeric(char *str)
 	return (1);
 }
 
-int	count_double(char **e)
+int	count_2d_array(char **e)
 {
 	int	i;
 
