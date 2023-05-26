@@ -6,6 +6,8 @@ int init_data(t_data *data, char **envp)
 	data->vars = set_env(envp);
 	data->cmds = NULL;
 	data->my_envp = NULL;
+	tcgetattr(STDIN_FILENO, &data->attr->def_attributes);
+	tcgetattr(STDIN_FILENO, &data->attr->mod_attributes);
 	rebuild_envp(data);
 	return (1);
 }

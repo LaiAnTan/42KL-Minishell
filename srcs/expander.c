@@ -1,6 +1,10 @@
 #include "../headers/minishell.h"
 
-char	*find_var_and_ret_value(t_data *data, char *name)
+/*
+note: this function can be removed along with strcmp_equals
+! use get_val which returns the node and modify the code a little during cleanup
+*/
+char	*access_var(t_data *data, char *name) 
 {
 	t_list	*lst;
 
@@ -12,47 +16,6 @@ char	*find_var_and_ret_value(t_data *data, char *name)
 		lst = lst->next;
 	}
 	return (ft_strdup(""));
-}
-
-// char	*handle_dollar(t_data *data, char ***new, int *dollar_pos)
-// {
-// 	char	*val;
-
-// 	if (data->tokens[*dollar_pos] == NULL)
-// 		return (NULL);
-// 	if (ft_strcmp(data->tokens[*dollar_pos], "$") == 0)
-// 	{
-// 		(*dollar_pos)++;
-// 		if (data->tokens[*dollar_pos] != NULL)
-// 		{
-// 			val = find_var(data, data->tokens[*dollar_pos]);
-// 			if (val == NULL)
-// 				return (NULL);
-// 			return (val);
-// 		}
-// 	}
-// 	else
-// 		// *new = realloc_append(*new, data->tokens[*dollar_pos]);
-// 		return (ft_strdup(data->tokens[*dollar_pos]));
-// }
-
-// awkward, theres already an append
-
-char	*trim(char *source, char to_trim)
-{
-	char	*ret;
-	int		start = 0;
-	int		end = ft_strlen(source) - 1;
-
-	if (!source)
-		return NULL;
-	while (source[start] && source[start] == to_trim)
-		++start;
-	if (start == (end + 1))
-		return (ft_strdup(""));
-	while (end >= 0 && source[end] == to_trim)
-		--end;
-	return(ft_substr(source, start, end));
 }
 
 int		search_symbol(char *line, int to_find)
@@ -78,7 +41,7 @@ void	reset_storage(char **temp_strings)
 		free(temp_strings[i]);
 }
 
-void	break_down(char *line, int *indexes, char **temp_strings)
+void	break_down(char *line, int *indexes, char **temp_strings) // why do i hear josuke
 {
 	// example = ls $SHLVL la
 	// temp_string[0] = 'ls '
@@ -109,7 +72,7 @@ char	*handle_dollar(t_data *data, char *line)
 	char	*temp_strings[5];
 	int		indexes[3];
 
-	ret = trim(line, '\"');
+	ret = ft_trimstr(line, '\"');
 	indexes[0] = 0;
 	temp_strings[4] = NULL;
 	while (1)
@@ -125,7 +88,7 @@ char	*handle_dollar(t_data *data, char *line)
 		indexes[2] = get_keyword(ret, indexes[1]);
 		break_down(ret, indexes, temp_strings);
 
-		temp_strings[3] = find_var_and_ret_value(data, temp_strings[1]);
+		temp_strings[3] = access_var(data, temp_strings[1]);
 
 		free(ret);
 		ret = NULL;
@@ -159,7 +122,7 @@ int	expander(t_data *data)
 		}
 		else if (data->tokens[i][0] == '\'')
 		{
-			new = realloc_append(new, trim(data->tokens[i], '\''));
+			new = realloc_append(new, ft_trimstr(data->tokens[i], '\''));
 			i++;
 		}
 		else
@@ -172,32 +135,3 @@ int	expander(t_data *data)
 	data->tokens = new;
 	return (1);
 }
-
-
-/*
-
-		if (ft_strcmp(data->tokens[i], "\'") == 0)
-		{
-			i++;
-			while (data->tokens[i] != NULL && ft_strcmp(data->tokens[i], "\'") != 0)
-			{
-				new = realloc_append(new, data->tokens[i]);
-				i++;
-			}
-		}
-		else if (ft_strcmp(data->tokens[i], "\"") == 0)
-		{
-			i++;
-			while (data->tokens[i] != NULL && ft_strcmp(data->tokens[i], "\"") != 0)
-			{
-				handle_dollar(data, &new, &i);
-				i++;
-			}
-		}
-		else
-		{
-			handle_dollar(data, &new, &i);
-			i++;
-		}
-
-*/
