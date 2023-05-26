@@ -50,3 +50,33 @@ char	*get_val(t_list *node)
 	val[i] = '\0';
 	return (val);
 }
+
+int	compare_name(char *var, char *name)
+{
+	int	i;
+
+	i = 0;
+	while (name[i] != '\0')
+	{
+		if (name[i] != var[i])
+			return (0);
+		++i;
+	}
+	if (var[i] == '=')
+		return (1);
+	return (0);
+}
+
+t_list	*find_var(t_list *vars, char *to_find)
+{
+	t_list *node;
+
+	node = vars;
+	while (node != NULL)
+	{
+		if (compare_name(node->env.str, to_find) == 1)
+			return (node);
+		node = node->next;
+	}
+	return (NULL);
+}
