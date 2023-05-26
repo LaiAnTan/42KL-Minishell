@@ -128,4 +128,8 @@ void	ft_lstfree(t_list **lst);
 
 int		ft_lstsize(t_list *lst);
 
+
+// chua was here
+int	get_keyword(char *line, int stop);
+
 #endif

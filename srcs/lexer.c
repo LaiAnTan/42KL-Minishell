@@ -32,18 +32,23 @@ int	is_token(char c)
 	return (0);
 }
 
-// hmm would this work
-// you know this could be flags, but like im lazy so
+int	bunny_ears(char *line, int stop, int to_match)
+{
+	++stop;
+	while (line[stop] && line[stop] != to_match)
+		++stop;
+	return (stop);
+}
 
-// also god i hate these terms, will change to better ones later
-# define DO_NOT_IGNORE_SPACE	0
-# define IGNORE_SPACE			1
-# define STOP_ON_SPACE			2
-# define IF_IGNORE_SPACE		(*have_spaces) == IGNORE_SPACE
-# define IF_DO_NOT_IGNORE_SPACE	(*have_spaces) == DO_NOT_IGNORE_SPACE
-# define IF_STOP_ON_SPACE		(*have_spaces) == STOP_ON_SPACE
+int	get_keyword(char *line, int stop)
+{
+	++stop;
+	while (line[stop] && line[stop] != ' ' && !is_token(line[stop]))
+		++stop;
+	return (--stop);
+}
 
-int	find_token_pos(char *line, int *index_pair, int *have_spaces)
+int	find_token_pos(char *line, int *index_pair)
 {
 	int		i;
 	int		tk_type;
@@ -51,15 +56,10 @@ int	find_token_pos(char *line, int *index_pair, int *have_spaces)
 	// check if the index is on '\0' symbol, if it is kill it with fire
 	if (index_pair[1] + 1 >= ft_strlen(line))
 		return (0);
-	index_pair[0] = index_pair[1] + 1;
-	i = index_pair[0];
-	// fuck you bunny ears
-	if (IF_DO_NOT_IGNORE_SPACE)
-	{
-		while (line[i] != '\0' && line[i] == ' ')
-			i++;
-		index_pair[0] = i;
-	}
+	i = index_pair[1] + 1;
+	while (line[i] != '\0' && line[i] == ' ')
+		i++;
+	index_pair[0] = i;
 	tk_type = is_token(line[i]);
 	// handles identifier
 	if (tk_type != 0)
@@ -73,31 +73,15 @@ int	find_token_pos(char *line, int *index_pair, int *have_spaces)
 		}
 		// handles $
 		else if (line[i + 1] != '\0' && tk_type == 6)
-		{
-			if (line[i + 1] == '?')
-				i++;
-			else
-				*have_spaces = STOP_ON_SPACE;
-		}
-		if (line[i] == '\'' || line[i] == '\"')
-			// flip flop
-			*have_spaces = !(*have_spaces == IGNORE_SPACE);
+			i = get_keyword(line, i);
+		if (tk_type == 1 || tk_type == 2)
+			i = bunny_ears(line, i, line[i]);
 	}
 	// handles everything else
 	else
 	{
-		while (line[i] != '\0' && !is_token(line[i]))
-		{
-			// this is a pain in the ass
-			if (line[i] == ' ' && (IF_DO_NOT_IGNORE_SPACE || IF_STOP_ON_SPACE))
-			{	
-				if (IF_STOP_ON_SPACE)
-					*have_spaces = IGNORE_SPACE;
-				break;
-			}
+		while (line[i + 1] != '\0' && line[i + 1] != ' ' && !is_token(line[i]))
 			i++;
-		}
-		--i;
 	}
 	index_pair[1] = i;
 	return (1);
@@ -105,16 +89,12 @@ int	find_token_pos(char *line, int *index_pair, int *have_spaces)
 
 // will now attempt to fix the "" this symbol
 // expect horrendous code cause i lazy change
-
 int	lexer(t_data *data)
 {
 	int		len;
 	int		token_pos[2];
 	char	*new_token;
-	
-	int		have_space;
 
-	have_space = DO_NOT_IGNORE_SPACE;
 	len = ft_strlen(data->line);
 	data->tokens = (char **) malloc (sizeof(char *));
 	if (!data->tokens)
@@ -123,13 +103,12 @@ int	lexer(t_data *data)
 	data->tokens[0] = NULL;
 	while (1)
 	{
-		if (!find_token_pos(data->line, token_pos, &have_space) || token_pos[1] >= len)
+		if (!find_token_pos(data->line, token_pos) || token_pos[1] >= len)
 			break ;
 		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
 		data->tokens = realloc_append(data->tokens, new_token);
 		free(new_token);
 	}
-
 	printf("in tokens:\n");
 	for (int i = 0; data->tokens[i]; ++i)
 		printf("%d -- %s\n", i, data->tokens[i]);

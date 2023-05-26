@@ -25,6 +25,8 @@ SRCS_O = $(SRCS_C:.c=.o)
 # cringe ahh flags
 # CFLAG = -Wall -Wextra -Werror
 
+# FSAN = -fsanitize=address -g
+
 LIB = -lreadline
 
 all : $(NAME) move run
@@ -33,7 +35,7 @@ all : $(NAME) move run
 		@gcc $(CFLAG) -c $< -o $(<:.c=.o)
 
 $(NAME): $(SRCS_O)
-		@gcc $(CFLAG) -o $(NAME) $(SRCS_O) $(LIB) -fsanitize=address -g
+		@gcc $(CFLAG) -o $(NAME) $(SRCS_O) $(LIB) ${FSAN}
 
 $(ODIR) :
 	@echo "Folder $(ODIR) does not exist, making a new one..."
