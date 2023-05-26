@@ -37,9 +37,20 @@ void	builtin_echo(char **args, t_data *data)
 
 void	builtin_cd(char **args, t_data *data)
 {
-	// chdir();
+	int	size;
 
-
+	size = count_2d_array(args);
+		if (size > 2)
+		printf("cd: too many arguements\n");
+		return ;
+	if (chdir("..") == -1)
+	{
+		printf("cd: failed to change directory\n");
+		return ;
+	}
+	free(data->cwd);
+	data->cwd = getcwd(NULL, PATH_MAX);
+	return ;
 }
 
 void	builtin_pwd(char **args, t_data *data)
@@ -114,7 +125,6 @@ int	valid_assign(char *str)
 	return (0);
 }
 
-
 char	*get_var_name(char *str)
 {
 	int		i;
@@ -125,6 +135,8 @@ char	*get_var_name(char *str)
 	j = 0;
 	while (str[i] != '=')
 		i++;
+	if (i == ft_strlen(str)) //failsafe
+		return (NULL);
 	var_name = (char *) malloc (sizeof(char) * (i + 1));
 	while (j < i)
 	{
@@ -176,12 +188,21 @@ void	builtin_export(char **args, t_data *data)
 void builtin_unset(char **args, t_data *data)
 {
 	int i;
+	char	*var_name;
+	t_list	*node;
+	t_list	*lst;
 
-	i = 0;
+	i = 1;
+	lst = data->vars;
 	while (args[i] != NULL)
 	{
-		// find name too
-		// ft_lstdel();
+		var_name = get_var_name(args[i]);
+		node = find_var(lst, var_name);
+		if (node != NULL)
+		{
+			printf("variable found\n");
+			ft_lstdel_env(&lst, node);
+		}
 		i++;
 	}
 }
@@ -197,7 +218,10 @@ void builtin_exit(char **args, t_data *data)
 	int		exit_code;
 
 	if (count_2d_array(args) > 2)
+	{
 		printf("exit: too many arguements\n");
+		return ;
+	}
 	if (args[1] == NULL)
 		exit_code = 0;
 	else if (is_numeric(args[1]) == 1)

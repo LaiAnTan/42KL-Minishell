@@ -123,6 +123,7 @@ t_list	*ft_lstnew_env(char *var);
 t_list	*ft_lstnew_cmd(char **cmd);
 t_list	*ft_lstlast(t_list *lst);
 
+void	ft_lstdel_env(t_list **lst, t_list *node);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstprint_env(t_list *lst);
 void	ft_lstfree(t_list **lst);
