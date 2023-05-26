@@ -12,11 +12,11 @@ SRCS_C =	srcs/msh_main.c		\
 			srcs/parser.c		\
 			srcs/path.c			\
 			srcs/cmd.c			\
-			srcs/builtins.c		\
 			srcs/environment.c	\
 			srcs/list.c			\
 			srcs/ft_split.c		\
 			srcs/utilities.c	\
+			srcs/builtins.c		\
 
 SRCS_H = headers/minishell.h
 
@@ -27,7 +27,7 @@ SRCS_O = $(SRCS_C:.c=.o)
 
 LIB = -lreadline
 
-all : $(NAME) move run
+all : $(NAME) move
 
 %.o:%.c
 		@gcc $(CFLAG) -c $< -o $(<:.c=.o)
