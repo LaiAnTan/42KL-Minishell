@@ -206,3 +206,20 @@ char	*ft_append(char *s1, char *s2)
 	free(s1);
 	return (temp);
 }
+
+char	*ft_trimstr(char *source, char to_trim)
+{
+	char	*ret;
+	int		start = 0;
+	int		end = ft_strlen(source) - 1;
+
+	if (!source)
+		return NULL;
+	while (source[start] && source[start] == to_trim)
+		++start;
+	if (start == (end + 1))
+		return (ft_strdup(""));
+	while (end >= 0 && source[end] == to_trim)
+		--end;
+	return(ft_substr(source, start, end));
+}

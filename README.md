@@ -11,12 +11,11 @@ Team members:
 To Do
 - pipes
 - redirections
-- signals
 - error handling
-- memory leaks
 
 In Progress
-- builtins
+- signals
+- memory leaks
 
 Done (probably)
 - base data structure
@@ -25,3 +24,4 @@ Done (probably)
 - parser
 - command runner
 - environment variable stuff
+- builtins

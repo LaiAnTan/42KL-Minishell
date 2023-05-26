@@ -32,6 +32,13 @@ typedef struct s_cmd
 
 }		t_cmd;
 
+typedef struct s_sig
+{
+	struct termios	def_attributes;
+	struct termios	mod_attributes;
+
+}		t_sig;
+
 // linked list that holds environmental variables and commands (shit name)
 typedef struct s_list
 {
@@ -48,6 +55,7 @@ typedef struct s_data
 	char	*cwd;
 	char	**tokens;
 	char	**my_envp;
+	t_sig	*attr;
 
 	t_list	*vars;
 	t_list	*cmds;
@@ -59,35 +67,35 @@ void	rebuild_envp(t_data *data);
 
 int 	init_data(t_data *data, char **envp);
 
-/* Lexer */
+/* Input Processing */
 int		lexer(t_data *data);
-
-/* Expander */
 int		expander(t_data *data);
-
-/* Parser */
 int		parser(t_data *data);
+int		get_keyword(char *line, int stop);
 
-/* Command Path */
+/* Command Processing */
+void	run_cmd(t_data *data);
 void	append_stuff(char **paths, char *cmd);
 
+int		exec_cmd(t_data *data, char **cmd_paths, char **args);
+
+char	*trim_path(char *path);
 char	*get_path_envp(t_data *data);
 char	**get_cmd_path(t_data *data, char *cmd);
-char	*trim_path(char *path);
-
-/* Command Execution */
-void	run_cmd(t_data *data);
-
-int		exec_cmd(t_data *data, char **cmd_paths, char **args);
 
 /* Environment Variables */
 t_list	*set_env(char **envp);
 t_list	*find_var(t_list *vars, char *to_find);
-char	*find_var_and_ret_value(t_data *data, char *name);
 
 int		get_equal_pos(t_list *node);
 
 char	*get_val(t_list *node);
+char	*access_var(t_data *data, char *name);
+
+/* Signals */
+void	modify_attr(t_data *data);
+void	reset_attr(t_data *data);
+void	new_line(int sig_code);
 
 /* Builtin command functions */
 void	builtin_echo(char **args, t_data *data);
@@ -101,23 +109,7 @@ void	builtin_exit(char **args, t_data *data);
 int		handle_builtins(char *cmd, char **args, t_data *data);
 
 /* Error Handling */
-
-
-/* Utility Functions */
-void	free_2d_array(char ***arr);
-
-int		is_numeric(char *str);
-int		count_2d_array(char **e);
-int		ft_strlen(char *s);
-int		ft_strcmp(char *s1, char *s2); // returns 0 if same
-int		ft_strcmp_equals(char *s1, char *s2);
-int		ft_atoi(const char *s);
-
-char	*ft_strdup(char *str);
-char	*ft_append(char *s1, char *s2);
-char	*ft_substr(char *s, unsigned int start, unsigned int end);
-char	**ft_split(char *s, char c);
-char	**realloc_append(char **src, char *str);
+void	cleanup(t_data *data);
 
 /* Linked List */
 t_list	*ft_lstnew_env(char *var);
@@ -131,8 +123,21 @@ void	ft_lstfree(t_list **lst);
 
 int		ft_lstsize(t_list *lst);
 
+/* Utility Functions */
+void	free_2d_array(char ***arr);
 
-// chua was here
-int	get_keyword(char *line, int stop);
+int		is_numeric(char *str);
+int		count_2d_array(char **e);
+int		ft_strlen(char *s);
+int		ft_strcmp(char *s1, char *s2); // returns 0 if same
+int		ft_strcmp_equals(char *s1, char *s2);
+int		ft_atoi(const char *s);
+
+char	*ft_strdup(char *str);
+char	*ft_append(char *s1, char *s2);
+char	*ft_trimstr(char *source, char to_trim);
+char	*ft_substr(char *s, unsigned int start, unsigned int end);
+char	**ft_split(char *s, char c);
+char	**realloc_append(char **src, char *str);
 
 #endif

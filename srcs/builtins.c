@@ -193,7 +193,7 @@ void	builtin_export(char **args, t_data *data)
 			}
 			else
 			{
-				printf("variable found\n");
+				printf("variable found, %s\n", node->env.str);
 				free(node->env.str);
 				node->env.str = ft_strdup(args[i]);
 			}
@@ -204,7 +204,7 @@ void	builtin_export(char **args, t_data *data)
 
 void builtin_unset(char **args, t_data *data)
 {
-	int i;
+	int		i;
 	char	*var_name;
 	t_list	*node;
 	t_list	*lst;
@@ -213,11 +213,10 @@ void builtin_unset(char **args, t_data *data)
 	lst = data->vars;
 	while (args[i] != NULL)
 	{
-		var_name = get_var_name(args[i]);
-		node = find_var(lst, var_name);
+		node = find_var(lst, args[i]);
 		if (node != NULL)
 		{
-			printf("variable found\n");
+			printf("variable found, %s\n", node->env.str);
 			ft_lstdel_env(&lst, node);
 		}
 		i++;
@@ -247,7 +246,7 @@ void builtin_exit(char **args, t_data *data)
 		exit_code = 2;
 	while (exit_code >= 256) // overflow protection
 		exit_code = exit_code - 256;
-	// remember to free stuff here
+	cleanup(data);
 	exit(exit_code);
 }
 

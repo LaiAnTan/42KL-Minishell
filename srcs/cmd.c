@@ -7,6 +7,8 @@ void	run_cmd(t_data *data)
 
 	cmd = ft_strdup(data->cmds->cmd.cmd[0]);
 	cmd_paths = get_cmd_path(data, cmd);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (handle_builtins(cmd, data->cmds->cmd.cmd, data) == 0)
 		exec_cmd(data, cmd_paths, data->cmds->cmd.cmd);
 }
