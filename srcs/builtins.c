@@ -13,7 +13,7 @@ builtin commands
 
 */
 
-void builtin_echo(char **args, t_data *data)
+void	builtin_echo(char **args, t_data *data)
 {
 	int		i;
 	int		nl;
@@ -35,19 +35,20 @@ void builtin_echo(char **args, t_data *data)
 	return ;
 }
 
-void builtin_cd(char **args, t_data *data)
+void	builtin_cd(char **args, t_data *data)
 {
-	char	*buf_path;
-	// do this please
+	// chdir();
+
 
 }
 
-void builtin_pwd(char **args, t_data *data)
+void	builtin_pwd(char **args, t_data *data)
 {
-	printf("%s\n", data->cwd);
+	write(1, data->cwd, ft_strlen(data->cwd));
+	write(1, "\n", 1);
 }
 
-void display_export_line(t_list *node)
+void	display_export_line(t_list *node)
 {
 	int i;
 	int equal_pos;
@@ -68,7 +69,7 @@ void display_export_line(t_list *node)
 		write(1, node->env.str, ft_strlen(node->env.str));
 }
 
-void print_asc_export(t_list *lst)
+void	print_asc_export(t_list *lst)
 {
 	int		lst_size;
 	t_list	*curr_node;
@@ -99,25 +100,76 @@ void print_asc_export(t_list *lst)
 	}
 }
 
-void builtin_export(char **args, t_data *data)
+int	valid_assign(char *str)
 {
-	int i;
-	t_list *lst;
-	t_list *node;
+	if (str == NULL || *str == '=')
+		return (0);
+	str++;
+	while (*str != '\0')
+	{
+		if (*str == '=')
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
+
+char	*get_var_name(char *str)
+{
+	int		i;
+	int		j;
+	char	*var_name;
 
 	i = 0;
+	j = 0;
+	while (str[i] != '=')
+		i++;
+	var_name = (char *) malloc (sizeof(char) * (i + 1));
+	while (j < i)
+	{
+		var_name[j] = str[j];
+		j++;
+	}
+	var_name[j] = '\0';
+	return (var_name);
+}
+
+void	builtin_export(char **args, t_data *data)
+{
+	int i;
+	char	*var_name;
+	t_list	*lst;
+	t_list	*node;
+
+	i = 1;
 	lst = data->vars;
 	if (args[1] == NULL)
-		print_asc_export(lst);
-	else
 	{
-		while (args[i] != NULL)
+		print_asc_export(lst);
+		return ;
+	}
+	while (args[i] != NULL)
+	{
+		if (valid_assign(args[i]) == 1)
 		{
-			node = ft_lstnew_env(args[i]);
-			ft_lstadd_back(&lst, node);
-			i++;
-			// export dont work for shit fix this later
+			var_name = get_var_name(args[i]);
+			node = find_var(lst, var_name);
+			free(var_name);
+			if (node == NULL)
+			{
+				printf("variable not found\n");
+				node = ft_lstnew_env(ft_strdup(args[i]));
+				ft_lstadd_back(&lst, node);
+			}
+			else
+			{
+				printf("variable found\n");
+				free(node->env.str);
+				node->env.str = ft_strdup(args[i]);
+			}
 		}
+		i++;
 	}
 }
 
@@ -128,6 +180,7 @@ void builtin_unset(char **args, t_data *data)
 	i = 0;
 	while (args[i] != NULL)
 	{
+		// find name too
 		// ft_lstdel();
 		i++;
 	}
@@ -143,7 +196,7 @@ void builtin_exit(char **args, t_data *data)
 	int		size;
 	int		exit_code;
 
-	if (count_double(args) > 2)
+	if (count_2d_array(args) > 2)
 		printf("exit: too many arguements\n");
 	if (args[1] == NULL)
 		exit_code = 0;

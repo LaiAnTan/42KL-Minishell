@@ -88,7 +88,6 @@ void	ft_lstdel_env(t_list *lst, char *to_delete)
 	{
 		lst = curr->next;
 		curr = lst;	
-		
 		free(curr->env.str);
 	}
 	while (curr != NULL && ft_strcmp_equals(lst->env.str, to_delete))
