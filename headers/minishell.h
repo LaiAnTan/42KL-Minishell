@@ -92,7 +92,7 @@ char	*get_val(t_list *node);
 /* Builtin command functions */
 void	builtin_echo(char **args, t_data *data);
 void	builtin_cd(char **args, t_data *data);
-void	builtin_pwd(char **args, t_data *data);
+void	builtin_pwd(t_data *data);
 void	builtin_export(char **args, t_data *data);
 void	builtin_unset(char **args, t_data *data);
 void	builtin_env(t_data *data);
