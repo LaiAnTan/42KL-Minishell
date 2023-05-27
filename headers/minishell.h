@@ -95,7 +95,8 @@ char	*access_var(t_data *data, char *name);
 /* Signals */
 void	modify_attr(t_data *data);
 void	reset_attr(t_data *data);
-void	new_line(int sig_code);
+void	new_line_handler(int sig_code);
+void	exit_handler(int sig_code);
 
 /* Builtin command functions */
 void	builtin_echo(char **args, t_data *data);
@@ -109,7 +110,7 @@ void	builtin_exit(char **args, t_data *data);
 int		handle_builtins(char *cmd, char **args, t_data *data);
 
 /* Error Handling */
-void	cleanup(t_data *data);
+
 
 /* Linked List */
 t_list	*ft_lstnew_env(char *var);

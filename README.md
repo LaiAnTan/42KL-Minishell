@@ -9,13 +9,12 @@ Team members:
 -------------------------------------------
 
 To Do
-- pipes
-- redirections
 - error handling
+- (potential) memory leaks (might happen idk)
 
 In Progress
-- signals
-- memory leaks
+- pipes
+- redirections
 
 Done (probably)
 - base data structure
@@ -25,3 +24,4 @@ Done (probably)
 - command runner
 - environment variable stuff
 - builtins
+- signals
