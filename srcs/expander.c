@@ -98,7 +98,7 @@ char	*handle_dollar(t_data *data, char *line)
 	}
 }
 
-int	expander(t_data *data)
+int	expander(t_data *data) // forgot to handle $? lol
 {
 	int		i;
 	char	**new;
