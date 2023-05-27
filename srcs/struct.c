@@ -2,10 +2,13 @@
 
 int init_data(t_data *data, char **envp)
 {
+	if (pipe(data->pipefd) == -1)
+		printf("pipe failed\n"); // handle properly later
 	data->cwd = getcwd(NULL, PATH_MAX);
 	data->vars = set_env(envp);
 	data->cmds = NULL;
 	data->my_envp = NULL;
+	data->attr = malloc(sizeof(struct termios) * 2);
 	tcgetattr(STDIN_FILENO, &data->attr->def_attributes);
 	tcgetattr(STDIN_FILENO, &data->attr->mod_attributes);
 	rebuild_envp(data);

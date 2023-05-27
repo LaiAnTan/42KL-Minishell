@@ -9,6 +9,7 @@ Team members:
 -------------------------------------------
 
 To Do
+- norm & cleanup
 - error handling
 - (potential) memory leaks (might happen idk)
 

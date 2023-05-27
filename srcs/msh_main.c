@@ -15,7 +15,6 @@ int	handle_line(t_data *data)
 	}
 	else
 		exit(0); // handle ctrl + D
-		
 	return (0);
 }
 

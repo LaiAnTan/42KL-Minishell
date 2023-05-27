@@ -6,6 +6,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <wait.h>
+# include <sys/wait.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <errno.h>
@@ -14,6 +15,7 @@
 # include <linux/limits.h>
 # include <signal.h>
 # include <termios.h>
+# include <fcntl.h>
 
 # define TRUE 1
 # define FALSE 0
@@ -51,6 +53,8 @@ typedef struct s_list
 // all data for program
 typedef struct s_data
 {
+	int		pipefd[2];
+
 	char	*line;
 	char	*cwd;
 	char	**tokens;
