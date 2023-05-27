@@ -46,6 +46,12 @@ typedef struct s_list
 {
 	t_env			env;
 	t_cmd			cmd;
+
+	// piping purposes
+	// where the fuck is the initialization of t_list???
+	int				in_fd;
+	int				out_fd;
+
 	struct s_list	*next;
 
 }		t_list;

@@ -3,6 +3,8 @@
 /*
 note: this function can be removed along with strcmp_equals
 ! use get_val which returns the node and modify the code a little during cleanup
+
+suggestion - gay sex
 */
 char	*access_var(t_data *data, char *name) 
 {
@@ -41,7 +43,7 @@ void	reset_storage(char **temp_strings)
 		free(temp_strings[i]);
 }
 
-void	break_down(char *line, int *indexes, char **temp_strings) // why do i hear josuke
+void	break_down(char *line, int *indexes, char **temp_strings) // why do i hear josuke // i am about to have a break-down break-down
 {
 	// example = ls $SHLVL la
 	// temp_string[0] = 'ls '
@@ -68,7 +70,7 @@ char	*recombine_parts(char **temp_strings, int *indexes)
 char	*handle_dollar(t_data *data, char *line)
 {
 	char	*ret;
-	// i have sinned
+	// lord forgive me for i have sinned
 	char	*temp_strings[5];
 	int		indexes[3];
 
