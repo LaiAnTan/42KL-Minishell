@@ -60,7 +60,7 @@ void	ft_lstfree(t_list **lst)
 	t_list	*curr;
 	t_list	*next;
 
-	curr = (*lst);
+	curr = *lst;
 	while (curr != NULL)
 	{
 		next = curr->next;
@@ -72,7 +72,7 @@ void	ft_lstfree(t_list **lst)
 		free(curr);
 		curr = next;
 	}
-	(*lst) = NULL;
+	*lst = NULL;
 }
 
 void	ft_lstdel_env(t_list **lst, t_list *node)

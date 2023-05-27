@@ -13,6 +13,9 @@ int	handle_line(t_data *data)
 		free(line);
 		return (1);
 	}
+	else
+		exit(0); // handle ctrl + D
+		
 	return (0);
 }
 
@@ -34,27 +37,6 @@ void	print_parsed(t_list *amogus)
 	}
 }
 
-void	cleanup(t_data *data) // i am going to throw some hands
-{
-	reset_attr(data);
-	printf("attr resetted\n");
-	if (data->vars)
-	ft_lstfree(data->vars);
-	printf("env list freed\n");
-	if (data->cmds)
-		ft_lstfree(&data->cmds);
-	printf("cmd list freed\n");
-	if (data->tokens)
-		free_2d_array(&data->tokens);
-	printf("tokens freed\n");
-	if (data->my_envp)
-		free_2d_array(&data->my_envp);
-	printf("my_envp freed\n");
-	if (data->cwd)
-		free(data->cwd);
-	printf("cwd freed\n");
-}
-
 int main(int argc, char **argv, char **envp)
 {
 	(void) argv;
@@ -66,8 +48,8 @@ int main(int argc, char **argv, char **envp)
 	modify_attr(&data);
 	while (1)
 	{
-		signal(SIGINT, new_line);
-		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, new_line_handler); // ctrl + C
+		signal(SIGQUIT, SIG_IGN); // ctrl + /
 		if (!handle_line(&data))
 			continue;
 		lexer(&data);
@@ -75,9 +57,11 @@ int main(int argc, char **argv, char **envp)
 		parser(&data);
 		print_parsed(data.cmds);
 		run_cmd(&data);
-		ft_lstfree(&data.cmds);
-		free(data.line);
+		if (data.cmds)
+			ft_lstfree(&data.cmds);
+		if (data.line)
+			free(data.line);
 	}
-	cleanup(&data);
+	ft_lstfree(&data.vars);
 	return (0);
 }

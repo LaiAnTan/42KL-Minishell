@@ -246,7 +246,7 @@ void builtin_exit(char **args, t_data *data)
 		exit_code = 2;
 	while (exit_code >= 256) // overflow protection
 		exit_code = exit_code - 256;
-	cleanup(data);
+	printf("process exited with code %d\n", exit_code); // ok apparently exit auto frees
 	exit(exit_code);
 }
 
