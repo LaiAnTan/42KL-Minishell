@@ -1,70 +1,151 @@
 #include "../headers/minishell.h"
 
-int	*get_next_redirect_info(char **args, int start_index)
-{
-	int		i;
-	int		*info;
+/*
+* < should redirect input.
+* > should redirect output.
+* << should be given a delimiter, then read the input until a line containing the
+* delimiter is seen. However, it doesn’t have to update the history!
+* >> should redirect output in append mode.
+*/
 
-	i = start_index;
-	info = (int *) malloc (sizeof(int) * 2);
-	info[0] = 0;
-	info[1] = 0;
-	while (args[i] != NULL)
+void	handle_redir_input(char *filename)
+{
+	int		fd;
+
+	fd = open(filename, O_RDONLY, 0777);
+	if (fd == -1)
 	{
-		if (info[0] != 0)
-			return (info);
-		info[1] = i;
-		if (ft_strcmp(args[i], ">") == 0)
-			info[0] = 1;
-		else if (ft_strcmp(args[i], "<") == 0)
-			info[0] = 2; 
-		else if (ft_strcmp(args[i], ">>") == 0)
-			info[0] = 3;
-		else if (ft_strcmp(args[i], "<<") == 0)
-			info[0] = 4;
+		printf("%s: file could not be open", filename); // handle later
+		return (0);
+	}
+	dup2(fd, dup(STDIN_FILENO));
+	close(fd);
+	return (1);
+}
+
+void	handle_redir_input_delim(char *eof)
+{
+	// pipes
+}
+
+void	handle_redir_output(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (fd == -1)
+	{
+		printf("%s: file could not be open", filename); // handle later
+		return (0);
+	}
+	dup2(fd, dup(STDOUT_FILENO));
+	close(fd);
+	return (1);
+}
+
+void	handle_redir_output_append(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777);
+	if (fd == -1)
+	{
+		printf("%s: file could not be open", filename); // handle later
+		return (0);
+	}
+	dup2(fd, dup(STDOUT_FILENO));
+	close(fd);
+	return (1);
+}
+
+int		is_redirect(char *arg)
+{
+	if (ft_strcmp(arg, ">") == 0 || ft_strcmp(arg, ">>") == 0 
+		|| ft_strcmp(arg, "<") == 0 || ft_strcmp(arg, "<<") == 0)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+int		contains_redirect(char **args)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+
+	while (args[i + 1] != NULL)
+	{
+		if (is_redirect(args[i]))
+			flag = 1;
 		i++;
+	}
+	if (flag == 1)
+		return (1);
+	return (0);
+}
+
+int		get_redirect_type(char *arg)
+{
+	if (!is_redirect(arg))
+		return (0);
+	if (ft_strcmp(arg, ">") == 0)
+		return (1);
+	if (ft_strcmp(arg, ">>") == 0)
+		return (2);
+	if (ft_strcmp(arg, "<") == 0)
+		return (3);
+	if (ft_strcmp(arg, "<<") == 0)
+		return (4);
+}
+
+int		*get_next_redirect(char **args, int index)
+{
+	int	*redirect_info; // 0 = type, 1 = index
+
+	if (index >= count_2d_array(args))
+		return (NULL);
+	redirect_info = (int *) malloc(sizeof(int) * 2);
+	while (args[index] != NULL)
+	{
+		redirect_info[0] = get_redirect_type(args[index]);
+		if (redirect_info[0] != 0)
+		{
+			redirect_info[1] = index;
+			return (redirect_info);
+		}
+		++index;
 	}
 	return (NULL);
 }
 
-char	**get_new_args(char **args)
-{	
+char	**get_cmd_args_without_redirect(char **args)
+{
 	int		i;
-	int		*redir_info;
+	int		*redirect_info;
+
 	char	**new;
 
 	i = 0;
-	redir_info = get_next_redirect_info(args, 0);
-	if (redir_info == NULL)
+	redirect_info = get_next_redirect(args, 0);
+	if (redirect_info == NULL)
 		return (NULL);
-	new = (char **) malloc (sizeof(char *) * redir_info[1]);
-	while (args[i] < redir_info[1])
+	new = (char **) malloc(sizeof(char *) * redirect_info[1]);
+	while (i < redirect_info[1]);
 	{
 		new[i] = ft_strdup(args[i]);
-		i++;
+		++i;
 	}
 	new[i] = NULL;
 	return (new);
 }
 
-int	handle_redirect(char **args, t_data *data)
+// last arguement redirect error handled at the end
+int		handle_redirect(char **args, t_data *data)
 {
-	int		i;
-	int		fd;
-	int		*redir_info; // 0 = type, 1 = index
-	char	**new_args;
-
-	i = 0;
-	new_args = get_new_args(args);
-	if (new_args == NULL)
+	if (!contains_redirect(args))
 		return (0);
-	if (count_2d_array(args) == redir_info[1])
-		return (-1);
-	while (args[i] != NULL)
-	{
-		redir_info = get_next_redirect_info(args, i);
-		if (redir_info == NULL) // no more redirects
-			return (1);
-		fd = open(args[redir_info[1] + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	}
+	
 }
