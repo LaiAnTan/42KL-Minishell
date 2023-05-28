@@ -7,6 +7,8 @@ t_list *ft_lstnew_env(char *var)
 	list ->env.printed = 0;
 	list ->cmd.cmd= NULL;
 	list ->next = NULL;
+	list->in_fd = -1;
+	list->out_fd = -1;
 	return (list);
 }
 
@@ -17,6 +19,8 @@ t_list *ft_lstnew_cmd(char **cmd)
 	list ->env.printed = 0;
 	list ->cmd.cmd= cmd;
 	list ->next = NULL;
+	list->in_fd = STDIN_FILENO;
+	list->out_fd = STDOUT_FILENO;
 	return (list);
 }
 

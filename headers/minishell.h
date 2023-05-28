@@ -59,8 +59,6 @@ typedef struct s_list
 // all data for program
 typedef struct s_data
 {
-	int		pipefd[2];
-
 	char	*line;
 	char	*cwd;
 	char	**tokens;
