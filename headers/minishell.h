@@ -31,26 +31,22 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char			**cmd;
-
 }		t_cmd;
 
 typedef struct s_sig
 {
 	struct termios	def_attributes;
 	struct termios	mod_attributes;
-
 }		t_sig;
 
 // linked list that holds environmental variables and commands (shit name)
 typedef struct s_list
 {
-	t_env			env;
-	t_cmd			cmd;
-
-	// piping purposes
-	// where the fuck is the initialization of t_list???
 	int				in_fd;
 	int				out_fd;
+
+	t_env			env;
+	t_cmd			cmd;
 
 	struct s_list	*next;
 
