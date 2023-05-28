@@ -11,7 +11,7 @@ delimiter is seen. However, it doesn’t have to update the history!
 
 redirections are handled left to right no matter what
 
-redirection identifier without a (*) filename is an error
+redirection identifier without a (*) is an error
 (*) input redirection : existing filename only
 (*) output redirection : existing / potential filename
 
@@ -31,7 +31,7 @@ this is because redirections override piping
 
 */
 
-void	handle_redir_input(char *filename)
+void	handle_redir_input(char *filename, int *in_fd)
 {
 	int		fd;
 
@@ -46,12 +46,12 @@ void	handle_redir_input(char *filename)
 	return (1);
 }
 
-void	handle_redir_input_delim(char *eof)
+void	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 {
-	// pipes
+	// using readline
 }
 
-void	handle_redir_output(char *filename)
+void	handle_redir_output(char *filename, int *out_fd)
 {
 	int	fd;
 
@@ -66,7 +66,7 @@ void	handle_redir_output(char *filename)
 	return (1);
 }
 
-void	handle_redir_output_append(char *filename)
+void	handle_redir_output_append(char *filename, int *out_fd)
 {
 	int	fd;
 
@@ -126,7 +126,7 @@ int		get_redirect_type(char *arg)
 
 int		*get_next_redirect(char **args, int index)
 {
-	int	*redirect_info; // 0 = type, 1 = index
+	int	*redirect_info; // 0 - type 1 - index
 
 	if (index >= count_2d_array(args))
 		return (NULL);
@@ -141,7 +141,9 @@ int		*get_next_redirect(char **args, int index)
 		}
 		++index;
 	}
-	return (NULL);
+	redirect_info[0] = -1;
+	redirect_info[1] = -1;
+	return (redirect_info);
 }
 
 char	**get_cmd_args_without_redirect(char **args)
@@ -154,7 +156,7 @@ char	**get_cmd_args_without_redirect(char **args)
 	i = 0;
 	redirect_info = get_next_redirect(args, 0);
 	if (redirect_info == NULL)
-		return (NULL);
+		return (args);
 	new = (char **) malloc(sizeof(char *) * redirect_info[1]);
 	while (i < redirect_info[1]);
 	{
@@ -165,10 +167,33 @@ char	**get_cmd_args_without_redirect(char **args)
 	return (new);
 }
 
-// last arguement redirect error handled at the end
-int		handle_redirect(char **args, t_data *data)
+int		handle_redirect(char **args, int *in_fd, int *out_fd)
 {
+	int		i;
+	int		*redirect_info; // 0 - type 1 - index
+
+	i = 0;
 	if (!contains_redirect(args))
 		return (0);
-	
+	while (args[i] != NULL)
+	{
+		redirect_info = get_next_redirect(args, i);
+
+		if (redirect_info == NULL)
+			return (0); // handle error
+		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
+			return (1); // handle done
+		else if (args[i] == NULL)
+			return (1); // double done
+		if (redirect_info[0] == 1)
+			handle_redir_input(args[i + 1], in_fd);
+		else if (redirect_info[0] == 2)
+			handle_redir_output(args[i + 1], out_fd);
+		else if (redirect_info[0] == 3)
+			handle_redir_input_heredoc(args[i + 1], in_fd);
+		else if (redirect_info[0] == 4)
+			handle_redir_output_append(args[i + 1], out_fd);
+		i = redirect_info[1] + 1;
+		free(redirect_info);
+	}
 }
