@@ -2,8 +2,6 @@
 
 int init_data(t_data *data, char **envp)
 {
-	if (pipe(data->pipefd) == -1)
-		printf("pipe failed\n"); // handle properly later
 	data->cwd = getcwd(NULL, PATH_MAX);
 	data->vars = set_env(envp);
 	data->cmds = NULL;

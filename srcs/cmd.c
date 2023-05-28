@@ -35,32 +35,29 @@ void	multiple_commands(t_data *data)
 	int	pipe_storage[2];
 	int	prev_pipe;
 
-	dispatched = 0;
+	dispatched = 0; // number of commands that have been forked and ran
 	cmd_count = get_command_count(data);
 	while (dispatched < cmd_count)
 	{
-		// when t_list have no init function
-		data->cmds->in_fd = STDIN_FILENO;
-		data->cmds->out_fd = STDOUT_FILENO;
-
-		// piping
-		if (!dispatched)
+		// piping & setup fd
+		if (!dispatched) // first
 		{
 			pipe(pipe_storage);
-			data->cmds->out_fd = pipe_storage[1];
+			data->cmds->out_fd = pipe_storage[1]; // command output is pipe input
 		}
 		else if (dispatched == cmd_count - 1) // last command
 		{
-			data->cmds->in_fd = prev_pipe;
+			data->cmds->in_fd = prev_pipe; // command input is previous output
 		}
 		else // everything in between
 		{
-			data->cmds->in_fd = prev_pipe;
+			data->cmds->in_fd = prev_pipe; // command input is previous output
 			pipe(pipe_storage);
-			data->cmds->out_fd = pipe_storage[1];
+			data->cmds->out_fd = pipe_storage[1]; // command output is pipe input
 		}
 
-		if (!fork())
+		// forking
+		if (!fork()) // child redirect input and output
 		{
 			close(pipe_storage[0]);
 
@@ -71,29 +68,30 @@ void	multiple_commands(t_data *data)
 			// i fix this later
 			exit(0);
 		}
-		else
+		else // parent cleans up fd
 		{
-			// cleaning up file desc
-			if (!dispatched)
+			if (!dispatched) // first
 			{
 				close(pipe_storage[1]);
 				prev_pipe = pipe_storage[0];
 			}
-			else if (dispatched == cmd_count - 1)
+			else if (dispatched == cmd_count - 1) // last
 			{
 				close(prev_pipe);
 			}
-			else
+			else // between
 			{
 				close(prev_pipe);
 				close(pipe_storage[1]);
 				prev_pipe = pipe_storage[0];
 			}
+
+			// move to next command
 			++dispatched;
 			data->cmds = data->cmds->next;
 		}
 	}
-	while (cmd_count)
+	while (cmd_count) // wait for all processes
 	{
 		// hey replace NULL with the saved exit code thanks
 		waitpid(0, NULL, 0);
