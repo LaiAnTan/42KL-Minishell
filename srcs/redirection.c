@@ -161,14 +161,10 @@ int		count_args_without_redirect(char **args)
 	i = 0;
 	len = count_2d_array(args);
 	count = 0;
-	while (args[i] != NULL)
+	while (i < len)
 	{
 		if (is_redirect(args[i]))
-		{
-			if (i == len)
-				break ;
 			i += 2;
-		}
 		else
 		{
 			++i;
@@ -192,15 +188,11 @@ char	**get_cmd_args_without_redirect(char **args)
 	j = 0;
 	old_len = count_2d_array(args);
 	new_len = count_args_without_redirect(args);
-	new = malloc (sizeof(char *) * new_len + 1);
-	while (args[i] != NULL)
+	new = malloc (sizeof(char *) * (new_len + 1));
+	while (i < old_len)
 	{
-		if (is_redirect(args[i]) == 0)
-		{
-			if (i == old_len)
-				break ;
+		if (is_redirect(args[i]))
 			i += 2;
-		}
 		else
 		{
 			new[j] = ft_strdup(args[i]);
@@ -232,14 +224,14 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd)
 		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
 			return (1); // done
 		
-		if (redirect_info[0] == 1)
-			error = handle_redir_input(args[i + 1], in_fd);
-		else if (redirect_info[0] == 2)
-			error = handle_redir_output(args[i + 1], out_fd);
-		else if (redirect_info[0] == 3)
-			error = handle_redir_input_heredoc(args[i + 1], in_fd);
-		else if (redirect_info[0] == 4)
-			error = handle_redir_output_append(args[i + 1], out_fd);
+        if (redirect_info[0] == 1)
+            error = handle_redir_output(args[i + 1], out_fd);
+        else if (redirect_info[0] == 2)
+            error = handle_redir_output_append(args[i + 1], out_fd);
+        else if (redirect_info[0] == 3)
+            error = handle_redir_input(args[i + 1], in_fd);
+        else if (redirect_info[0] == 4)
+            error = handle_redir_input_heredoc(args[i + 1], in_fd);
 
 		if (error == -1)
 			return (0); // error
