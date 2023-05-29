@@ -50,14 +50,14 @@ int	handle_redir_input(char *filename, int *in_fd)
 
 	if (is_redirect(filename))
 		return (-1);
+	printf("in handle_redir_input\n");
 	fd = open(filename, O_RDONLY, 0777);
 	if (fd == -1)
 	{
 		printf("%s: file could not be open", filename); // handle later
 		return (-1);
 	}
-	dup2(fd, *in_fd);
-	close(fd);
+	dup2(*in_fd, fd);
 	return (1);
 }
 
@@ -65,6 +65,7 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 {
 	if (is_redirect(delimiter))
 		return (-1);
+	printf("in handle_redir_input_heredoc\n");
 	// using readline or gnl
 }
 
@@ -74,6 +75,7 @@ int	handle_redir_output(char *filename, int *out_fd)
 
 	if (is_redirect(filename))
 		return (-1);
+	printf("in handle_redir_output\n");
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 	{
@@ -91,6 +93,7 @@ int	handle_redir_output_append(char *filename, int *out_fd)
 
 	if (is_redirect(filename))
 		return (-1);
+	printf("in handle_redir_output_append\n");
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777);
 	if (fd == -1)
 	{
@@ -188,15 +191,18 @@ char	**get_cmd_args_without_redirect(char **args)
 
 	if (contains_redirect(args) == 0)
 		return (args);
+	printf("in get_cmd_args_without_redirect\n");
 	i = 0;
 	j = 0;
 	old_len = count_2d_array(args);
 	new_len = count_args_without_redirect(args);
+	printf("old len = %d new len = %d\n", old_len, new_len);
 	new = malloc (sizeof(char *) * new_len + 1);
 	while (args[i] != NULL)
 	{
-		if (is_redirect(args[i]) == 0)
+		if (is_redirect(args[i]))
 		{
+			printf("found redirect at %d, skip\n", i);
 			if (i == old_len)
 				break ;
 			i += 2;
@@ -207,8 +213,10 @@ char	**get_cmd_args_without_redirect(char **args)
 			++i;
 			++j;
 		}
+		printf("i = %d j = %d\n", i, j);
 	}
 	new[new_len] = NULL;
+	printf("done\n");
 	free_2d_array(&args);
 	return (new);
 }
@@ -223,6 +231,7 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd)
 	error = 0;
 	if (contains_redirect(args) == 0)
 		return (0);
+	printf("in handle redirect\n");
 	while (args[i] != NULL)
 	{
 		redirect_info = get_next_redirect(args, i);
@@ -232,14 +241,17 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd)
 		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
 			return (1); // done
 		
+		printf("found next redirect, type = %d index = %d\n", redirect_info[0], redirect_info[1]);
+
 		if (redirect_info[0] == 1)
-			error = handle_redir_input(args[i + 1], in_fd);
-		else if (redirect_info[0] == 2)
 			error = handle_redir_output(args[i + 1], out_fd);
-		else if (redirect_info[0] == 3)
-			error = handle_redir_input_heredoc(args[i + 1], in_fd);
-		else if (redirect_info[0] == 4)
+		else if (redirect_info[0] == 2)
 			error = handle_redir_output_append(args[i + 1], out_fd);
+		else if (redirect_info[0] == 3)
+			error = handle_redir_input(args[i + 1], in_fd);
+		else if (redirect_info[0] == 4)
+			error = handle_redir_input_heredoc(args[i + 1], in_fd);
+			
 
 		if (error == -1)
 			return (0); // error
