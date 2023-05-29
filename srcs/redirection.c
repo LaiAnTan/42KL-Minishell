@@ -164,14 +164,10 @@ int		count_args_without_redirect(char **args)
 	i = 0;
 	len = count_2d_array(args);
 	count = 0;
-	while (args[i] != NULL)
+	while (i < len)
 	{
 		if (is_redirect(args[i]))
-		{
-			if (i == len)
-				break ;
 			i += 2;
-		}
 		else
 		{
 			++i;
@@ -196,17 +192,11 @@ char	**get_cmd_args_without_redirect(char **args)
 	j = 0;
 	old_len = count_2d_array(args);
 	new_len = count_args_without_redirect(args);
-	printf("old len = %d new len = %d\n", old_len, new_len);
-	new = malloc (sizeof(char *) * new_len + 1);
-	while (args[i] != NULL)
+	new = malloc (sizeof(char *) * (new_len + 1));
+	while (i < old_len)
 	{
 		if (is_redirect(args[i]))
-		{
-			printf("found redirect at %d, skip\n", i);
-			if (i == old_len)
-				break ;
 			i += 2;
-		}
 		else
 		{
 			new[j] = ft_strdup(args[i]);
