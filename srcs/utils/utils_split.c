@@ -1,4 +1,4 @@
-#include "../headers/minishell.h"
+#include "../../headers/minishell.h"
 
 int	countwords(char *s, char c)
 {

@@ -1,4 +1,4 @@
-#include "../headers/minishell.h"
+#include "../../headers/minishell.h"
 
 t_list *ft_lstnew_env(char *var)
 {

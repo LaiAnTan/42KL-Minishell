@@ -4,20 +4,28 @@ CDIR = srcs
 
 ODIR = obj
 
-SRCS_C =	srcs/msh_main.c		\
-			srcs/struct.c		\
-			srcs/lexer.c		\
-			srcs/expander.c		\
-			srcs/parser.c		\
-			srcs/path.c			\
+SRCS_C =	srcs/builtins/builtins_cd.c					\
+			srcs/builtins/builtins_echo.c				\
+			srcs/builtins/builtins_exit.c				\
+			srcs/builtins/builtins_export.c				\
+			srcs/builtins/builtins_handler_env_pwd.c	\
+			srcs/builtins/builtins_unset.c				\
+			srcs/utils/utils_2d_array.c					\
+			srcs/utils/utils_list.c						\
+			srcs/utils/utils_split.c					\
+			srcs/utils/utils_string_1.c					\
+			srcs/utils/utils_string_2.c					\
 			srcs/cmd.c			\
 			srcs/environment.c	\
-			srcs/list.c			\
-			srcs/ft_split.c		\
-			srcs/utilities.c	\
-			srcs/builtins.c		\
-			srcs/signal.c		\
+			srcs/expander.c		\
+			srcs/lexer.c		\
+			srcs/main.c			\
+			srcs/parser.c		\
+			srcs/path.c			\
 			srcs/redirection.c	\
+			srcs/signal.c		\
+			srcs/struct.c		\
+
 
 SRCS_H = headers/minishell.h
 
