@@ -50,14 +50,14 @@ int	handle_redir_input(char *filename, int *in_fd)
 
 	if (is_redirect(filename))
 		return (-1);
-	printf("in handle_redir_input\n");
+	printf("in handle_redir_input, filename = %s, in_fd = %d\n", filename, *in_fd);
 	fd = open(filename, O_RDONLY, 0777);
 	if (fd == -1)
 	{
 		printf("%s: file could not be open", filename); // handle later
 		return (-1);
 	}
-	dup2(*in_fd, fd);
+	dup2(fd, *in_fd);
 	return (1);
 }
 
@@ -65,7 +65,7 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 {
 	if (is_redirect(delimiter))
 		return (-1);
-	printf("in handle_redir_input_heredoc\n");
+	printf("in handle_redir_input_heredoc, delim = %s, in_fd = %d\n", delimiter, *in_fd);
 	// using readline or gnl
 }
 
@@ -75,7 +75,7 @@ int	handle_redir_output(char *filename, int *out_fd)
 
 	if (is_redirect(filename))
 		return (-1);
-	printf("in handle_redir_output\n");
+	printf("in handle_redir_output, filename = %s, out_fd = %d\n", filename, *out_fd);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 	{
@@ -93,7 +93,7 @@ int	handle_redir_output_append(char *filename, int *out_fd)
 
 	if (is_redirect(filename))
 		return (-1);
-	printf("in handle_redir_output_append\n");
+	printf("in handle_redir_output, filename = %s, out_fd = %d\n", filename, *out_fd);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777);
 	if (fd == -1)
 	{
@@ -231,22 +231,21 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd)
 		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
 			return (1); // done
 		
+		
 		printf("found next redirect, type = %d index = %d\n", redirect_info[0], redirect_info[1]);
-
+		i = redirect_info[1] + 1;
 		if (redirect_info[0] == 1)
-			error = handle_redir_output(args[i + 1], out_fd);
+			error = handle_redir_output(args[i], out_fd);
 		else if (redirect_info[0] == 2)
-			error = handle_redir_output_append(args[i + 1], out_fd);
+			error = handle_redir_output_append(args[i], out_fd);
 		else if (redirect_info[0] == 3)
-			error = handle_redir_input(args[i + 1], in_fd);
+			error = handle_redir_input(args[i], in_fd);
 		else if (redirect_info[0] == 4)
-			error = handle_redir_input_heredoc(args[i + 1], in_fd);
-			
+			error = handle_redir_input_heredoc(args[i], in_fd);
 
 		if (error == -1)
 			return (0); // error
-
-		i = redirect_info[1] + 1;
+		
 		free(redirect_info);
 	}
 	return (1); // done

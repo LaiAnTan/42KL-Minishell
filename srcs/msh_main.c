@@ -56,10 +56,13 @@ int main(int argc, char **argv, char **envp)
 		parser(&data);
 		print_parsed(data.cmds);
 		run_cmd(&data);
+		dup2(data.stdin_backup, STDIN_FILENO);
+		dup2(data.stdout_backup, STDOUT_FILENO);
 		if (data.cmds)
 			ft_lstfree(&data.cmds);
 		if (data.line)
 			free(data.line);
+
 	}
 	ft_lstfree(&data.vars);
 	return (0);
