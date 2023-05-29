@@ -59,10 +59,10 @@ void	multiple_commands(t_data *data)
 		// forking
 		if (!fork()) // child redirect input and output
 		{
+			close(pipe_storage[0]);
 			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
 				printf("error happend");
 			data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
-			close(pipe_storage[0]);
 
 			dup2(data->cmds->in_fd, STDIN_FILENO);
 			dup2(data->cmds->out_fd, STDOUT_FILENO);
