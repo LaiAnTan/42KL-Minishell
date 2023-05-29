@@ -17,6 +17,7 @@ SRCS_C =	srcs/msh_main.c		\
 			srcs/utilities.c	\
 			srcs/builtins.c		\
 			srcs/signal.c		\
+			srcs/redirection.c	\
 
 SRCS_H = headers/minishell.h
 

@@ -77,6 +77,11 @@ int		expander(t_data *data);
 int		parser(t_data *data);
 int		get_keyword(char *line, int stop);
 
+/* Redirection */
+int		handle_redirect(char **args, int *in_fd, int *out_fd);
+
+char	**get_cmd_args_without_redirect(char **args);
+
 /* Command Processing */
 void	run_cmd(t_data *data);
 void	append_stuff(char **paths, char *cmd);

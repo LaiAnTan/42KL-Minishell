@@ -59,6 +59,9 @@ void	multiple_commands(t_data *data)
 		// forking
 		if (!fork()) // child redirect input and output
 		{
+			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
+				printf("error happend");
+			data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
 			close(pipe_storage[0]);
 
 			dup2(data->cmds->in_fd, STDIN_FILENO);
@@ -104,7 +107,12 @@ void	run_cmd(t_data *data)
 	if (data->cmds->next)
 		multiple_commands(data);
 	else
+	{
+		if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
+			printf("error happend");
+		data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
 		single_command(data, data->cmds);
+	}
 }
 
 int	exec_cmd(t_data *data, char **cmd_paths, char **args)
