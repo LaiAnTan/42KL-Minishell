@@ -112,7 +112,6 @@ int	expander(t_data *data) // forgot to handle $? lol
 	if (!data || !data->tokens)
 		return (0);
 	
-	printf("expander: \n");
 	while (i < tokencount)
 	{
 		// this will fail if tokens[i] is NULL

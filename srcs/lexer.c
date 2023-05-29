@@ -80,7 +80,7 @@ int	find_token_pos(char *line, int *index_pair)
 	// handles everything else
 	else
 	{
-		while (line[i + 1] != '\0' && line[i + 1] != ' ' && !is_token(line[i + 1]))
+		while (line[i + 1] != '\0' && line[i + 1] != ' ' && !is_token(line[i + 1])) // i le trolled
 			i++;
 	}
 	index_pair[1] = i;

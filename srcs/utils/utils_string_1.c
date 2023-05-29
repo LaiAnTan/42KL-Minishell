@@ -32,31 +32,29 @@ int	ft_strcmp(char *s1, char *s2)
 	// maybe i should include a failswitch as well~
 	if (!s1 || !s2)
 		return (!(!s1 && !s2));
-	while (s1[i] != '\0' || s2[i] != '\0')
+	while ((s1[i] == s2[i]))
 	{
-		if (s1[i] > s2[i])
-			return (1);
-		if (s1[i] < s2[i])
-			return (-1);
-		i++;
+		if (s1[i] == '\0')
+			return (0);
+		++i;
 	}
-	return (0);
+	return (s1[i] - s2[i]);
 }
 
+// s1 IS THE FULL STRING, s2 IS TO MATCH
+// s1 IS PATH=ABCDEF, s2 is $PATH
 int	ft_strcmp_equals(char *s1, char *s2)
 {
 	int		i;
 
 	i = 0;
-	while ((s1[i] != '=') || (s2[i] != '='))
+	while ((s1[i] == s2[i]) && s1[i] && s2[i])
 	{
-		if (s1[i] > s2[i])
-			return (1);
-		if (s1[i] < s2[i])
-			return (-1);
-		i++;
+		++i;
 	}
-	return (0);
+	if (s1[i] == '=' && s2[i] == '\0')
+		return 0;
+	return (s1[i] - s2[i]);
 }
 
 int	ft_atoi(const char *s)

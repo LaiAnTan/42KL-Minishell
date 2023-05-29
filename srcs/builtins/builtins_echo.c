@@ -6,10 +6,10 @@ void	builtin_echo(char **args, t_data *data)
 	int		nl;
 
 	i = 1;
-	nl = 0;
+	nl = 1;
 	if (ft_strcmp(args[1], "-n") == 0)
 	{
-		nl = 1;
+		nl = 0;
 		i = 2;
 	}
 	while (args[i] != NULL)
