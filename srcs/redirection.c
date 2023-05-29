@@ -63,10 +63,35 @@ int	handle_redir_input(char *filename, int *in_fd)
 
 int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 {
+	int		storage[2]; // 0 - read 1 - write
+	char	*line;
+
 	if (is_redirect(delimiter))
 		return (-1);
 	printf("in handle_redir_input_heredoc, delim = %s, in_fd = %d\n", delimiter, *in_fd);
-	// using readline or gnl
+	pipe(storage);
+	line = NULL;
+	if (!fork())
+	{
+		while (1)
+		{
+			line = readline("> ");
+			rl_redisplay();
+			if (ft_strcmp(line, delimiter) != 0)
+				break ;
+			write(storage[1], line, ft_strlen(line));
+			free(line);
+
+		}
+	}
+	else
+	{
+		waitpid(-1, NULL, 0);
+		dup2(STDIN_FILENO, storage[0]);
+		close(storage[1]);
+		close(storage[2]);
+	}
+	return (1);
 }
 
 int	handle_redir_output(char *filename, int *out_fd)
@@ -121,6 +146,7 @@ int		contains_redirect(char **args)
 
 int		get_redirect_type(char *arg)
 {
+	printf("checking = %s\n", arg);
 	if (!is_redirect(arg))
 		return (0);
 	if (ft_strcmp(arg, ">") == 0)
@@ -143,6 +169,7 @@ int		*get_next_redirect(char **args, int index)
 	while (args[index] != NULL)
 	{
 		redirect_info[0] = get_redirect_type(args[index]);
+		
 		if (redirect_info[0] != 0)
 		{
 			redirect_info[1] = index;
