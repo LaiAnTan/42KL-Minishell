@@ -55,6 +55,9 @@ typedef struct s_list
 // all data for program
 typedef struct s_data
 {
+	int		stdin_backup;
+	int		stdout_backup;
+
 	char	*line;
 	char	*cwd;
 	char	**tokens;
