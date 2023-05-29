@@ -62,8 +62,8 @@ typedef struct s_data
 	char	*cwd;
 	char	**tokens;
 	char	**my_envp;
+	
 	t_sig	*attr;
-
 	t_list	*vars;
 	t_list	*cmds;
 
