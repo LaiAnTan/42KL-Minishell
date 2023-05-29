@@ -9,14 +9,13 @@ Team members:
 -------------------------------------------
 
 To Do
-- handle $?
-- handle executables
 - norm & cleanup
 - error handling
 - (potential) memory leaks (might happen idk)
 
 In Progress
-- redirections
+- handle $?
+- handle executables
 
 Done (probably)
 - base data structure
@@ -28,3 +27,4 @@ Done (probably)
 - builtins
 - signals
 - pipes
+- redirections
