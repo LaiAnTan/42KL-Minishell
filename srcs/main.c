@@ -54,7 +54,7 @@ int main(int argc, char **argv, char **envp)
 		lexer(&data);
 		expander(&data);
 		parser(&data);
-		print_parsed(data.cmds);
+		// print_parsed(data.cmds);
 		run_cmd(&data);
 		dup2(data.stdin_backup, STDIN_FILENO);
 		dup2(data.stdout_backup, STDOUT_FILENO);
