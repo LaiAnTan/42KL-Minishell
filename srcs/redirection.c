@@ -50,7 +50,6 @@ int	handle_redir_input(char *filename, int *in_fd)
 
 	if (is_redirect(filename))
 		return (-1);
-	printf("in handle_redir_input, filename = %s, in_fd = %d\n", filename, *in_fd);
 	fd = open(filename, O_RDONLY, 0777);
 	if (fd == -1)
 	{
@@ -71,26 +70,19 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 	printf("in handle_redir_input_heredoc, delim = %s, in_fd = %d\n", delimiter, *in_fd);
 	pipe(storage);
 	line = NULL;
-	if (!fork())
+	while (1)
 	{
-		while (1)
-		{
-			line = readline("> ");
-			rl_redisplay();
-			if (ft_strcmp(line, delimiter) != 0)
-				break ;
-			write(storage[1], line, ft_strlen(line));
-			free(line);
-
-		}
+		line = readline("> ");
+		rl_redisplay();
+		if (ft_strcmp(line, delimiter) == 0)
+			break ;
+		write(storage[1], line, ft_strlen(line));
+		write(storage[1], "\n", 1);
+		free(line);
 	}
-	else
-	{
-		waitpid(-1, NULL, 0);
-		dup2(STDIN_FILENO, storage[0]);
-		close(storage[1]);
-		close(storage[2]);
-	}
+	dup2(storage[0], *in_fd);
+	close(storage[1]);
+	close(storage[2]);
 	return (1);
 }
 
@@ -100,7 +92,6 @@ int	handle_redir_output(char *filename, int *out_fd)
 
 	if (is_redirect(filename))
 		return (-1);
-	printf("in handle_redir_output, filename = %s, out_fd = %d\n", filename, *out_fd);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 	{
@@ -118,7 +109,6 @@ int	handle_redir_output_append(char *filename, int *out_fd)
 
 	if (is_redirect(filename))
 		return (-1);
-	printf("in handle_redir_output, filename = %s, out_fd = %d\n", filename, *out_fd);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777);
 	if (fd == -1)
 	{
@@ -146,7 +136,6 @@ int		contains_redirect(char **args)
 
 int		get_redirect_type(char *arg)
 {
-	printf("checking = %s\n", arg);
 	if (!is_redirect(arg))
 		return (0);
 	if (ft_strcmp(arg, ">") == 0)
@@ -214,7 +203,6 @@ char	**get_cmd_args_without_redirect(char **args)
 
 	if (contains_redirect(args) == 0)
 		return (args);
-	printf("in get_cmd_args_without_redirect\n");
 	i = 0;
 	j = 0;
 	old_len = count_2d_array(args);
@@ -233,7 +221,6 @@ char	**get_cmd_args_without_redirect(char **args)
 		printf("i = %d j = %d\n", i, j);
 	}
 	new[new_len] = NULL;
-	printf("done\n");
 	free_2d_array(&args);
 	return (new);
 }
@@ -248,7 +235,6 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd)
 	error = 0;
 	if (contains_redirect(args) == 0)
 		return (0);
-	printf("in handle redirect\n");
 	while (args[i] != NULL)
 	{
 		redirect_info = get_next_redirect(args, i);
@@ -257,9 +243,7 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd)
 			return (0); // error
 		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
 			return (1); // done
-		
-		
-		printf("found next redirect, type = %d index = %d\n", redirect_info[0], redirect_info[1]);
+
 		i = redirect_info[1] + 1;
 		if (redirect_info[0] == 1)
 			error = handle_redir_output(args[i], out_fd);
