@@ -35,6 +35,8 @@ char	**get_cmd_path(t_data *data, char *cmd)
 	else
 	{
 		full_path = get_path_envp(data);
+		if (!full_path)
+			return (NULL);
 		cmd_paths = ft_split(full_path, ':');
 		free(full_path);
 		cmd_paths[0] = trim_path(cmd_paths[0]);
