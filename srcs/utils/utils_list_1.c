@@ -17,7 +17,7 @@ t_list *ft_lstnew_cmd(char **cmd)
 	t_list *list = (t_list *) malloc (sizeof(t_list));
 	list ->env.str = NULL;
 	list ->env.printed = 0;
-	list ->cmd.cmd= cmd;
+	list ->cmd.cmd = cmd;
 	list ->next = NULL;
 	list->in_fd = STDIN_FILENO;
 	list->out_fd = STDOUT_FILENO;
@@ -59,54 +59,3 @@ void	ft_lstprint_env(t_list *lst)
 	}
 }
 
-void	ft_lstfree(t_list **lst)
-{
-	t_list	*curr;
-	t_list	*next;
-
-	curr = *lst;
-	while (curr != NULL)
-	{
-		next = curr->next;
-		if (curr->env.str != NULL)
-			free(curr->env.str);
-		if(curr->cmd.cmd != NULL)
-			free_2d_array(&curr->cmd.cmd);
-		curr->next = NULL;
-		free(curr);
-		curr = next;
-	}
-	*lst = NULL;
-}
-
-void	ft_lstdel_env(t_list **lst, t_list *node)
-{
-	t_list	*head;
-	t_list	*prev;
-
-	head = *lst;
-	if (head == node)
-	{
-		head = head->next;
-		return ;
-	}
-	prev = head;
-	while (prev->next != node)
-		prev = prev->next;
-	prev->next = node->next;
-	free(node);
-	return ;
-}
-
-int		ft_lstsize(t_list *lst)
-{
-	size_t i;
-
-	i = 0;
-	while (lst != NULL)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
-}

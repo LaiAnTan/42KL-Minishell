@@ -111,13 +111,11 @@ int	builtin_export(char **args, t_data *data)
 			free(var_name);
 			if (node == NULL)
 			{
-				printf("variable not found\n");
 				node = ft_lstnew_env(ft_strdup(args[i]));
 				ft_lstadd_back(&lst, node);
 			}
 			else
 			{
-				printf("variable found, %s\n", node->env.str);
 				free(node->env.str);
 				node->env.str = ft_strdup(args[i]);
 			}

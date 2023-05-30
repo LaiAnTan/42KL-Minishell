@@ -12,7 +12,6 @@ To Do
 - norm
 
 In Progress
-- handle $?
 - cleanup
 - error handling
 - (potential) memory leaks (might happen idk)
@@ -29,3 +28,4 @@ Done (probably)
 - pipes
 - redirections
 - handle executables
+- handle $?

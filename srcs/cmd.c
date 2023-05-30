@@ -13,7 +13,7 @@ int	single_command(t_data *data, t_list *cmds)
 		return (exec_cmd(data, cmd_paths, cmds->cmd.cmd));
 	else
 		data->last_exit = exit_status;
-	// this will only return in the built-in was ran
+	// this will only return if the built-in was ran
 	return (69);
 }
 
@@ -80,7 +80,7 @@ void	multiple_commands(t_data *data)
 		{
 			close(pipe_storage[0]);
 			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
-				printf("error happend");
+				printf("error happened\n");
 			data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
 
 			dup2(data->cmds->in_fd, STDIN_FILENO);
@@ -128,7 +128,7 @@ void	run_cmd(t_data *data)
 	else
 	{
 		if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
-			printf("error happend");
+			printf("error happened\n");
 		data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
 		single_command(data, data->cmds);
 	}
@@ -171,6 +171,6 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 		}
 		i++;
 	}
-	printf("%s: command not found\n", args[0]);
+	printf("%s: command not found\n", args[0]); // need to remove path here
 	return (127);
 }

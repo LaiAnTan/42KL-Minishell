@@ -112,6 +112,8 @@ void	new_line_handler(int sig_code);
 void	exit_handler(int sig_code);
 
 /* Builtin command functions */
+int		handle_builtins(char *cmd, char **args, t_data *data);
+
 int		builtin_echo(char **args, t_data *data);
 int		builtin_cd(char **args, t_data *data);
 int		builtin_pwd(t_data *data);
@@ -120,12 +122,7 @@ int		builtin_unset(char **args, t_data *data);
 int		builtin_env(t_data *data);
 int		builtin_exit(char **args, t_data *data);
 
-int		handle_builtins(char *cmd, char **args, t_data *data);
-
-/* Error Handling */
-
-
-/* Linked List */
+/* Linked Lists */
 t_list	*ft_lstnew_env(char *var);
 t_list	*ft_lstnew_cmd(char **cmd);
 t_list	*ft_lstlast(t_list *lst);
@@ -143,17 +140,16 @@ void	free_2d_array(char ***arr);
 int		is_numeric(char *str);
 int		count_2d_array(char **e);
 int		ft_strlen(char *s);
-int		ft_strcmp(char *s1, char *s2); // returns 0 if same
+int		ft_strcmp(char *s1, char *s2);
 int		ft_strcmp_equals(char *s1, char *s2);
 int		ft_atoi(const char *s);
 
+char	*ft_itoa(int n);
 char	*ft_strdup(char *str);
 char	*ft_append(char *s1, char *s2);
 char	*ft_trimstr(char *source, char to_trim);
 char	*ft_substr(char *s, unsigned int start, unsigned int end);
 char	**ft_split(char *s, char c);
 char	**realloc_append(char **src, char *str);
-
-char	*ft_itoa(int n);
 
 #endif

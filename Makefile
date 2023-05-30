@@ -11,11 +11,12 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
 			srcs/builtins/builtins_handler_env_pwd.c	\
 			srcs/builtins/builtins_unset.c				\
 			srcs/utils/utils_2d_array.c					\
-			srcs/utils/utils_list.c						\
-			srcs/utils/utils_split.c					\
+			srcs/utils/utils_list_1.c					\
+			srcs/utils/utils_list_2.c					\
 			srcs/utils/utils_string_1.c					\
 			srcs/utils/utils_string_2.c					\
-			srcs/utils/utils_itoa.c					\
+			srcs/utils/utils_string_itoa.c				\
+			srcs/utils/utils_string_split.c				\
 			srcs/cmd.c			\
 			srcs/environment.c	\
 			srcs/expander.c		\
