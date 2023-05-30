@@ -67,7 +67,6 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 
 	if (is_redirect(delimiter))
 		return (-1);
-	printf("in handle_redir_input_heredoc, delim = %s, in_fd = %d\n", delimiter, *in_fd);
 	pipe(storage);
 	line = NULL;
 	while (1)
@@ -201,12 +200,14 @@ char	**get_cmd_args_without_redirect(char **args)
 	int		new_len;
 	char	**new;
 
+	
 	if (contains_redirect(args) == 0)
 		return (args);
 	i = 0;
 	j = 0;
 	old_len = count_2d_array(args);
 	new_len = count_args_without_redirect(args);
+	printf("old len - %d new len - %d\n", old_len, new_len);
 	new = malloc (sizeof(char *) * (new_len + 1));
 	while (i < old_len)
 	{
