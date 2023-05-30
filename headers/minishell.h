@@ -112,13 +112,13 @@ void	new_line_handler(int sig_code);
 void	exit_handler(int sig_code);
 
 /* Builtin command functions */
-void	builtin_echo(char **args, t_data *data);
-void	builtin_cd(char **args, t_data *data);
-void	builtin_pwd(t_data *data);
-void	builtin_export(char **args, t_data *data);
-void	builtin_unset(char **args, t_data *data);
-void	builtin_env(t_data *data);
-void	builtin_exit(char **args, t_data *data);
+int		builtin_echo(char **args, t_data *data);
+int		builtin_cd(char **args, t_data *data);
+int		builtin_pwd(t_data *data);
+int		builtin_export(char **args, t_data *data);
+int		builtin_unset(char **args, t_data *data);
+int		builtin_env(t_data *data);
+int		builtin_exit(char **args, t_data *data);
 
 int		handle_builtins(char *cmd, char **args, t_data *data);
 
