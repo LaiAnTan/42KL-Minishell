@@ -3,7 +3,7 @@
 int	is_token(char c)
 {
 	int		i = 0;
-	char	token[9] = "\'\"|><";
+	char	token[9] = "\'\"|><$";
 	
 	while (token[i] != '\0')
 	{
@@ -62,12 +62,8 @@ int	find_token_pos(char *line, int *index_pair)
 	// handles everything else
 	else
 	{
-		while (line[i + 1] != '\0' && !is_token(line[i + 1]))
-		{
-			if (line[i + 1] == ' ')
-					break;
+		while (line[i + 1] != '\0' && !is_token(line[i + 1]) && line[i] != ' ')
 			i++;
-		}
 	}
 	index_pair[1] = i;
 	return (1);
@@ -93,8 +89,5 @@ int	lexer(t_data *data)
 		data->tokens = realloc_append(data->tokens, new_token);
 		free(new_token);
 	}
-	printf("in tokens:\n");
-	for (int i = 0; data->tokens[i]; ++i)
-		printf("%d -- %s\n", i, data->tokens[i]);
 	return (1);
 }

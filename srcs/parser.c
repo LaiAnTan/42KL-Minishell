@@ -27,21 +27,38 @@ int	find_next_cmd(char **tokens, int *index_pair)
 
 char	**extract_cmd(char **tokens, int *index_pair)
 {
-	int		i;
 	int		j;
+	int		filled;
 	char	**cmd;
-	
+	char	*str;
+
 	find_next_cmd(tokens, index_pair);
-	i = 0;
 	j = index_pair[0];
-	cmd = (char **) malloc (sizeof(char *) * (index_pair[1] - index_pair[0] + 1));
+	str = NULL;
+	cmd = malloc (sizeof(char *));
+	cmd[0] = NULL;
+	filled = 0;
 	while (j < index_pair[1])
 	{
-		cmd[i] = ft_strdup(tokens[j]);
-		++i;
+		if (ft_strlen(tokens[j]) == 0 && filled)
+		{
+			cmd = realloc_append(cmd, ft_strdup(str));
+			free(str);
+			str = NULL;
+			filled = 0;
+		}
+		else
+		{
+			str = ft_append(str, tokens[j]);
+			filled = 1;
+		}
 		++j;
 	}
-	cmd[i] = NULL;
+	if (str)
+	{
+		cmd = realloc_append(cmd, ft_strdup(str));
+		free(str);
+	}
 	return (cmd);
 }
 
