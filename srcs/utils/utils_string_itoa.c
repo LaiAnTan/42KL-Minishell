@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include "../../headers/minishell.h"
 
 static size_t	get_digits(int n)
 {
