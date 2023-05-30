@@ -27,7 +27,6 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
 			srcs/signal.c		\
 			srcs/struct.c		\
 
-
 SRCS_H = headers/minishell.h
 
 SRCS_O = $(SRCS_C:.c=.o)

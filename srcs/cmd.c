@@ -11,7 +11,6 @@ void	single_command(t_data *data, t_list *cmds)
 		exec_cmd(data, cmd_paths, cmds->cmd.cmd);
 }
 
-// why do we not have a command count
 int		get_command_count(t_data *data)
 {
 	t_list	*counter;
