@@ -218,7 +218,6 @@ char	**get_cmd_args_without_redirect(char **args)
 			++i;
 			++j;
 		}
-		printf("i = %d j = %d\n", i, j);
 	}
 	new[new_len] = NULL;
 	free_2d_array(&args);
