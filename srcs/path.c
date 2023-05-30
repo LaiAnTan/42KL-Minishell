@@ -7,7 +7,7 @@ char	*get_path_envp(t_data *data)
 	lst = data->vars;
 	while (lst != NULL)
 	{
-		if (ft_strcmp_equals("PATH=", lst->env.str) == 0)
+		if (ft_strcmp_equals(lst->env.str, "PATH") == 0)
 			return (ft_strdup(lst->env.str));
 		lst = lst->next;
 	}
