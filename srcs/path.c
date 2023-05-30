@@ -19,6 +19,7 @@ char	**get_cmd_path(t_data *data, char *cmd)
 	char	*full_path;
 	char	**cmd_paths;
 
+	// printf("%s\n", cmd);
 	full_path = get_path_envp(data);
 	cmd_paths = ft_split(full_path, ':');
 	free(full_path);

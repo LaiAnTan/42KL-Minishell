@@ -111,7 +111,7 @@ int	expander(t_data *data) // forgot to handle $? lol
 	new[0] = NULL;
 	if (!data || !data->tokens)
 		return (0);
-
+	
 	while (i < tokencount)
 	{
 		// this will fail if tokens[i] is NULL
