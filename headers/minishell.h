@@ -90,7 +90,7 @@ char	**get_cmd_args_without_redirect(char **args);
 void	run_cmd(t_data *data);
 void	append_stuff(char **paths, char *cmd);
 
-int		exec_cmd(t_data *data, char **cmd_paths, char **args);
+int		exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd);
 
 char	*trim_path(char *path);
 char	*get_path_envp(t_data *data);
