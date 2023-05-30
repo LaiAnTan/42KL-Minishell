@@ -87,5 +87,7 @@ char	*ft_trimstr(char *source, char to_trim)
 		return (ft_strdup(""));
 	while (end >= 0 && source[end] == to_trim)
 		--end;
-	return(ft_substr(source, start, end));
+	ret = ft_substr(source, start, end);
+	free(source);
+	return (ret);
 }

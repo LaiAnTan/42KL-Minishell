@@ -36,6 +36,21 @@ void	print_parsed(t_list *amogus)
 	}
 }
 
+char	*twod_to_oned(char **in)
+{
+	char	*ret;
+	int		i;
+
+	i = 0;
+	ret = NULL;
+	while(in[i])
+	{
+		ret = ft_append(ret, in[i]);
+		++i;
+	}
+	return (ret);
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	(void) argv;
@@ -51,8 +66,19 @@ int main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, SIG_IGN); // ctrl + /
 		if (!handle_line(&data))
 			continue;
-		lexer(&data);
+		// lexer seperates all the spaces
+		lexer(&data, 0);
+		// expander expands the $ symbols
 		expander(&data);
+
+		// you know the person who tested test = "ho hi", ec$test
+		// yeah he should be in jail for his crimes
+		data.line = twod_to_oned(data.tokens);
+		printf("%s\n", data.line);
+		free_2d_array(&data.tokens);
+		lexer(&data, 1);
+
+		// parser seperates the | commands
 		parser(&data);
 		// print_parsed(data.cmds);
 		run_cmd(&data);

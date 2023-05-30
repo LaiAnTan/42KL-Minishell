@@ -45,6 +45,21 @@ char	**extract_cmd(char **tokens, int *index_pair)
 	return (cmd);
 }
 
+void	remove_ears(t_data *data)
+{
+	int	i; 
+
+	i = 0; 
+	while (data->tokens[i])
+	{
+		if (data->tokens[i][0] == '\"')
+			data->tokens[i] = ft_trimstr(data->tokens[i], '\"');
+		else if (data->tokens[i][0] == '\'')
+			data->tokens[i] = ft_trimstr(data->tokens[i], '\'');
+		++i;
+	}
+}
+
 int	parser(t_data *data)
 {
 	int		index_pair[2];
@@ -52,6 +67,7 @@ int	parser(t_data *data)
 	t_list	*lst;
 	t_list	*node;
 
+	remove_ears(data);
 	index_pair[1] = 0;
 	cmd = extract_cmd(data->tokens, index_pair);
 	lst = ft_lstnew_cmd(cmd);

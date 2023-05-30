@@ -76,7 +76,7 @@ void	rebuild_envp(t_data *data);
 int 	init_data(t_data *data, char **envp);
 
 /* Input Processing */
-int		lexer(t_data *data);
+int		lexer(t_data *data, int skip_space);
 int		expander(t_data *data);
 int		parser(t_data *data);
 int		get_keyword(char *line, int stop);
