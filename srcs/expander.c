@@ -112,8 +112,6 @@ int	expander(t_data *data) // forgot to handle $? lol
 		return (0);
 	while (i < tokencount)
 	{
-		// this will fail if tokens[i] is NULL
-		// ...which it should not be
 		if (data->tokens[i][0] == '\"')
 		{
 			new = realloc_append(new, handle_dollar(data, data->tokens[i]));

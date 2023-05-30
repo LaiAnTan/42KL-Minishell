@@ -14,17 +14,32 @@ char	*get_path_envp(t_data *data)
 	return (NULL);
 }
 
+int		is_executable(char *str)
+{
+	if (ft_strlen(str) > 2 && str[0] == '.' && str[1] == '/')
+		return (1);
+	return (0);
+}
+
 char	**get_cmd_path(t_data *data, char *cmd)
 {
 	char	*full_path;
 	char	**cmd_paths;
 
-	// printf("%s\n", cmd);
-	full_path = get_path_envp(data);
-	cmd_paths = ft_split(full_path, ':');
-	free(full_path);
-	cmd_paths[0] = trim_path(cmd_paths[0]);
-	append_stuff(cmd_paths, cmd);
+	if (is_executable(cmd))
+	{
+		cmd_paths = (char **) malloc(sizeof(char *) * 2);
+		cmd_paths[0] = ft_strdup(cmd);
+		cmd_paths[1] = NULL;
+	}
+	else
+	{
+		full_path = get_path_envp(data);
+		cmd_paths = ft_split(full_path, ':');
+		free(full_path);
+		cmd_paths[0] = trim_path(cmd_paths[0]);
+		append_stuff(cmd_paths, cmd);
+	}
 	return (cmd_paths);
 }
 

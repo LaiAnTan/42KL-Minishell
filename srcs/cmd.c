@@ -11,7 +11,6 @@ void	single_command(t_data *data, t_list *cmds)
 		exec_cmd(data, cmd_paths, cmds->cmd.cmd);
 }
 
-// why do we not have a command count
 int		get_command_count(t_data *data)
 {
 	t_list	*counter;
@@ -127,6 +126,7 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 		if (args[0] != NULL)
 			free(args[0]);
 		args[0] = ft_strdup(cmd_paths[i]);
+		printf("path now: %s\n", cmd_paths[i]);
 		status = access(args[0], X_OK);
 		if (!status)
 		{
