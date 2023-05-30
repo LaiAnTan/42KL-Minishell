@@ -1,11 +1,5 @@
 #include "../headers/minishell.h"
 
-/*
-note: this function can be removed
-! use get_val which returns the node and modify the code a little during cleanup
-
-*/
-
 char	*access_var(t_data *data, char *name) 
 {
 	t_list	*lst;
@@ -132,7 +126,7 @@ char	**worry_about_spaces(char **ori, char *might_have_space)
 	}
 }
 
-int	expander(t_data *data) // forgot to handle $? lol
+int	expander(t_data *data)
 {
 	int		i;
 	char	**new;
