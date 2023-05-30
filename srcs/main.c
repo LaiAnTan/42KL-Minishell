@@ -68,11 +68,17 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		// this lexer seperates all the symbols
 		lexer(&data);
+		printf("after lexer:\n");
+		for (int i = 0; data.tokens[i]; ++i)
+			printf("%d -- %s\n", i, data.tokens[i]);
 		// expander expands the $ symbols
 		expander(&data);
+		printf("after expanded:\n");
+		for (int i = 0; data.tokens[i]; ++i)
+			printf("%d -- %s\n", i, data.tokens[i]);
 		// parser seperates the | commands
 		parser(&data);
-		// print_parsed(data.cmds);
+		print_parsed(data.cmds);
 		run_cmd(&data);
 		dup2(data.stdin_backup, STDIN_FILENO);
 		dup2(data.stdout_backup, STDOUT_FILENO);
