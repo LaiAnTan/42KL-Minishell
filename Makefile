@@ -15,6 +15,7 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
 			srcs/utils/utils_split.c					\
 			srcs/utils/utils_string_1.c					\
 			srcs/utils/utils_string_2.c					\
+			srcs/utils/utils_itoa.c					\
 			srcs/cmd.c			\
 			srcs/environment.c	\
 			srcs/expander.c		\

@@ -27,6 +27,15 @@ int		get_command_count(t_data *data)
 	return (ret);
 }
 
+void	get_exit_code(t_data *data, int exit_status)
+{
+	if (WIFEXITED(exit_status))
+		data->last_exit = WEXITSTATUS(exit_status);
+	else
+		if (WIFSIGNALED(exit_status))
+			data->last_exit = 130;
+}
+
 void	multiple_commands(t_data *data)
 {
 	int	dispatched;
@@ -34,6 +43,7 @@ void	multiple_commands(t_data *data)
 	// 0 - read 1 - write
 	int	pipe_storage[2];
 	int	prev_pipe;
+	int	status;
 
 	dispatched = 0; // number of commands that have been forked and ran
 	cmd_count = get_command_count(data);
@@ -96,8 +106,8 @@ void	multiple_commands(t_data *data)
 	}
 	while (cmd_count) // wait for all processes
 	{
-		// hey replace NULL with the saved exit code thanks
-		waitpid(0, NULL, 0);
+		waitpid(0, &status, 0);
+		get_exit_code(data, status);
 		--cmd_count;
 	}
 }
@@ -145,7 +155,8 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 			{
 				signal(SIGINT, SIG_IGN);
 				signal(SIGQUIT, SIG_IGN);
-				waitpid(-1, NULL, 0);
+				waitpid(-1, &status, 0);
+				get_exit_code(data, status);
 				return (0);
 			}
 		}

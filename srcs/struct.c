@@ -9,6 +9,7 @@ int init_data(t_data *data, char **envp)
 	data->cmds = NULL;
 	data->my_envp = NULL;
 	data->attr = malloc(sizeof(struct termios) * 2);
+	data->last_exit = 0;
 	tcgetattr(STDIN_FILENO, &data->attr->def_attributes);
 	tcgetattr(STDIN_FILENO, &data->attr->mod_attributes);
 	rebuild_envp(data);

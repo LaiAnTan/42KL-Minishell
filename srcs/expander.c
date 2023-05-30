@@ -6,11 +6,17 @@ note: this function can be removed
 
 suggestion - gay sex
 */
+
 char	*access_var(t_data *data, char *name) 
 {
 	t_list	*lst;
 
 	lst = data->vars;
+	if (!name)
+		return (ft_strdup(""));
+	// please make an itoa thanks
+	if (name[0] == '?')
+		return (ft_itoa(data->last_exit));
 	while (lst)
 	{
 		if (ft_strcmp_equals(lst->env.str, name) == 0)
@@ -88,6 +94,10 @@ char	*handle_dollar(t_data *data, char *line)
 
 		// get the end of the keyword
 		indexes[2] = get_keyword(ret, indexes[1]);
+
+		// $?
+		if (ret[indexes[1] + 1] == '?')
+			indexes[2] = indexes[1] + 1;
 		break_down(ret, indexes, temp_strings);
 
 		temp_strings[3] = access_var(data, temp_strings[1]);

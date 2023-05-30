@@ -57,6 +57,7 @@ typedef struct s_data
 {
 	int		stdin_backup;
 	int		stdout_backup;
+	int		last_exit;
 
 	char	*line;
 	char	*cwd;
@@ -152,5 +153,7 @@ char	*ft_trimstr(char *source, char to_trim);
 char	*ft_substr(char *s, unsigned int start, unsigned int end);
 char	**ft_split(char *s, char c);
 char	**realloc_append(char **src, char *str);
+
+char	*ft_itoa(int n);
 
 #endif
