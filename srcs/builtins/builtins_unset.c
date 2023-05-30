@@ -11,12 +11,11 @@ int builtin_unset(char **args, t_data *data)
 	lst = data->vars;
 	while (args[i] != NULL)
 	{
+		if (ft_strcmp(args[i], "_") == 0)
+			i++;
 		node = find_var(lst, args[i]);
 		if (node != NULL)
-		{
-			printf("variable found, %s\n", node->env.str);
 			ft_lstdel_env(&lst, node);
-		}
 		i++;
 	}
 	return (0);
