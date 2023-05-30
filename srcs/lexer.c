@@ -89,8 +89,8 @@ int	lexer(t_data *data)
 		data->tokens = realloc_append(data->tokens, new_token);
 		free(new_token);
 	}
-	printf("in tokens:\n");
-	for (int i = 0; data->tokens[i]; ++i)
-		printf("%d -- %s\n", i, data->tokens[i]);
+	// printf("in tokens:\n");
+	// for (int i = 0; data->tokens[i]; ++i)
+	// 	printf("%d -- %s\n", i, data->tokens[i]);
 	return (1);
 }

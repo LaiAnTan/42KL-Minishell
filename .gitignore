@@ -2,3 +2,5 @@
 obj
 obj/*
 minishell
+.vscode
+.gitignore

@@ -126,7 +126,6 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 		if (args[0] != NULL)
 			free(args[0]);
 		args[0] = ft_strdup(cmd_paths[i]);
-		printf("path now: %s\n", cmd_paths[i]);
 		status = access(args[0], X_OK);
 		if (!status)
 		{
