@@ -62,6 +62,9 @@ int	find_token_pos(char *line, int *index_pair)
 	// handles everything else
 	else
 	{
+		// we changed the lexer so that it will leave at lease one space
+		// for some reason your expander will leave an extra empty node if there is a space
+		// we will use that to determine if it should be together or not
 		while (line[i + 1] != '\0' && !is_token(line[i + 1]) && line[i] != ' ')
 			i++;
 	}
