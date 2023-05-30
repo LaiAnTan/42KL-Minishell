@@ -62,24 +62,14 @@ int main(int argc, char **argv, char **envp)
 	modify_attr(&data);
 	while (1)
 	{
-		signal(SIGINT, new_line_handler); // ctrl + C
-		signal(SIGQUIT, SIG_IGN); // ctrl + /
+		// signal(SIGINT, new_line_handler); // ctrl + C
+		// signal(SIGQUIT, SIG_IGN); // ctrl + /
 		if (!handle_line(&data))
 			continue;
-		// lexer seperates all the spaces
-		lexer(&data, 0);
+		// this lexer seperates all the symbols
+		lexer(&data);
 		// expander expands the $ symbols
 		expander(&data);
-
-		// you know the person who tested test = "ho hi", ec$test
-		// yeah he should be in jail for his crimes
-
-		// absolutely lazy method to fix it
-		data.line = twod_to_oned(data.tokens);
-		printf("%s\n", data.line);
-		free_2d_array(&data.tokens);
-		lexer(&data, 1);
-
 		// parser seperates the | commands
 		parser(&data);
 		// print_parsed(data.cmds);
