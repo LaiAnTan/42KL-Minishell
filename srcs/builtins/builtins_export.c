@@ -100,6 +100,7 @@ void	builtin_export(char **args, t_data *data)
 	if (args[1] == NULL)
 	{
 		print_asc_export(lst);
+		data->last_exit = 0;
 		return ;
 	}
 	while (args[i] != NULL)
