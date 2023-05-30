@@ -3,7 +3,7 @@
 t_list *ft_lstnew_env(char *var)
 {
 	t_list *list = (t_list *) malloc (sizeof(t_list));
-	list ->env.str = var;
+	list ->env.str = ft_strdup(var);
 	list ->env.printed = 0;
 	list ->cmd.cmd= NULL;
 	list ->next = NULL;
