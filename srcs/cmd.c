@@ -1,14 +1,20 @@
 #include "../headers/minishell.h"
 
-void	single_command(t_data *data, t_list *cmds)
+int	single_command(t_data *data, t_list *cmds)
 {
+	int		exit_status;
 	char	*cmd;
 	char	**cmd_paths;
 
 	cmd = ft_strdup(cmds->cmd.cmd[0]);
 	cmd_paths = get_cmd_path(data, cmd);
-	if (handle_builtins(cmd, cmds->cmd.cmd, data) == 0)
-		exec_cmd(data, cmd_paths, cmds->cmd.cmd);
+	exit_status = handle_builtins(cmd, cmds->cmd.cmd, data);
+	if (exit_status == -1)
+		return (exec_cmd(data, cmd_paths, cmds->cmd.cmd));
+	else
+		data->last_exit = exit_status;
+	// this will only return in the built-in was ran
+	return (69);
 }
 
 int		get_command_count(t_data *data)
@@ -44,6 +50,9 @@ void	multiple_commands(t_data *data)
 	int	prev_pipe;
 	int	status;
 
+	// uhoh
+	int	last_child_pid;
+
 	dispatched = 0; // number of commands that have been forked and ran
 	cmd_count = get_command_count(data);
 	while (dispatched < cmd_count)
@@ -66,7 +75,8 @@ void	multiple_commands(t_data *data)
 		}
 
 		// forking
-		if (!fork()) // child redirect input and output
+		last_child_pid = fork();
+		if (last_child_pid == 0) // child redirect input and output
 		{
 			close(pipe_storage[0]);
 			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
@@ -76,9 +86,7 @@ void	multiple_commands(t_data *data)
 			dup2(data->cmds->in_fd, STDIN_FILENO);
 			dup2(data->cmds->out_fd, STDOUT_FILENO);
 
-			single_command(data, data->cmds);
-			// i fix this later
-			exit(0);
+			exit (single_command(data, data->cmds));
 		}
 		else // parent cleans up fd
 		{
@@ -105,8 +113,10 @@ void	multiple_commands(t_data *data)
 	}
 	while (cmd_count) // wait for all processes
 	{
-		waitpid(0, &status, 0);
-		get_exit_code(data, status);
+		waitpid(last_child_pid, &status, 0);
+		if (last_child_pid)
+			get_exit_code(data, status);
+		last_child_pid = 0; // wait for all of the other processes
 		--cmd_count;
 	}
 }
@@ -161,5 +171,6 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 		}
 		i++;
 	}
-	return (0);
+	printf("%s: command not found\n", args[0]);
+	return (127);
 }

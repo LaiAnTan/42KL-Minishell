@@ -1,6 +1,6 @@
 #include "../../headers/minishell.h"
 
-void	builtin_echo(char **args, t_data *data)
+int	builtin_echo(char **args, t_data *data)
 {
 	int		i;
 	int		nl;
@@ -19,5 +19,5 @@ void	builtin_echo(char **args, t_data *data)
 	}
 	if (nl)
 		write(1, "\n", 1);
-	return ;
+	return (0);
 }

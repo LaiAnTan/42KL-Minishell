@@ -88,7 +88,7 @@ char	*get_var_name(char *str)
 	return (var_name);
 }
 
-void	builtin_export(char **args, t_data *data)
+int	builtin_export(char **args, t_data *data)
 {
 	int i;
 	char	*var_name;
@@ -100,7 +100,7 @@ void	builtin_export(char **args, t_data *data)
 	if (args[1] == NULL)
 	{
 		print_asc_export(lst);
-		return ;
+		return (0);
 	}
 	while (args[i] != NULL)
 	{
@@ -124,4 +124,5 @@ void	builtin_export(char **args, t_data *data)
 		}
 		i++;
 	}
+	return (0);
 }

@@ -1,6 +1,6 @@
 #include "../../headers/minishell.h"
 
-void builtin_unset(char **args, t_data *data)
+int builtin_unset(char **args, t_data *data)
 {
 	int		i;
 	char	*var_name;
@@ -19,4 +19,5 @@ void builtin_unset(char **args, t_data *data)
 		}
 		i++;
 	}
+	return (0);
 }
