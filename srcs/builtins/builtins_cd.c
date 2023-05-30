@@ -1,6 +1,6 @@
 #include "../../headers/minishell.h"
 
-void	builtin_cd(char **args, t_data *data)
+int	builtin_cd(char **args, t_data *data)
 {
 	t_list		*node;
 
@@ -20,7 +20,7 @@ void	builtin_cd(char **args, t_data *data)
 	else if (args[1][0] == '-')
 	{
 		builtin_pwd(data);
-		return ;
+		return (0);
 	}
 	else
 		cd_path = ft_strdup(args[1]);
@@ -34,7 +34,7 @@ void	builtin_cd(char **args, t_data *data)
 	else
 	{
 		printf("cd: %s: no such file or directory\n", cd_path);
-		data->last_exit = 1;
+		return (1);
 	}
-	return ;
+	return (0);
 }
