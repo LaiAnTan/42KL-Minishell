@@ -1,23 +1,5 @@
 #include "../headers/minishell.h"
 
-/*
-symbols to be handled
-
-single quotation		'
-double quotation		"
-pipes					|
-
-redirect input			<
-redirect output			>
-delimiter				<<
-append					>>
-
-variable expansion		$
-exec status of last cmd	$?
-else keyword
-
-*/
-
 int	is_token(char c)
 {
 	int		i = 0;
@@ -87,8 +69,6 @@ int	find_token_pos(char *line, int *index_pair)
 	return (1);
 }
 
-// will now attempt to fix the "" this symbol
-// expect horrendous code cause i lazy change
 int	lexer(t_data *data)
 {
 	int		len;

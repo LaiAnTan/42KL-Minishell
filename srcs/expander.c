@@ -1,7 +1,7 @@
 #include "../headers/minishell.h"
 
 /*
-note: this function can be removed along with strcmp_equals
+note: this function can be removed
 ! use get_val which returns the node and modify the code a little during cleanup
 
 suggestion - gay sex
@@ -43,7 +43,7 @@ void	reset_storage(char **temp_strings)
 		free(temp_strings[i]);
 }
 
-void	break_down(char *line, int *indexes, char **temp_strings) // why do i hear josuke // i am about to have a break-down break-down
+void	break_down(char *line, int *indexes, char **temp_strings)
 {
 	// example = ls $SHLVL la
 	// temp_string[0] = 'ls '
@@ -111,8 +111,7 @@ int	expander(t_data *data) // forgot to handle $? lol
 	new[0] = NULL;
 	if (!data || !data->tokens)
 		return (0);
-	
-	printf("expander: \n");
+
 	while (i < tokencount)
 	{
 		// this will fail if tokens[i] is NULL
