@@ -3,7 +3,7 @@
 int	is_token(char c)
 {
 	int		i = 0;
-	char	token[9] = "\'\"|><$";
+	char	token[9] = "\'\"|><";
 	
 	while (token[i] != '\0')
 	{
@@ -30,7 +30,7 @@ int	get_keyword(char *line, int stop)
 	return (--stop);
 }
 
-int	find_token_pos(char *line, int *index_pair, int skip_space)
+int	find_token_pos(char *line, int *index_pair)
 {
 	int		i;
 	int		tk_type;
@@ -39,7 +39,7 @@ int	find_token_pos(char *line, int *index_pair, int skip_space)
 	if (index_pair[1] + 1 >= ft_strlen(line))
 		return (0);
 	i = index_pair[1] + 1;
-	while (line[i] != '\0' && line[i] == ' ' && skip_space)
+	while (line[i] != '\0' && line[i] == ' ')
 		i++;
 	index_pair[0] = i;
 	tk_type = is_token(line[i]);
@@ -64,7 +64,7 @@ int	find_token_pos(char *line, int *index_pair, int skip_space)
 	{
 		while (line[i + 1] != '\0' && !is_token(line[i + 1]))
 		{
-			if (line[i + 1] == ' ' && skip_space)
+			if (line[i + 1] == ' ')
 					break;
 			i++;
 		}
@@ -73,7 +73,7 @@ int	find_token_pos(char *line, int *index_pair, int skip_space)
 	return (1);
 }
 
-int	lexer(t_data *data, int skip_space)
+int	lexer(t_data *data)
 {
 	int		len;
 	int		token_pos[2];
@@ -87,14 +87,14 @@ int	lexer(t_data *data, int skip_space)
 	data->tokens[0] = NULL;
 	while (1)
 	{
-		if (!find_token_pos(data->line, token_pos, skip_space) || token_pos[1] >= len)
+		if (!find_token_pos(data->line, token_pos) || token_pos[1] >= len)
 			break ;
 		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
 		data->tokens = realloc_append(data->tokens, new_token);
 		free(new_token);
 	}
-	// printf("in tokens:\n");
-	// for (int i = 0; data->tokens[i]; ++i)
-	// 	printf("%d -- %s\n", i, data->tokens[i]);
+	printf("in tokens:\n");
+	for (int i = 0; data->tokens[i]; ++i)
+		printf("%d -- %s\n", i, data->tokens[i]);
 	return (1);
 }
