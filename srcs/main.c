@@ -73,6 +73,8 @@ int main(int argc, char **argv, char **envp)
 
 		// you know the person who tested test = "ho hi", ec$test
 		// yeah he should be in jail for his crimes
+
+		// absolutely lazy method to fix it
 		data.line = twod_to_oned(data.tokens);
 		printf("%s\n", data.line);
 		free_2d_array(&data.tokens);
