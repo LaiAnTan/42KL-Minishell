@@ -7,14 +7,14 @@ int	single_command(t_data *data, t_list *cmds)
 	char	**cmd_paths;
 
 	cmd = ft_strdup(cmds->cmd.cmd[0]);
-	cmd_paths = get_cmd_path(data, cmd);
 	exit_status = handle_builtins(cmd, cmds->cmd.cmd, data);
 	if (exit_status == -1)
-		return (exec_cmd(data, cmd_paths, cmds->cmd.cmd));
+	{
+		cmd_paths = get_cmd_path(data, cmd);
+		return (exec_cmd(data, cmd_paths, cmds->cmd.cmd, cmd));
+	}
 	else
-		data->last_exit = exit_status;
-	// this will only return if the built-in was ran
-	return (69);
+		return (exit_status);
 }
 
 int		get_command_count(t_data *data)
@@ -85,7 +85,6 @@ void	multiple_commands(t_data *data)
 
 			dup2(data->cmds->in_fd, STDIN_FILENO);
 			dup2(data->cmds->out_fd, STDOUT_FILENO);
-
 			exit (single_command(data, data->cmds));
 		}
 		else // parent cleans up fd
@@ -130,17 +129,22 @@ void	run_cmd(t_data *data)
 		if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
 			printf("error happened\n");
 		data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
-		single_command(data, data->cmds);
+		data->last_exit = single_command(data, data->cmds);
 	}
 }
 
-int	exec_cmd(t_data *data, char **cmd_paths, char **args)
+int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 {
 	int		i;
 	int		status;
 
 	i = 0;
 	rebuild_envp(data);
+	if (!cmd_paths)
+	{
+		printf("%s: No such file or directotry\n", cmd);
+		return (127);
+	}
 	while (cmd_paths[i] != NULL)
 	{
 		if (args[0] != NULL)
@@ -157,7 +161,7 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 				{
 					free_2d_array(&cmd_paths);
 					free_2d_array(&args);
-					return (0);
+					exit (errno);
 				}
 			}
 			else
@@ -171,6 +175,6 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args)
 		}
 		i++;
 	}
-	printf("%s: command not found\n", args[0]); // need to remove path here
+	printf("%s: command not found\n", cmd);
 	return (127);
 }
