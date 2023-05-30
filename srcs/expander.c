@@ -79,7 +79,7 @@ char	*handle_dollar(t_data *data, char *line)
 	char	*temp_strings[5];
 	int		indexes[3];
 
-	ret = ft_trimstr(line, '\"');
+	ret = ft_strdup(line);
 	indexes[0] = 0;
 	temp_strings[4] = NULL;
 	while (1)
@@ -129,7 +129,7 @@ int	expander(t_data *data) // forgot to handle $? lol
 		}
 		else if (data->tokens[i][0] == '\'')
 		{
-			new = realloc_append(new, ft_trimstr(data->tokens[i], '\''));
+			new = realloc_append(new, data->tokens[i]);
 			i++;
 		}
 		else
