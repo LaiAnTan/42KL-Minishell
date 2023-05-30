@@ -29,8 +29,12 @@ void	builtin_cd(char **args, t_data *data)
 	{
 		free(data->cwd);
 		data->cwd = getcwd(NULL, PATH_MAX);
+		data->last_exit = 0;
 	}
 	else
-		printf("cd: failed to change directory\n");
+	{
+		printf("cd: %s: no such file or directory\n", cd_path);
+		data->last_exit = 1;
+	}
 	return ;
 }
