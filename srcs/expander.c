@@ -112,16 +112,21 @@ char	**worry_about_spaces(char **ori, char *might_have_space)
 	// printf("this sentece may have a space = %s\n", might_have_space);
 	while (1)
 	{
-		// printf("sentence checking = %s\n", &might_have_space[start]);
+		printf("sentence checking = %s\n", &might_have_space[start]);
 		end = search_symbol(&might_have_space[start], ' ');
 		if (end == -1)
 		{
 			end = ft_strlen(might_have_space);
 			return (realloc_append(ori, ft_substr(might_have_space, start, end)));
 		}
-		ori = realloc_append(ori, ft_substr(might_have_space, start, end - 1));
-		// so that the parser can do its job
-		ori = realloc_append(ori, "");
+		end += start;
+		if ((end - start) > 0)
+		{
+			ori = realloc_append(ori, ft_substr(might_have_space, start, end - 1));
+			// so that the parser can do its job
+			ori = realloc_append(ori, "");
+		}
+		printf("%d, %d\n", start, end);
 		start = end + 1;
 	}
 }
