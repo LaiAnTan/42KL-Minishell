@@ -49,6 +49,7 @@ char	**extract_cmd(char **tokens, int *index_pair)
 		}
 		else
 		{
+			tokens[j] = ft_trimstr(tokens[j], ' ');
 			str = ft_append(str, tokens[j]);
 			filled = 1;
 		}

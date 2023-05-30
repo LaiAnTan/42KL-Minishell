@@ -12,13 +12,13 @@ int	builtin_echo(char **args, t_data *data)
 		nl = 0;
 		i = 2;
 	}
-	while (args[i + 1] != NULL)
+	while (args[i] != NULL)
 	{
 		write(1, args[i], ft_strlen(args[i]));
-		write(1, " ", 1);
+		if (args[i + 1] != NULL)
+			write(1, " ", 1);
 		i++;
 	}
-	write(1, args[i], ft_strlen(args[i]));
 	if (nl)
 		write(1, "\n", 1);
 	return (0);
