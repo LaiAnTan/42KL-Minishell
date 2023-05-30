@@ -1,39 +1,5 @@
 #include "../headers/minishell.h"
 
-/*
---redirection--
-
-< should redirect input.
-> should redirect output.
-<< should be given a delimiter, then read the input until a line containing the
-delimiter is seen. However, it doesn’t have to update the history!
->> should redirect output in append mode.
-
-redirections are handled left to right no matter what
-
-redirection identifier without a (*) is an error
-(*) input redirection : existing filename only
-(*) output redirection : existing / potential filename
-
-eg: ls > a > b > c
-output: files a, b and c are created, but the output is written only inside c
-
-eg: cat < a < b < c
-output: only file c is redirected as input
-
-eg: cat < a << EOF < c
-output: STDIN is read until EOF is found, only then file c is redirected as input
-
-eg: cat < a b
-output: b is output since cat reads from parameter first 
-
-for multiple commands:
-redirections should be done inside the child process, 
-but before the alteration of the command's input and output
-this is because redirections override piping
-
-*/
-
 int		is_redirect(char *arg)
 {
 	if (ft_strcmp(arg, ">") == 0 || ft_strcmp(arg, ">>") == 0 
@@ -53,7 +19,7 @@ int	handle_redir_input(char *filename, int *in_fd)
 	fd = open(filename, O_RDONLY, 0777);
 	if (fd == -1)
 	{
-		printf("%s: file could not be open", filename); // handle later
+		printf("%s: No such file or directory\n", filename);
 		return (-1);
 	}
 	dup2(fd, *in_fd);
@@ -67,7 +33,6 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 
 	if (is_redirect(delimiter))
 		return (-1);
-	printf("in handle_redir_input_heredoc, delim = %s, in_fd = %d\n", delimiter, *in_fd);
 	pipe(storage);
 	line = NULL;
 	while (1)
@@ -95,7 +60,7 @@ int	handle_redir_output(char *filename, int *out_fd)
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 	{
-		printf("%s: file could not be open", filename); // handle later
+		printf("%s: No such file or directory\n", filename);
 		return (-1);
 	}
 	dup2(fd, *out_fd);
@@ -112,7 +77,7 @@ int	handle_redir_output_append(char *filename, int *out_fd)
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777);
 	if (fd == -1)
 	{
-		printf("%s: file could not be open", filename); // handle later
+		printf("%s: No such file or directory\n", filename);
 		return (-1);
 	}
 	dup2(fd, *out_fd);
@@ -201,6 +166,7 @@ char	**get_cmd_args_without_redirect(char **args)
 	int		new_len;
 	char	**new;
 
+	
 	if (contains_redirect(args) == 0)
 		return (args);
 	i = 0;

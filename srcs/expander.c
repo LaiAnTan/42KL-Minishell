@@ -4,7 +4,6 @@
 note: this function can be removed
 ! use get_val which returns the node and modify the code a little during cleanup
 
-suggestion - gay sex
 */
 
 char	*access_var(t_data *data, char *name) 
@@ -121,11 +120,8 @@ int	expander(t_data *data) // forgot to handle $? lol
 	new[0] = NULL;
 	if (!data || !data->tokens)
 		return (0);
-	
 	while (i < tokencount)
 	{
-		// this will fail if tokens[i] is NULL
-		// ...which it should not be
 		if (data->tokens[i][0] == '\"')
 		{
 			new = realloc_append(new, handle_dollar(data, data->tokens[i]));

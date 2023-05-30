@@ -13,7 +13,6 @@ To Do
 
 In Progress
 - handle $?
-- handle executables
 - cleanup
 - error handling
 - (potential) memory leaks (might happen idk)
@@ -29,3 +28,4 @@ Done (probably)
 - signals
 - pipes
 - redirections
+- handle executables
