@@ -126,6 +126,8 @@ char	**worry_about_spaces(char **ori, char *might_have_space)
 			return (realloc_append(ori, ft_substr(might_have_space, start, end)));
 		}
 		ori = realloc_append(ori, ft_substr(might_have_space, start, end - 1));
+		// so that the parser can do its job
+		ori = realloc_append(ori, "");
 		start = end + 1;
 	}
 }
