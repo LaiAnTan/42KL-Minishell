@@ -63,6 +63,14 @@ void	print_parsed(t_list *amogus)
 	}
 }
 
+void	print_double(char **stuff)
+{
+	for (int i = 0; stuff[i]; ++i)
+	{
+		printf("%s - wc = %d\n", stuff[i], ft_strlen(stuff[i]));
+	}
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	(void) argv;
@@ -79,7 +87,11 @@ int main(int argc, char **argv, char **envp)
 		if (!handle_line(&data))
 			continue;
 		lexer(&data);
+		printf("after lexer\n");
+		print_double(data.tokens);
+		printf("after expander\n");
 		expander(&data);
+		print_double(data.tokens);
 		parser(&data);
 		print_parsed(data.cmds);
 		run_cmd(&data);

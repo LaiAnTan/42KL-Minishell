@@ -1,5 +1,13 @@
 #include "../../headers/minishell.h"
 
+/*
+thou shall regret asking me to do documentation
+
+function for the cd command in bash
+handles the changing in directory and 
+  - symbol => is broken, cd - is broken 
+  ~ symbol => goes back to the directory stated in $HOME
+*/
 int	builtin_cd(char **args, t_data *data)
 {
 	t_list		*node;

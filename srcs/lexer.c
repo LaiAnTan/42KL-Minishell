@@ -1,5 +1,11 @@
 #include "../headers/minishell.h"
 
+/*
+this function checks if the character is part of the token group
+
+token group is ' " | < > $
+if it does, return a non-zero value
+*/
 int	is_token(char c)
 {
 	int		i = 0;
@@ -14,6 +20,14 @@ int	is_token(char c)
 	return (0);
 }
 
+/*
+this function handles the special index searching for bunny ears
+
+specifically, the stop index
+
+the start index would be at the first bunny ear found, the last index would be at the
+last bunny ear found
+*/
 int	bunny_ears(char *line, int stop, int to_match)
 {
 	++stop;
@@ -30,52 +44,47 @@ int	get_keyword(char *line, int stop)
 	return (--stop);
 }
 
+/*
+i find it hella stupid we cannot put comments in functions
+*/
 int	find_token_pos(char *line, int *index_pair)
 {
 	int		i;
 	int		tk_type;
 
-	// check if the index is on '\0' symbol, if it is kill it with fire
 	if (index_pair[1] + 1 >= ft_strlen(line))
-		return (0);
+		return (-1);
 	i = index_pair[1] + 1;
 	while (line[i] != '\0' && line[i] == ' ')
 		i++;
 	index_pair[0] = i;
 	tk_type = is_token(line[i]);
-	// handles identifier
 	if (tk_type != 0)
 	{
-		// handles  < and > 
 		if (line[i + 1] != '\0' && (tk_type == 4 || tk_type == 5))
 		{
-			// handles << and >>
 			if (tk_type == is_token(line[i + 1]))
 				i++;
 		}
-		// handles $
 		else if (line[i + 1] != '\0' && tk_type == 6)
 			i = get_keyword(line, i);
 		if (tk_type == 1 || tk_type == 2)
 			i = bunny_ears(line, i, line[i]);
 	}
-	// handles everything else
 	else
 	{
-		// we changed the lexer so that it will leave at least one space
-		// for some reason your expander will leave an extra empty node if there is a space
-		// we will use that to determine if it should be together or not
 		while (line[i + 1] != '\0' && !is_token(line[i + 1]) && line[i] != ' ')
 			i++;
 	}
 	index_pair[1] = i;
-	return (1);
+	return (tk_type);
 }
 
 int	lexer(t_data *data)
 {
 	int		len;
 	int		token_pos[2];
+	int		ret_val;
 	char	*new_token;
 
 	len = ft_strlen(data->line);
@@ -86,10 +95,14 @@ int	lexer(t_data *data)
 	data->tokens[0] = NULL;
 	while (1)
 	{
-		if (!find_token_pos(data->line, token_pos) || token_pos[1] >= len)
+		ret_val = find_token_pos(data->line, token_pos);
+		// use -1 if ended
+		if (ret_val == -1 || token_pos[1] >= len)
 			break ;
 		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
 		data->tokens = realloc_append(data->tokens, new_token);
+		if (ret_val > 0 && ret_val != 1 && ret_val != 2)
+			data->tokens = realloc_append(data->tokens, ft_strdup(""));
 		free(new_token);
 	}
 	return (1);
