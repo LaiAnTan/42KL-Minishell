@@ -117,10 +117,10 @@ void	replace_dollar(t_data *data)
 	indexes[0] = 0;
 	indexes[1] = 0;
 	string_storage[4] = NULL;
-	printf("in replace dollar --> %s\n", ret);
+	// printf("in replace dollar --> %s\n", ret);
 	while (search_symbol(&ret[indexes[1]], '$') != -1)
 	{
-		if (ret[indexes[1] == '\"'])
+		if (ret[indexes[1]] == '\"')
 			double_bunny = (double_bunny == 0);
 		if (ret[indexes[1]] == '\'' && !double_bunny)
 		{
@@ -141,7 +141,7 @@ void	replace_dollar(t_data *data)
 		else
 			++indexes[1];
 	}
-	printf("done replace --> %s\n", ret);
+	// printf("done replace --> %s\n", ret);
 	free(data->line);
 	data->line = ret;
 }
