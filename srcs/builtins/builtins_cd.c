@@ -17,18 +17,39 @@ int	builtin_cd(char **args, t_data *data)
 		if (node != NULL)
 			cd_path = ft_strdup(get_val(node));
 	}
-	else if (args[1][0] == '-')
+	else if (args[1][0] == '-') // wrong
 	{
-		builtin_pwd(data);
-		return (0);
+		cd_path = access_var(data, "OLDPWD");
+		if (ft_strlen(cd_path) == 0)
+		{
+			printf("cd: OLDPWD not set");
+			return (1);
+		}
+		printf("%s\n", cd_path);
 	}
 	else
 		cd_path = ft_strdup(args[1]);
 
 	if (chdir(cd_path) == 0)
 	{
+		node = find_var(data->vars, "OLDPWD");
+		if (node == NULL)
+		{
+			node = ft_lstnew_env(ft_strdup(ft_append(ft_strdup("OLDPWD="), data->cwd)));
+			ft_lstadd_back(&data->vars, node);
+		}
+		else
+			node->env.str = ft_strdup(ft_append(ft_strdup("OLDPWD="), data->cwd));
 		free(data->cwd);
 		data->cwd = getcwd(NULL, PATH_MAX);
+		node = find_var(data->vars, "PWD");
+		if (node == NULL)
+		{
+			node = ft_lstnew_env(ft_strdup(ft_append(ft_strdup("PWD="), data->cwd)));
+			ft_lstadd_back(&data->vars, node);
+		}
+		else
+			node->env.str = ft_strdup(ft_append(ft_strdup("PWD="), data->cwd));
 		data->last_exit = 0;
 	}
 	else
