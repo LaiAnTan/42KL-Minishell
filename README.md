@@ -19,9 +19,9 @@ Features:
 - GNU make
 ## Installation instructions
 
-1. run ```git clone https://github.com/LaiAnTan/42KL-Minishell``` to clone this repository
-2. run ```make``` in the terminal and an executable will be created
-3. run ```./minishell``` to run the program
+1. ```git clone https://github.com/LaiAnTan/42KL-Minishell``` to clone this repository
+2. ```make``` to create the executable
+3. ```./minishell``` to run the program
 
 ## Contributors:
 
