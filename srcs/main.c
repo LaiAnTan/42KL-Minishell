@@ -87,13 +87,13 @@ int main(int argc, char **argv, char **envp)
 		if (!handle_line(&data))
 			continue;
 		lexer(&data);
-		printf("after lexer\n");
-		print_double(data.tokens);
-		printf("after expander\n");
+		// printf("after lexer\n");
+		// print_double(data.tokens);
 		expander(&data);
-		print_double(data.tokens);
+		// printf("after expander\n");
+		// print_double(data.tokens);
 		parser(&data);
-		print_parsed(data.cmds);
+		// print_parsed(data.cmds);
 		run_cmd(&data);
 		dup2(data.stdin_backup, STDIN_FILENO);
 		dup2(data.stdout_backup, STDOUT_FILENO);
