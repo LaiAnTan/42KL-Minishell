@@ -25,5 +25,5 @@ Features:
 
 ## Contributors:
 
-- cshi-xia (@SaveMePlz)
+- cshi-xia (@SphagettiCodes)
 - tlai-an (Myself)
