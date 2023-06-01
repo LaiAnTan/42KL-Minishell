@@ -67,7 +67,7 @@ void	print_double(char **stuff)
 {
 	for (int i = 0; stuff[i]; ++i)
 	{
-		printf("%s - wc = %d\n", stuff[i], ft_strlen(stuff[i]));
+		printf("%s - len = %d\n", stuff[i], ft_strlen(stuff[i]));
 	}
 }
 
@@ -90,11 +90,7 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		replace_dollar(&data);
 		lexer(&data);
-		printf("after lexer\n");
 		print_double(data.tokens);
-		// expander(&data);
-		// printf("after expander\n");
-		// print_double(data.tokens);
 		parser(&data);
 		print_parsed(data.cmds);
 		run_cmd(&data);
