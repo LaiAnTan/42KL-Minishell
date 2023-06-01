@@ -108,12 +108,12 @@ void	recombine_parts(char **store, char **temp_strings, int *indexes)
 // i think of a better way tmr morning
 void	replace_dollar(t_data *data)
 {
-	int		double_bunny;
+	int		special_case;
 	char	*ret;
 	char	*string_storage[5];
 	int		indexes[3];
 
-	double_bunny = 0;
+	special_case = 0;
 	ret = ft_strdup(data->line);
 	indexes[0] = 0;
 	indexes[1] = 0;
@@ -121,11 +121,11 @@ void	replace_dollar(t_data *data)
 	while (search_symbol(&ret[indexes[1]], '$') != -1)
 	{
 		if (ret[indexes[1]] == '\"')
-			double_bunny = (double_bunny == 0);
-		else if (ret[indexes[1]] == '\'' && !double_bunny)
+			special_case = !special_case;
+		else if (ret[indexes[1]] == '\'' && !special_case)
 		{
 			++indexes[1];
-			while (ret[indexes[1]] && ret[indexes[1]] != '\'')
+			while (ret[indexes[1]] && ret[indexes[1]] != '\"')
 				++indexes[1];
 		}
 		else if (ret[indexes[1]] == '$')
