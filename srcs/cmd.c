@@ -1,5 +1,9 @@
 #include "../headers/minishell.h"
 
+/*
+function that runs a single command in the node cmds
+goes through builtin commands first and then tries to exec it 
+*/
 int	single_command(t_data *data, t_list *cmds)
 {
 	int		exit_status;
@@ -17,6 +21,9 @@ int	single_command(t_data *data, t_list *cmds)
 		return (exit_status);
 }
 
+/*
+gets the number of commands in the cmd linked list
+*/
 int		get_command_count(t_data *data)
 {
 	t_list	*counter;
@@ -32,6 +39,9 @@ int		get_command_count(t_data *data)
 	return (ret);
 }
 
+/*
+gets the exit code of the last exited command
+*/
 void	get_exit_code(t_data *data, int exit_status)
 {
 	if (WIFEXITED(exit_status))
@@ -41,85 +51,92 @@ void	get_exit_code(t_data *data, int exit_status)
 			data->last_exit = 130;
 }
 
+/*
+function that handles the execution of multiple commands, simulating the behaviour of piping
+
+1. the in_fd and out_fd of each command is set up
+- if the command is the first one being executed, the command output is the pipe input
+- if the command is the last one being executed, the command input is the previous pipe output
+- if the command is in between, command input is previous pipe output and command output is current pipe input
+
+2. a child process is forked and redirections are handled, and the input and output are redirected
+
+3. the parent process cleans up unused file descriptors and moves on to the next iteration of the loop
+
+4. waiting of death (apparently) of all child processes
+*/
 void	multiple_commands(t_data *data)
 {
-	int	dispatched;
+	int	dispatched; // shit 6 variables
 	int	cmd_count;
-	// 0 - read 1 - write
 	int	pipe_storage[2];
 	int	prev_pipe;
 	int	status;
-
-	// uhoh
 	int	last_child_pid;
 
-	dispatched = 0; // number of commands that have been forked and ran
+	dispatched = 0;
 	cmd_count = get_command_count(data);
 	while (dispatched < cmd_count)
 	{
-		// piping & setup fd
-		if (!dispatched) // first
+		if (!dispatched)
 		{
 			pipe(pipe_storage);
-			data->cmds->out_fd = pipe_storage[1]; // command output is pipe input
+			data->cmds->out_fd = pipe_storage[1];
 		}
-		else if (dispatched == cmd_count - 1) // last command
+		else if (dispatched == cmd_count - 1)
+			data->cmds->in_fd = prev_pipe;
+		else
 		{
-			data->cmds->in_fd = prev_pipe; // command input is previous output
-		}
-		else // everything in between
-		{
-			data->cmds->in_fd = prev_pipe; // command input is previous output
+			data->cmds->in_fd = prev_pipe;
 			pipe(pipe_storage);
-			data->cmds->out_fd = pipe_storage[1]; // command output is pipe input
+			data->cmds->out_fd = pipe_storage[1];
 		}
-
-		// forking
 		last_child_pid = fork();
-		if (last_child_pid == 0) // child redirect input and output
+		if (last_child_pid == 0)
 		{
 			close(pipe_storage[0]);
 			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
-				printf("error happened\n");
+			{
+				printf("error happened\n"); // should never happen
+				break ;
+			}
 			data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
-
 			dup2(data->cmds->in_fd, STDIN_FILENO);
 			dup2(data->cmds->out_fd, STDOUT_FILENO);
 			exit (single_command(data, data->cmds));
 		}
-		else // parent cleans up fd
+		else
 		{
-			if (!dispatched) // first
+			if (!dispatched) 
 			{
 				close(pipe_storage[1]);
 				prev_pipe = pipe_storage[0];
 			}
-			else if (dispatched == cmd_count - 1) // last
-			{
+			else if (dispatched == cmd_count - 1)
 				close(prev_pipe);
-			}
-			else // between
+			else
 			{
 				close(prev_pipe);
 				close(pipe_storage[1]);
 				prev_pipe = pipe_storage[0];
 			}
-
-			// move to next command
 			++dispatched;
 			data->cmds = data->cmds->next;
 		}
 	}
-	while (cmd_count) // wait for all processes
+	while (cmd_count)
 	{
 		waitpid(last_child_pid, &status, 0);
 		if (last_child_pid)
 			get_exit_code(data, status);
-		last_child_pid = 0; // wait for all of the other processes
+		last_child_pid = 0;
 		--cmd_count;
 	}
 }
 
+/*
+function that handles the execution of one or many commands
+*/
 void	run_cmd(t_data *data)
 {
 	if (data->cmds->next)
@@ -133,6 +150,11 @@ void	run_cmd(t_data *data)
 	}
 }
 
+/*
+function that executes commands
+first gets all the potential paths, then checks if the process can access said path
+after that, the command is executed
+*/
 int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 {
 	int		i;

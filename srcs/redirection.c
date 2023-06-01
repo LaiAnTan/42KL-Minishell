@@ -1,5 +1,8 @@
 #include "../headers/minishell.h"
 
+/*
+function to check to if a string is a redirection symbol
+*/
 int		is_redirect(char *arg)
 {
 	if (ft_strcmp(arg, ">") == 0 || ft_strcmp(arg, ">>") == 0 
@@ -10,6 +13,10 @@ int		is_redirect(char *arg)
 	return (0);
 }
 
+/*
+function to handle normal input redirection 
+in_fd is duplicated to the file opened as input
+*/
 int	handle_redir_input(char *filename, int *in_fd)
 {
 	int		fd;
@@ -26,6 +33,11 @@ int	handle_redir_input(char *filename, int *in_fd)
 	return (1);
 }
 
+/*
+function to handle here document input redirection
+uses a pipe which acts as temporary storage for input
+when the delimiter character is found, the whole input except the delimiter is redirected when in_fd is duplicated to open the write end of the pipe
+*/
 int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 {
 	int		storage[2]; // 0 - read 1 - write
@@ -51,6 +63,10 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 	return (1);
 }
 
+/*
+function to handle normal output redirection
+out_fd is duplicated to the file opened as output
+*/
 int	handle_redir_output(char *filename, int *out_fd)
 {
 	int	fd;
@@ -68,6 +84,10 @@ int	handle_redir_output(char *filename, int *out_fd)
 	return (1);
 }
 
+/*
+function to handle append output redirection
+out_fd is duplicated to the file opened in append mode as output
+*/
 int	handle_redir_output_append(char *filename, int *out_fd)
 {
 	int	fd;
@@ -85,6 +105,9 @@ int	handle_redir_output_append(char *filename, int *out_fd)
 	return (1);
 }
 
+/*
+function to check if a command (array of stringsg) contains a redirection symbol
+*/
 int		contains_redirect(char **args)
 {
 	int	i;
@@ -99,6 +122,9 @@ int		contains_redirect(char **args)
 	return (0);
 }
 
+/*
+function to get the type of redirection that is passed into it
+*/
 int		get_redirect_type(char *arg)
 {
 	if (!is_redirect(arg))
@@ -111,12 +137,18 @@ int		get_redirect_type(char *arg)
 		return (3);
 	if (ft_strcmp(arg, "<<") == 0)
 		return (4);
-	return (-1); // should never happen
+	return (-1);
 }
 
+/*
+function to get the information of the next redirect in a command 
+an int array with 2 elements is returned
+redirect_info[0] = type of redirection
+redirect_info[1] = index of redirection symbol
+*/
 int		*get_next_redirect(char **args, int index)
 {
-	int	*redirect_info; // 0 - type 1 - index
+	int	*redirect_info;
 
 	if (index >= count_2d_array(args))
 		return (NULL);
@@ -137,6 +169,10 @@ int		*get_next_redirect(char **args, int index)
 	return (redirect_info);
 }
 
+/*
+function that counts the number of arguments that are not part of redirection
+eg. cat < a.txt hello, "< a.txt" are skipped
+*/
 int		count_args_without_redirect(char **args)
 {
 	int		i;
@@ -159,6 +195,9 @@ int		count_args_without_redirect(char **args)
 	return (count);
 }
 
+/*
+function that gets the raw command and its arguments without the redirection
+*/
 char	**get_cmd_args_without_redirect(char **args)
 {
 	int		i;
@@ -191,6 +230,9 @@ char	**get_cmd_args_without_redirect(char **args)
 	return (new);
 }
 
+/*
+function that handles redirections
+*/
 int		handle_redirect(char **args, int *in_fd, int *out_fd)
 {
 	int		i;

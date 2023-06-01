@@ -1,5 +1,9 @@
 #include "../headers/minishell.h"
 
+
+/*
+function that locates the PATH env variable from the linked list of env variables and then returns it
+*/
 char	*get_path_envp(t_data *data)
 {
 	t_list	*lst;
@@ -14,6 +18,9 @@ char	*get_path_envp(t_data *data)
 	return (NULL);
 }
 
+/*
+function that checks if a string is in the format of an executable
+*/
 int		is_executable(char *str)
 {
 	if (ft_strlen(str) > 2 && str[0] == '.' && str[1] == '/')
@@ -21,6 +28,9 @@ int		is_executable(char *str)
 	return (0);
 }
 
+/*
+function that gets all the possible paths of a command if it is not an executable
+*/
 char	**get_cmd_path(t_data *data, char *cmd)
 {
 	char	*full_path;
@@ -45,6 +55,9 @@ char	**get_cmd_path(t_data *data, char *cmd)
 	return (cmd_paths);
 }
 
+/*
+function that trims the string "PATH=" from the front of a path
+*/
 char	*trim_path(char *path)
 {
 	int		i;
@@ -67,6 +80,9 @@ char	*trim_path(char *path)
 	return (trimmed);
 }
 
+/*
+function that appends the command name at the end of the path
+*/
 void	append_stuff(char **paths, char *cmd)
 {
 	int		i;

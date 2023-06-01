@@ -62,8 +62,8 @@ int main(int argc, char **argv, char **envp)
 	modify_attr(&data);
 	while (1)
 	{
-		// signal(SIGINT, new_line_handler); // ctrl + C
-		// signal(SIGQUIT, SIG_IGN); // ctrl + /
+		signal(SIGINT, new_line_handler); // ctrl + C
+		signal(SIGQUIT, SIG_IGN); // ctrl + /
 		if (!handle_line(&data))
 			continue;
 		// this lexer seperates all the symbols

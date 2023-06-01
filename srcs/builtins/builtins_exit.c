@@ -3,7 +3,7 @@
 /*
 function for the exit command in bash
 handles more than 2 arguments
-handles no arguments
+handles no arguments exiting with code 0
 handles non numeric arguments
 handles arguments with values larger than 255 (max exit code)
 */
@@ -25,9 +25,9 @@ int builtin_exit(char **args)
 	}
 	else
 		exit_code = ft_atoi(args[1]);
-	while (exit_code >= 256) // overflow protection
+	while (exit_code >= 256)
 		exit_code = exit_code - 256;
-	printf("process exited with code %d\n", exit_code); // ok apparently exit auto frees
+	printf("process exited with code %d\n", exit_code);
 	exit(exit_code);
 	return (exit_code);
 }
