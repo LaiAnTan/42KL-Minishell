@@ -83,17 +83,13 @@ void	multiple_commands(t_data *data)
 	{
 		if (!dispatched)
 		{
-			printf("first\n");
 			pipe(pipe_storage);
 			data->cmds->out_fd = pipe_storage[1];
 		}
-		else if (dispatched == cmd_count - 1){
-			printf("last\n");
+		else if (dispatched == cmd_count - 1)
 			data->cmds->in_fd = prev_pipe;
-		}
 		else
 		{
-			printf("mid\n");
 			data->cmds->in_fd = prev_pipe;
 			pipe(pipe_storage);
 			data->cmds->out_fd = pipe_storage[1];
@@ -105,6 +101,7 @@ void	multiple_commands(t_data *data)
 
 			// DO NOT CLOSE THE READ END OF THE PIPE IF IT IS THE LAST COMMAND
 			// LAST COMMAND LITERALLY READ FROM THE READ END OF THE PREVIOUS PIPE, AND PIPE_STORAGE ISNT REPIPED IN THE LAST COMMAND
+			// SO PIPE_STORAGE WILL HAVE THE CONTENTS OF THE PREVIOUS PIPE HEHHHHHHHHHHH
 			if (!(dispatched == cmd_count - 1))
 				close(pipe_storage[0]);
 			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
@@ -121,18 +118,13 @@ void	multiple_commands(t_data *data)
 		{
 			if (!dispatched) 
 			{
-				printf("first\n");
 				close(pipe_storage[1]);
 				prev_pipe = pipe_storage[0];
 			}
 			else if (dispatched == cmd_count - 1)
-			{
-				printf("last\n");
 				close(prev_pipe);
-			}
 			else
 			{
-				printf("mid\n");
 				close(prev_pipe);
 				close(pipe_storage[1]);
 				prev_pipe = pipe_storage[0];
