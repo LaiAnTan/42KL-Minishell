@@ -17,9 +17,6 @@
 # include <termios.h>
 # include <fcntl.h>
 
-# define TRUE 1
-# define FALSE 0
-
 // struct for environment variables
 typedef struct s_env
 {
@@ -73,13 +70,20 @@ typedef struct s_data
 /* Input Processing */
 
 int		lexer(t_data *data);
-int		expander(t_data *data);
 int		parser(t_data *data);
+int		expander(t_data *data);
 int		get_keyword(char *line, int stop);
 
 /* Redirection */
-
+int		is_redirect(char *arg);
+int		get_redirect_type(char *arg);
+int		contains_redirect(char **args);
 int		handle_redirect(char **args, int *in_fd, int *out_fd);
+
+int		handle_redir_input(char *filename, int *in_fd);
+int		handle_redir_output(char *filename, int *out_fd);
+int		handle_redir_input_heredoc(char *delimiter, int *in_fd);
+int		handle_redir_output_append(char *filename, int *out_fd);
 
 char	**get_cmd_args_without_redirect(char **args);
 
@@ -125,14 +129,15 @@ int		handle_builtins(char *cmd, char **args, t_data *data);
 
 /* Linked Lists */
 
+t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstnew_env(char *var);
 t_list	*ft_lstnew_cmd(char **cmd);
-t_list	*ft_lstlast(t_list *lst);
 
+
+void	ft_lstfree(t_list **lst);
+void	ft_lstprint_env(t_list *lst);
 void	ft_lstdel_env(t_list **lst, t_list *node);
 void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstprint_env(t_list *lst);
-void	ft_lstfree(t_list **lst);
 
 int		ft_lstsize(t_list *lst);
 
@@ -140,12 +145,12 @@ int		ft_lstsize(t_list *lst);
 
 void	free_2d_array(char ***arr);
 
-int		is_numeric(char *str);
-int		count_2d_array(char **e);
 int		ft_strlen(char *s);
+int		is_numeric(char *str);
+int		ft_atoi(const char *s);
+int		count_2d_array(char **e);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strcmp_equals(char *s1, char *s2);
-int		ft_atoi(const char *s);
 
 char	*ft_itoa(int n);
 char	*ft_strdup(char *str);
