@@ -57,7 +57,7 @@ void	print_parsed(t_list *amogus)
 	{
 		printf("<Cmd %d>\n", iter_count);
 		for (int i = 0; iter->cmd.cmd[i]; ++i)
-			printf("%d | %s\n", i, iter->cmd.cmd[i]);
+			printf("%d | %s | %d\n", i, iter->cmd.cmd[i], ft_strlen(iter->cmd.cmd[i]));
 		iter = iter->next;
 		++iter_count;
 	}

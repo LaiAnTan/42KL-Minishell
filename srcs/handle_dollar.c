@@ -105,6 +105,7 @@ void	recombine_parts(char **store, char **temp_strings, int *indexes)
 	(*store) = ret;
 }
 
+// i think of a better way tmr morning
 void	replace_dollar(t_data *data)
 {
 	int		double_bunny;
@@ -117,31 +118,28 @@ void	replace_dollar(t_data *data)
 	indexes[0] = 0;
 	indexes[1] = 0;
 	string_storage[4] = NULL;
-	// printf("in replace dollar --> %s\n", ret);
 	while (search_symbol(&ret[indexes[1]], '$') != -1)
 	{
 		if (ret[indexes[1]] == '\"')
 			double_bunny = (double_bunny == 0);
-		if (ret[indexes[1]] == '\'' && !double_bunny)
+		else if (ret[indexes[1]] == '\'' && !double_bunny)
 		{
 			++indexes[1];
 			while (ret[indexes[1]] && ret[indexes[1]] != '\'')
 				++indexes[1];
-			++indexes[1];
 		}
-		if (ret[indexes[1]] == '$')
+		else if (ret[indexes[1]] == '$')
 		{
 			indexes[2] = get_keyword(ret, indexes[1]);
 			break_down(ret, indexes, string_storage);
 			string_storage[3] = access_var(data, string_storage[1]);
 			recombine_parts(&ret, string_storage, indexes);
 			reset_storage(string_storage);
-			indexes[1] = indexes[2] + 1;
+			indexes[1] = 0;
 		}
-		else
-			++indexes[1];
+		++indexes[1];
 	}
-	// printf("done replace --> %s\n", ret);
+	printf("done replace --> %s\n", ret);
 	free(data->line);
 	data->line = ret;
 }

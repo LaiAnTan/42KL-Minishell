@@ -9,7 +9,7 @@ if it does, return a non-zero value
 int	is_token(char c)
 {
 	int		i = 0;
-	char	token[9] = "\'\"|><$";
+	char	token[] = "\'\"|><$";
 	
 	while (token[i] != '\0')
 	{
@@ -44,12 +44,12 @@ this function handles the special index searching for variables ($)
 the start index would be the dollar sign, the last index would be at the first character 
 that isnt part of token or a space
 */
-int	get_keyword(char *line, int start)
+int	get_keyword(char *line, int stop)
 {
-	++start;
-	while (line[start] && line[start] != ' ' && !is_token(line[start]))
-		++start;
-	return (--start);
+	++stop;
+	while (line[stop] && line[stop] != ' ' && !is_token(line[stop]))
+		++stop;
+	return (--stop);
 }
 
 /*
@@ -80,9 +80,7 @@ int	find_token_pos(char *line, int *index_pair)
 			if (tk_type == is_token(line[i + 1]))
 				i++;
 		}
-		else if (line[i + 1] != '\0' && tk_type == 6)
-			i = get_keyword(line, i);
-		if (tk_type == 1 || tk_type == 2)
+		else if (tk_type == 1 || tk_type == 2)
 			i = bunny_ears(line, i, line[i]);
 	}
 	else
@@ -95,7 +93,27 @@ int	find_token_pos(char *line, int *index_pair)
 }
 
 /*
+i find it hella stupid we cannot put comments in functions
 
+this fucking piece of broken shit will seperate all the tokens in the line of code
+
+each token will follow the following format
+
+(the token)(a single space to represent if it is connected to the previous token)
+
+so a command like : ls -la a b c
+will be expressed as (i hope you can see whitespaces)
+[ls ] -> [-la ] -> [a ] -> [b ] -> [c ]
+
+a command like : echo stuff"abcdef" $SHLVL'pizza'
+will be expressed as
+[echo ] -> [stuff] -> ["abcdef"] -> [""] (special tokens will have "" nodes instead of spaces) -> [$SHLVL] -> ['pizza']
+
+the expander will convert the spaces into "", and remove the spaces at the words
+the parser will remove the "" nodes, and combine the tokens that should be together
+
+
+i want to die
 */
 int	lexer(t_data *data)
 {
@@ -117,6 +135,19 @@ int	lexer(t_data *data)
 			break ;
 		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
 		data->tokens = realloc_append(data->tokens, new_token);
+		if (ret_val > 0)
+		{
+			if (ret_val == 1 || ret_val == 2)
+			{
+				if (data->line[token_pos[1] + 1] == ' ')
+				{
+					data->tokens = realloc_append(data->tokens, ft_strdup(""));
+					++token_pos[1];
+				}
+			}
+		}
+		else if (data->line[token_pos[1] + 1] == ' ')
+			data->tokens = realloc_append(data->tokens, ft_strdup(""));
 		free(new_token);
 	}
 	return (1);
