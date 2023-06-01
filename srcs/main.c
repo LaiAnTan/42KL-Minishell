@@ -71,6 +71,8 @@ void	print_double(char **stuff)
 	}
 }
 
+void	replace_dollar(t_data *data);
+
 int main(int argc, char **argv, char **envp)
 {
 	(void) argv;
@@ -86,14 +88,15 @@ int main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		if (!handle_line(&data))
 			continue;
+		replace_dollar(&data);
 		lexer(&data);
-		// printf("after lexer\n");
-		// print_double(data.tokens);
-		expander(&data);
+		printf("after lexer\n");
+		print_double(data.tokens);
+		// expander(&data);
 		// printf("after expander\n");
 		// print_double(data.tokens);
 		parser(&data);
-		// print_parsed(data.cmds);
+		print_parsed(data.cmds);
 		run_cmd(&data);
 		dup2(data.stdin_backup, STDIN_FILENO);
 		dup2(data.stdout_backup, STDOUT_FILENO);

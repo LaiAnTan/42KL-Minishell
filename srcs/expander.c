@@ -89,18 +89,61 @@ ah yes, another function needed because norminette, is a bitch
 this function recombines all the strings found in temp_strings into a
 single string using ft_append()
 
-returns the recombined strings
+the recombined strings is stored in store
 */
-char	*recombine_parts(char **temp_strings, int *indexes)
+void	recombine_parts(char **store, char **temp_strings, int *indexes)
 {
 	char	*ret;
 
+	if ((*store))
+		free((*store));
 	ret = NULL;
 	if (indexes[1] != indexes[0])
 		ret = ft_append(ret, temp_strings[0]);
 	ret = ft_append(ret, temp_strings[3]);
 	ret = ft_append(ret, temp_strings[2]);
-	return (ret);
+	(*store) = ret;
+}
+
+void	replace_dollar(t_data *data)
+{
+	int		double_bunny;
+	char	*ret;
+	char	*string_storage[5];
+	int		indexes[3];
+
+	double_bunny = 0;
+	ret = ft_strdup(data->line);
+	indexes[0] = 0;
+	indexes[1] = 0;
+	string_storage[4] = NULL;
+	printf("in replace dollar --> %s\n", ret);
+	while (search_symbol(&ret[indexes[1]], '$') != -1)
+	{
+		if (ret[indexes[1] == '\"'])
+			double_bunny = (double_bunny == 0);
+		if (ret[indexes[1]] == '\'' && !double_bunny)
+		{
+			++indexes[1];
+			while (ret[indexes[1]] && ret[indexes[1]] != '\'')
+				++indexes[1];
+			++indexes[1];
+		}
+		if (ret[indexes[1]] == '$')
+		{
+			indexes[2] = get_keyword(ret, indexes[1]);
+			break_down(ret, indexes, string_storage);
+			string_storage[3] = access_var(data, string_storage[1]);
+			recombine_parts(&ret, string_storage, indexes);
+			reset_storage(string_storage);
+			indexes[1] = indexes[2] + 1;
+		}
+		else
+			++indexes[1];
+	}
+	printf("done replace --> %s\n", ret);
+	free(data->line);
+	data->line = ret;
 }
 
 /*
@@ -110,31 +153,32 @@ checks for and replaces variables in a token (which is given in line)
 
 returns the new string with its variable replaced
 */
-char	*handle_dollar(t_data *data, char *line)
-{
-	char	*ret;
-	char	*temp_strings[5];
-	int		indexes[3];
+// kill me, just kill me
+// char	*handle_dollar(t_data *data, char *line)
+// {
+// 	char	*ret;
+// 	char	*temp_strings[5];
+// 	int		indexes[3];
 
-	ret = ft_strdup(line);
-	indexes[0] = 0;
-	temp_strings[4] = NULL;
-	while (1)
-	{
-		indexes[1] = search_symbol(ret, '$');
-		if (indexes[1] == -1)
-			return (ret);
-		indexes[2] = get_keyword(ret, indexes[1]);
-		if (ret[indexes[1] + 1] == '?')
-			indexes[2] = indexes[1] + 1;
-		break_down(ret, indexes, temp_strings);
-		temp_strings[3] = access_var(data, temp_strings[1]);
-		free(ret);
-		ret = NULL;
-		ret = recombine_parts(temp_strings, indexes);
-		reset_storage(temp_strings);
-	}
-}
+// 	ret = ft_strdup(line);
+// 	indexes[0] = 0;
+// 	temp_strings[4] = NULL;
+// 	while (1)
+// 	{
+// 		indexes[1] = search_symbol(ret, '$');
+// 		if (indexes[1] == -1)
+// 			return (ret);
+// 		indexes[2] = get_keyword(ret, indexes[1]);
+// 		if (ret[indexes[1] + 1] == '?')
+// 			indexes[2] = indexes[1] + 1;
+// 		break_down(ret, indexes, temp_strings);
+// 		temp_strings[3] = access_var(data, temp_strings[1]);
+// 		free(ret);
+// 		ret = NULL;
+// 		ret = recombine_parts(temp_strings, indexes);
+// 		reset_storage(temp_strings);
+// 	}
+// }
 
 /*
 this function is needed because bash is a bitch
@@ -146,33 +190,34 @@ if a space is detected, the first half will be extracted and appended, then, a
 "" token will be appended due to how the parser works
 
 required for $TEST="ho hi", ec$TEST to work
+// this is.. getting deprecated whoops
 */
-char	**worry_about_spaces(char **ori, char *line)
-{
-	char	**ret;
-	int		start;
-	int		end;
+// char	**worry_about_spaces(char **ori, char *line)
+// {
+// 	char	**ret;
+// 	int		start;
+// 	int		end;
 
-	start = 0;
-	while (1)
-	{
-		end = search_symbol(&line[start], ' ');
-		if (end == -1)
-		{
-			end = ft_strlen(line);
-			ret = realloc_append(ori, ft_substr(line, start, end));
-			return (ret);
-		}
-		end += start;
-		if ((end - start))
-		{
-			ori = realloc_append(ori, ft_substr(line, start, end - 1));
-			if (line[end + 1] != '\0')
-				ori = realloc_append(ori, "");
-		}
-		start = end + 1;
-	}
-}
+// 	start = 0;
+// 	while (1)
+// 	{
+// 		end = search_symbol(&line[start], ' ');
+// 		if (end == -1)
+// 		{
+// 			end = ft_strlen(line);
+// 			ret = realloc_append(ori, ft_substr(line, start, end));
+// 			return (ret);
+// 		}
+// 		end += start;
+// 		if ((end - start))
+// 		{
+// 			ori = realloc_append(ori, ft_substr(line, start, end - 1));
+// 			if (line[end + 1] != '\0')
+// 				ori = realloc_append(ori, "");
+// 		}
+// 		start = end + 1;
+// 	}
+// }
 
 /*
 this function is le expander
@@ -180,37 +225,41 @@ this function is le expander
 it checks and replaces all the variables ($ signs) in the token
 creates a new list with all the tokens with its variable replaced
 frees original token list
-*/
-int	expander(t_data *data)
-{
-	int		i;
-	char	**new;
-	int		tokencount = count_2d_array(data->tokens);
 
-	i = 0;
-	new = malloc (sizeof(char *));
-	new[0] = NULL;
-	if (!data || !data->tokens)
-		return (0);
-	while (i < tokencount)
-	{
-		if (data->tokens[i][0] == '\"')
-		{
-			new = realloc_append(new, handle_dollar(data, data->tokens[i]));
-			i++;
-		}
-		else if (data->tokens[i][0] == '\'')
-		{
-			new = realloc_append(new, data->tokens[i]);
-			i++;
-		}
-		else
-		{
-			new = worry_about_spaces(new, handle_dollar(data, data->tokens[i]));
-			i++;
-		}
-	}
-	free_2d_array(&data->tokens);
-	data->tokens = new;
-	return (1);
-}
+
+hey, future dude here, yeah your expander is being deprecated, 
+have fun remove the evidences
+*/
+// int	expander(t_data *data)
+// {
+// 	int		i;
+// 	char	**new;
+// 	int		tokencount = count_2d_array(data->tokens);
+
+// 	i = 0;
+// 	new = malloc (sizeof(char *));
+// 	new[0] = NULL;
+// 	if (!data || !data->tokens)
+// 		return (0);
+// 	while (i < tokencount)
+// 	{
+// 		if (data->tokens[i][0] == '\"')
+// 		{
+// 			new = realloc_append(new, handle_dollar(data, data->tokens[i]));
+// 			i++;
+// 		}
+// 		else if (data->tokens[i][0] == '\'')
+// 		{
+// 			new = realloc_append(new, data->tokens[i]);
+// 			i++;
+// 		}
+// 		else
+// 		{
+// 			new = worry_about_spaces(new, handle_dollar(data, data->tokens[i]));
+// 			i++;
+// 		}
+// 	}
+// 	free_2d_array(&data->tokens);
+// 	data->tokens = new;
+// 	return (1);
+// }

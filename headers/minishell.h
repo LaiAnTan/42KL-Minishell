@@ -53,6 +53,9 @@ typedef struct s_list
 }		t_list;
 
 // all data for program
+
+// WHY THE FUCK DID WE USE DOUBLE CHAR POINTERS
+// I AM IN SO MUCH PAIN NOW
 typedef struct s_data
 {
 	int		stdin_backup;
@@ -61,6 +64,7 @@ typedef struct s_data
 
 	char	*line;
 	char	*cwd;
+	int		token_num; // <-- this records token_num because i officially gave up
 	char	**tokens;
 	char	**my_envp;
 	

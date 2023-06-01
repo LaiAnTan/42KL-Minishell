@@ -25,44 +25,32 @@ int	find_next_cmd(char **tokens, int *index_pair)
 	return (0);
 }
 
+/*
+kill me
+*/
 char	**extract_cmd(char **tokens, int *index_pair)
 {
+	int		i;
 	int		j;
-	int		filled;
 	char	**cmd;
-	char	*str;
-
+	
 	find_next_cmd(tokens, index_pair);
+	i = 0;
 	j = index_pair[0];
-	str = NULL;
-	cmd = malloc (sizeof(char *));
-	cmd[0] = NULL;
-	filled = 0;
+	cmd = (char **) malloc (sizeof(char *) * (index_pair[1] - index_pair[0] + 1));
 	while (j < index_pair[1])
 	{
-		if (ft_strlen(tokens[j]) == 0 && filled)
-		{
-			cmd = realloc_append(cmd, ft_strdup(str));
-			free(str);
-			str = NULL;
-			filled = 0;
-		}
-		else
-		{
-			tokens[j] = ft_trimstr(tokens[j], ' ');
-			str = ft_append(str, tokens[j]);
-			filled = 1;
-		}
+		cmd[i] = ft_strdup(tokens[j]);
+		++i;
 		++j;
 	}
-	if (str)
-	{
-		cmd = realloc_append(cmd, ft_strdup(str));
-		free(str);
-	}
+	cmd[i] = NULL;
 	return (cmd);
 }
 
+/*
+this will trim off the bunny ears in all of the tokens
+*/
 void	remove_ears(t_data *data)
 {
 	int	i; 
@@ -78,6 +66,15 @@ void	remove_ears(t_data *data)
 	}
 }
 
+/*
+this function will do two things
+
+1. seperate the token list according to the pipe token | 
+2. remove the space token --> ""
+
+it will then reconstruct a "command list" and return the list
+which is the final command that would be ran
+*/
 int	parser(t_data *data)
 {
 	int		index_pair[2];

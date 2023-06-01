@@ -27,6 +27,8 @@ specifically, the stop index
 
 the start index would be at the first bunny ear found, the last index would be at the
 last bunny ear found
+
+these two indexes is then extracted and ft_substr is used to create the token
 */
 int	bunny_ears(char *line, int stop, int to_match)
 {
@@ -36,16 +38,28 @@ int	bunny_ears(char *line, int stop, int to_match)
 	return (stop);
 }
 
-int	get_keyword(char *line, int stop)
+/*
+this function handles the special index searching for variables ($)
+
+the start index would be the dollar sign, the last index would be at the first character 
+that isnt part of token or a space
+*/
+int	get_keyword(char *line, int start)
 {
-	++stop;
-	while (line[stop] && line[stop] != ' ' && !is_token(line[stop]))
-		++stop;
-	return (--stop);
+	++start;
+	while (line[start] && line[start] != ' ' && !is_token(line[start]))
+		++start;
+	return (--start);
 }
 
 /*
-i find it hella stupid we cannot put comments in functions
+this function finds the index start and end for all the token
+
+it will first skip all leading whitespaces from start
+then it checks if the character is a token
+if it is, a specific way of extracting the indexes will be used
+if it is not, the end would be the location of the first character that is part of a token, a space or 
+the adjacent character is the NULL terminating character
 */
 int	find_token_pos(char *line, int *index_pair)
 {
@@ -73,13 +87,16 @@ int	find_token_pos(char *line, int *index_pair)
 	}
 	else
 	{
-		while (line[i + 1] != '\0' && !is_token(line[i + 1]) && line[i] != ' ')
+		while (line[i + 1] != '\0' && !is_token(line[i + 1]) && line[i + 1] != ' ')
 			i++;
 	}
 	index_pair[1] = i;
 	return (tk_type);
 }
 
+/*
+
+*/
 int	lexer(t_data *data)
 {
 	int		len;
@@ -96,13 +113,10 @@ int	lexer(t_data *data)
 	while (1)
 	{
 		ret_val = find_token_pos(data->line, token_pos);
-		// use -1 if ended
 		if (ret_val == -1 || token_pos[1] >= len)
 			break ;
 		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
 		data->tokens = realloc_append(data->tokens, new_token);
-		if (ret_val > 0 && ret_val != 1 && ret_val != 2)
-			data->tokens = realloc_append(data->tokens, ft_strdup(""));
 		free(new_token);
 	}
 	return (1);
