@@ -42,13 +42,16 @@ int		get_command_count(t_data *data)
 /*
 gets the exit code of the last exited command
 */
-void	get_exit_code(t_data *data, int exit_status)
+int	get_exit_code(t_data *data, int exit_status)
 {
 	if (WIFEXITED(exit_status))
 		data->last_exit = WEXITSTATUS(exit_status);
 	else
+	{
 		if (WIFSIGNALED(exit_status))
 			data->last_exit = 130;
+	}
+	return (data->last_exit);
 }
 
 /*
@@ -78,15 +81,26 @@ void	multiple_commands(t_data *data)
 	cmd_count = get_command_count(data);
 	while (dispatched < cmd_count)
 	{
+		// if (dispatched)
+		// 	data->cmds->in_fd = prev_pipe;
+		// if (dispatched != cmd_count - 1)
+		// {
+		// 	pipe(pipe_storage);
+		// 	data->cmds->out_fd = pipe_storage[1];
+		// }
 		if (!dispatched)
 		{
+			printf("first\n");
 			pipe(pipe_storage);
 			data->cmds->out_fd = pipe_storage[1];
 		}
-		else if (dispatched == cmd_count - 1)
+		else if (dispatched == cmd_count - 1){
+			printf("last\n");
 			data->cmds->in_fd = prev_pipe;
+		}
 		else
 		{
+			printf("mid\n");
 			data->cmds->in_fd = prev_pipe;
 			pipe(pipe_storage);
 			data->cmds->out_fd = pipe_storage[1];
@@ -94,7 +108,8 @@ void	multiple_commands(t_data *data)
 		last_child_pid = fork();
 		if (last_child_pid == 0)
 		{
-			close(pipe_storage[0]);
+			if (!(dispatched == cmd_count - 1))
+				close(pipe_storage[0]);
 			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
 			{
 				printf("error happened\n"); // should never happen
@@ -107,15 +122,27 @@ void	multiple_commands(t_data *data)
 		}
 		else
 		{
+			// if (dispatched)
+			// 	close(prev_pipe);
+			// if (dispatched != cmd_count - 1)
+			// {
+			// 	close(pipe_storage[1]);
+			// 	prev_pipe = pipe_storage[0];
+			// }
 			if (!dispatched) 
 			{
+				printf("first\n");
 				close(pipe_storage[1]);
 				prev_pipe = pipe_storage[0];
 			}
 			else if (dispatched == cmd_count - 1)
+			{
+				printf("last\n");
 				close(prev_pipe);
+			}
 			else
 			{
+				printf("mid\n");
 				close(prev_pipe);
 				close(pipe_storage[1]);
 				prev_pipe = pipe_storage[0];
@@ -194,8 +221,7 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 				signal(SIGINT, SIG_IGN);
 				signal(SIGQUIT, SIG_IGN);
 				waitpid(-1, &status, 0);
-				get_exit_code(data, status);
-				return (0);
+				return (get_exit_code(data, status));
 			}
 		}
 		i++;
