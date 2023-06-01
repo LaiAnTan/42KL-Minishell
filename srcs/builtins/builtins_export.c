@@ -1,5 +1,8 @@
 #include "../../headers/minishell.h"
 
+/*
+function to print an env variable but with "declare -x" in front
+*/
 void	display_export_line(t_list *node)
 {
 	int i;
@@ -21,6 +24,10 @@ void	display_export_line(t_list *node)
 		write(1, node->env.str, ft_strlen(node->env.str));
 }
 
+/*
+function to handle when export is called without arguments
+prints env variables in ascending order
+*/
 void	print_asc_export(t_list *lst)
 {
 	int		lst_size;
@@ -52,6 +59,9 @@ void	print_asc_export(t_list *lst)
 	}
 }
 
+/*
+function to check if the argument is a valid assignment statement in the form of "<name>=<value>""
+*/
 int	valid_assign(char *str)
 {
 	if (str == NULL || *str == '=')
@@ -66,6 +76,9 @@ int	valid_assign(char *str)
 	return (0);
 }
 
+/*
+function to get the variable name from an assignment statement
+*/
 char	*get_var_name(char *str)
 {
 	int		i;
@@ -88,6 +101,12 @@ char	*get_var_name(char *str)
 	return (var_name);
 }
 
+/*
+function for the export command in bash
+locates the variable and then either adds it to the end of the linked list of env variables
+or updates the value of an existing variable
+handles no arguments
+*/
 int	builtin_export(char **args, t_data *data)
 {
 	int i;

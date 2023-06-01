@@ -1,8 +1,14 @@
 #include "../../headers/minishell.h"
 
-int builtin_exit(char **args, t_data *data)
+/*
+function for the exit command in bash
+handles more than 2 arguments
+handles no arguments
+handles non numeric arguments
+handles arguments with values larger than 255 (max exit code)
+*/
+int builtin_exit(char **args)
 {
-	int		size;
 	int		exit_code;
 
 	if (count_2d_array(args) > 2)
@@ -17,7 +23,6 @@ int builtin_exit(char **args, t_data *data)
 		printf("exit: %s: numeric arguement required", args[1]);
 		exit_code = 2;
 	}
-
 	else
 		exit_code = ft_atoi(args[1]);
 	while (exit_code >= 256) // overflow protection

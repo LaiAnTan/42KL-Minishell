@@ -33,7 +33,7 @@ SRCS_H = headers/minishell.h
 SRCS_O = $(SRCS_C:.c=.o)
 
 # cringe ahh flags
-# CFLAG = -Wall -Wextra -Werror
+CFLAG = -Wall -Wextra -Werror
 
 # FSAN = -fsanitize=address -g
 
