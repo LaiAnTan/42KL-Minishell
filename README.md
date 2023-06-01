@@ -14,14 +14,14 @@ Features:
 - A few bultin commands: cd, echo, exit, export, env, pwd, unset
 - Exit codes
 
-## Dependancies
+## Dependencies
 - gcc with the readline library
 - GNU make
 ## Installation instructions
 
-1. git clone this repository (https://github.com/LaiAnTan/42KL-Minishell)
+1. run ```git clone https://github.com/LaiAnTan/42KL-Minishell``` to clone this repository
 2. run ```make``` in the terminal and an executable will be created
-3. run the executable (./minishell)
+3. run ```./minishell``` to run the program
 
 ## Contributors:
 
