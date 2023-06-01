@@ -1,5 +1,30 @@
 #include "../headers/minishell.h"
 
+/*
+initializes the data structure that stores all the data required by the program
+converts the environment variables into a linked list and stores it
+tores the current working directory
+intializes 2 termios structures for later use
+*/
+int init_data(t_data *data, char **envp)
+{
+	data->stdin_backup = dup(STDIN_FILENO);
+	data->stdout_backup = dup(STDOUT_FILENO);
+	data->cwd = getcwd(NULL, PATH_MAX);
+	data->vars = set_env(envp);
+	data->cmds = NULL;
+	data->my_envp = NULL;
+	data->attr = malloc(sizeof(struct termios) * 2);
+	data->last_exit = 0;
+	tcgetattr(STDIN_FILENO, &data->attr->def_attributes);
+	tcgetattr(STDIN_FILENO, &data->attr->mod_attributes);
+	rebuild_envp(data);
+	return (1);
+}
+
+/*
+function that handles reading user input and history
+*/
 int	handle_line(t_data *data)
 {
 	char	*line;
@@ -18,7 +43,9 @@ int	handle_line(t_data *data)
 	return (0);
 }
 
-// debug function for printing commands
+/*
+debug function for printing commands
+*/
 void	print_parsed(t_list *amogus)
 {
 	t_list *iter;
@@ -36,21 +63,6 @@ void	print_parsed(t_list *amogus)
 	}
 }
 
-char	*twod_to_oned(char **in)
-{
-	char	*ret;
-	int		i;
-
-	i = 0;
-	ret = NULL;
-	while(in[i])
-	{
-		ret = ft_append(ret, in[i]);
-		++i;
-	}
-	return (ret);
-}
-
 int main(int argc, char **argv, char **envp)
 {
 	(void) argv;
@@ -62,21 +74,12 @@ int main(int argc, char **argv, char **envp)
 	modify_attr(&data);
 	while (1)
 	{
-		signal(SIGINT, new_line_handler); // ctrl + C
-		signal(SIGQUIT, SIG_IGN); // ctrl + /
+		signal(SIGINT, new_line_handler);
+		signal(SIGQUIT, SIG_IGN);
 		if (!handle_line(&data))
 			continue;
-		// this lexer seperates all the symbols
 		lexer(&data);
-		printf("after lexer:\n");
-		for (int i = 0; data.tokens[i]; ++i)
-			printf("%d -- %s\n", i, data.tokens[i]);
-		// expander expands the $ symbols
 		expander(&data);
-		printf("after expanded:\n");
-		for (int i = 0; data.tokens[i]; ++i)
-			printf("%d -- %s\n", i, data.tokens[i]);
-		// parser seperates the | commands
 		parser(&data);
 		print_parsed(data.cmds);
 		run_cmd(&data);
@@ -86,7 +89,6 @@ int main(int argc, char **argv, char **envp)
 			ft_lstfree(&data.cmds);
 		if (data.line)
 			free(data.line);
-
 	}
 	ft_lstfree(&data.vars);
 	return (0);

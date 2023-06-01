@@ -22,8 +22,9 @@ Features:
 1. ```git clone https://github.com/LaiAnTan/42KL-Minishell``` to clone this repository
 2. ```make``` to create the executable
 3. ```./minishell``` to run the program
+4. to remove program, run ```make fclean```
 
-## Contributors:
+## Contributors
 
 - cshi-xia (@SphagettiCodes)
 - tlai-an (Myself)

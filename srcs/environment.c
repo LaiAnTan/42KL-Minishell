@@ -1,5 +1,8 @@
 #include "../headers/minishell.h"
 
+/*
+function that converts the envp array of strings into a linked list
+*/
 t_list	*set_env(char **envp)
 {
 	int		i;
@@ -18,6 +21,9 @@ t_list	*set_env(char **envp)
 	return (vars);
 }
 
+/*
+function that gets the position of the equal in an env variable
+*/
 int	get_equal_pos(t_list *node)
 {
 	int		pos;
@@ -32,6 +38,9 @@ int	get_equal_pos(t_list *node)
 	return (-1);
 }
 
+/*
+function that gets the value of the node passed as parameter
+*/
 char	*get_val(t_list *node)
 {
 	int		i;
@@ -51,6 +60,9 @@ char	*get_val(t_list *node)
 	return (val);
 }
 
+/*
+function that checks if the variable names are the same
+*/
 int	compare_name(char *var, char *name)
 {
 	int	i;
@@ -67,6 +79,9 @@ int	compare_name(char *var, char *name)
 	return (0);
 }
 
+/*
+function that finds and returns the node in which the variable to_find is located at
+*/
 t_list	*find_var(t_list *vars, char *to_find)
 {
 	t_list *node;
@@ -79,4 +94,31 @@ t_list	*find_var(t_list *vars, char *to_find)
 		node = node->next;
 	}
 	return (NULL);
+}
+
+/*
+function that converts the linked list of env variables into a 2d array inside data
+*/
+void	rebuild_envp(t_data *data)
+{
+	int		i;
+	int		lst_size;
+	t_list	*lst;
+	t_list	*head;
+
+	i = 0;
+	lst = data->vars;
+	lst_size = ft_lstsize(lst);
+	head = lst;
+	if (data->my_envp != NULL)
+		free_2d_array(&data->my_envp);
+	data->my_envp = (char **) malloc(sizeof(char *) * (lst_size + 1));
+	while (lst != NULL)
+	{
+		data->my_envp[i] = ft_strdup(lst->env.str);
+		i++;
+		lst = lst->next;
+	}
+	data->my_envp[i] = NULL;
+	lst = head;
 }

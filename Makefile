@@ -26,13 +26,11 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
 			srcs/path.c			\
 			srcs/redirection.c	\
 			srcs/signal.c		\
-			srcs/struct.c		\
 
 SRCS_H = headers/minishell.h
 
 SRCS_O = $(SRCS_C:.c=.o)
 
-# cringe ahh flags
 CFLAG = -Wall -Wextra -Werror
 
 # FSAN = -fsanitize=address -g

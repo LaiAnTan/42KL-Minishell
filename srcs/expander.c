@@ -7,7 +7,6 @@ char	*access_var(t_data *data, char *name)
 	lst = data->vars;
 	if (!name)
 		return (ft_strdup(""));
-	// please make an itoa thanks
 	if (name[0] == '?')
 		return (ft_itoa(data->last_exit));
 	while (lst)
@@ -109,10 +108,8 @@ char	**worry_about_spaces(char **ori, char *might_have_space)
 	int	end;
 
 	start = 0;
-	// printf("this sentece may have a space = %s\n", might_have_space);
 	while (1)
 	{
-		printf("sentence checking = %s\n", &might_have_space[start]);
 		end = search_symbol(&might_have_space[start], ' ');
 		if (end == -1)
 		{

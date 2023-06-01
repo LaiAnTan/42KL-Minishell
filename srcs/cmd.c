@@ -144,7 +144,10 @@ void	run_cmd(t_data *data)
 	else
 	{
 		if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
+		{
 			printf("error happened\n");
+			return ;
+		}
 		data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
 		data->last_exit = single_command(data, data->cmds);
 	}

@@ -70,12 +70,6 @@ typedef struct s_data
 
 }			t_data;
 
-/* Data */
-
-void	rebuild_envp(t_data *data);
-
-int 	init_data(t_data *data, char **envp);
-
 /* Input Processing */
 
 int		lexer(t_data *data);
@@ -101,8 +95,11 @@ char	*get_path_envp(t_data *data);
 char	**get_cmd_path(t_data *data, char *cmd);
 
 /* Environment Variables */
+
 t_list	*set_env(char **envp);
 t_list	*find_var(t_list *vars, char *to_find);
+
+void	rebuild_envp(t_data *data);
 
 int		get_equal_pos(t_list *node);
 
@@ -155,6 +152,7 @@ char	*ft_strdup(char *str);
 char	*ft_append(char *s1, char *s2);
 char	*ft_trimstr(char *source, char to_trim);
 char	*ft_substr(char *s, unsigned int start, unsigned int end);
+
 char	**ft_split(char *s, char c);
 char	**realloc_append(char **src, char *str);
 
