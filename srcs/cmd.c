@@ -42,13 +42,16 @@ int		get_command_count(t_data *data)
 /*
 gets the exit code of the last exited command
 */
-void	get_exit_code(t_data *data, int exit_status)
+int	get_exit_code(t_data *data, int exit_status)
 {
 	if (WIFEXITED(exit_status))
 		data->last_exit = WEXITSTATUS(exit_status);
 	else
+	{
 		if (WIFSIGNALED(exit_status))
 			data->last_exit = 130;
+	}
+	return (data->last_exit);
 }
 
 /*
@@ -94,7 +97,13 @@ void	multiple_commands(t_data *data)
 		last_child_pid = fork();
 		if (last_child_pid == 0)
 		{
-			close(pipe_storage[0]);
+			// AHHH PISS SHIT
+
+			// DO NOT CLOSE THE READ END OF THE PIPE IF IT IS THE LAST COMMAND
+			// LAST COMMAND LITERALLY READ FROM THE READ END OF THE PREVIOUS PIPE, AND PIPE_STORAGE ISNT REPIPED IN THE LAST COMMAND
+			// SO PIPE_STORAGE WILL HAVE THE CONTENTS OF THE PREVIOUS PIPE HEHHHHHHHHHHH
+			if (!(dispatched == cmd_count - 1))
+				close(pipe_storage[0]);
 			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
 			{
 				printf("error happened\n"); // should never happen
@@ -194,8 +203,7 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 				signal(SIGINT, SIG_IGN);
 				signal(SIGQUIT, SIG_IGN);
 				waitpid(-1, &status, 0);
-				get_exit_code(data, status);
-				return (0);
+				return (get_exit_code(data, status));
 			}
 		}
 		i++;
