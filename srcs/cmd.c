@@ -66,7 +66,7 @@ function that handles the execution of multiple commands, simulating the behavio
 
 3. the parent process cleans up unused file descriptors and moves on to the next iteration of the loop
 
-4. waiting of death (apparently) of all child processes
+4. waiting for death (apparently) of all child processes
 */
 void	multiple_commands(t_data *data)
 {
