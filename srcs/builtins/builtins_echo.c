@@ -1,5 +1,9 @@
 #include "../../headers/minishell.h"
 
+/*
+function for the echo command in bash
+handles option -n to print the arguements without a "\n" at the end
+*/
 int	builtin_echo(char **args)
 {
 	int		i;

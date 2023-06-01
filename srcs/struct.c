@@ -1,5 +1,11 @@
 #include "../headers/minishell.h"
 
+/*
+initializes the data structure that stores all the data required by the program
+converts the environment variables into a linked list and stores it
+stores the current working directory
+intializes 2 termios structures for later use
+*/
 int init_data(t_data *data, char **envp)
 {
 	data->stdin_backup = dup(STDIN_FILENO);
@@ -16,6 +22,9 @@ int init_data(t_data *data, char **envp)
 	return (1);
 }
 
+/*
+converts the linked list of env variables into a 2d array inside data
+*/
 void	rebuild_envp(t_data *data)
 {
 	int		i;

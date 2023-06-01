@@ -71,22 +71,26 @@ typedef struct s_data
 }			t_data;
 
 /* Data */
+
 void	rebuild_envp(t_data *data);
 
 int 	init_data(t_data *data, char **envp);
 
 /* Input Processing */
+
 int		lexer(t_data *data);
 int		expander(t_data *data);
 int		parser(t_data *data);
 int		get_keyword(char *line, int stop);
 
 /* Redirection */
+
 int		handle_redirect(char **args, int *in_fd, int *out_fd);
 
 char	**get_cmd_args_without_redirect(char **args);
 
 /* Command Processing */
+
 void	run_cmd(t_data *data);
 void	append_stuff(char **paths, char *cmd);
 
@@ -106,13 +110,12 @@ char	*get_val(t_list *node);
 char	*access_var(t_data *data, char *name);
 
 /* Signals */
+
 void	reset_attr(t_data *data);
 void	modify_attr(t_data *data);
-void	exit_handler(int sig_code);
 void	new_line_handler(int sig_code);
 
 /* Builtin command functions */
-int		handle_builtins(char *cmd, char **args, t_data *data);
 
 int		builtin_echo(char **args);
 int		builtin_pwd(t_data *data);
@@ -121,8 +124,10 @@ int		builtin_exit(char **args);
 int		builtin_cd(char **args, t_data *data);
 int		builtin_unset(char **args, t_data *data);
 int		builtin_export(char **args, t_data *data);
+int		handle_builtins(char *cmd, char **args, t_data *data);
 
 /* Linked Lists */
+
 t_list	*ft_lstnew_env(char *var);
 t_list	*ft_lstnew_cmd(char **cmd);
 t_list	*ft_lstlast(t_list *lst);
@@ -135,6 +140,7 @@ void	ft_lstfree(t_list **lst);
 int		ft_lstsize(t_list *lst);
 
 /* Utility Functions */
+
 void	free_2d_array(char ***arr);
 
 int		is_numeric(char *str);
