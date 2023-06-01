@@ -1,6 +1,6 @@
 #include "../../headers/minishell.h"
 
-int	builtin_echo(char **args, t_data *data)
+int	builtin_echo(char **args)
 {
 	int		i;
 	int		nl;

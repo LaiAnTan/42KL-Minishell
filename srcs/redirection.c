@@ -111,6 +111,7 @@ int		get_redirect_type(char *arg)
 		return (3);
 	if (ft_strcmp(arg, "<<") == 0)
 		return (4);
+	return (-1); // should never happen
 }
 
 int		*get_next_redirect(char **args, int index)

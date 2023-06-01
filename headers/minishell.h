@@ -106,21 +106,21 @@ char	*get_val(t_list *node);
 char	*access_var(t_data *data, char *name);
 
 /* Signals */
-void	modify_attr(t_data *data);
 void	reset_attr(t_data *data);
-void	new_line_handler(int sig_code);
+void	modify_attr(t_data *data);
 void	exit_handler(int sig_code);
+void	new_line_handler(int sig_code);
 
 /* Builtin command functions */
 int		handle_builtins(char *cmd, char **args, t_data *data);
 
-int		builtin_echo(char **args, t_data *data);
-int		builtin_cd(char **args, t_data *data);
+int		builtin_echo(char **args);
 int		builtin_pwd(t_data *data);
-int		builtin_export(char **args, t_data *data);
-int		builtin_unset(char **args, t_data *data);
 int		builtin_env(t_data *data);
-int		builtin_exit(char **args, t_data *data);
+int		builtin_exit(char **args);
+int		builtin_cd(char **args, t_data *data);
+int		builtin_unset(char **args, t_data *data);
+int		builtin_export(char **args, t_data *data);
 
 /* Linked Lists */
 t_list	*ft_lstnew_env(char *var);
