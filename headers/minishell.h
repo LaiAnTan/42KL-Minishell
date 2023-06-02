@@ -5,7 +5,8 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <wait.h>
+// ini untuk ubuntu sahaja
+// # include <wait.h>
 # include <sys/wait.h>
 # include <stdlib.h>
 # include <unistd.h>
