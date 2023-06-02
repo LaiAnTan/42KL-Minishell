@@ -125,7 +125,7 @@ void	replace_dollar(t_data *data)
 		else if (ret[indexes[1]] == '\'' && !special_case)
 		{
 			++indexes[1];
-			while (ret[indexes[1]] && ret[indexes[1]] != '\"')
+			while (ret[indexes[1]] && ret[indexes[1]] != '\'')
 				++indexes[1];
 		}
 		else if (ret[indexes[1]] == '$')
