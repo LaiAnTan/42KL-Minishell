@@ -108,7 +108,7 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 		redirect_info = get_next_redirect(args, i);
 
 		if (redirect_info == NULL)
-			return (0); // error
+			return (-1); // error
 		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
 			return (1); // done
 
