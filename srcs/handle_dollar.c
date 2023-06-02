@@ -74,6 +74,7 @@ void	reset(char **temp_strings, int *indexes)
 	int	i;
 
 	indexes[1] = ft_strlen(temp_strings[0]) + ft_strlen(temp_strings[3]) - 1;
+	printf("%d, %d\n", ft_strlen(temp_strings[0]), ft_strlen(temp_strings[3]));
 	i = -1;
 	while (temp_strings[++i])
 		free(temp_strings[i]);
@@ -92,7 +93,10 @@ temp_string[2] = ' la'
 */
 void	break_down(char *line, int *indexes, char **temp_strings)
 {
-	temp_strings[0] = ft_substr(line, indexes[0], indexes[1] - 1);
+	if (indexes[1] != indexes[0])
+		temp_strings[0] = ft_substr(line, indexes[0], indexes[1] - 1);
+	else
+		temp_strings[0] = NULL;
 	temp_strings[1] = ft_substr(line, indexes[1] + 1, indexes[2]);
 	temp_strings[2] = ft_substr(line, indexes[2] + 1, ft_strlen(line));
 }
@@ -105,15 +109,14 @@ single string using ft_append()
 
 the recombined strings is stored in store
 */
-void	recombine_parts(char **store, char **temp_strings, int *indexes)
+void	recombine_parts(char **store, char **temp_strings)
 {
 	char	*ret;
 
 	if ((*store))
 		free((*store));
 	ret = NULL;
-	if (indexes[1] != indexes[0])
-		ret = ft_append(ret, temp_strings[0]);
+	ret = ft_append(ret, temp_strings[0]);
 	ret = ft_append(ret, temp_strings[3]);
 	ret = ft_append(ret, temp_strings[2]);
 	(*store) = ret;
@@ -170,10 +173,11 @@ void	replace_dollar(t_data *data)
 			}
 			else
 				string_storage[3] = access_var(data, string_storage[1]);
-			recombine_parts(&ret, string_storage, indexes);
+			recombine_parts(&ret, string_storage);
 			reset(string_storage, indexes);
 		}
 		++indexes[1];
+		// printf("index = %d\n", indexes[1]);
 	}
 	// printf("done replace --> %s\n", ret);
 	free(data->line);
