@@ -56,10 +56,11 @@ this function.. is needed because norminette is a bitch
 
 resets the temporary storage used in recombine_parts, freeing all the strings inside it
 */
-void	reset_storage(char **temp_strings)
+void	reset(char **temp_strings, int *indexes)
 {
 	int	i;
 
+	indexes[1] = ft_strlen(temp_strings[0]) + ft_strlen(temp_strings[3]) - 1;
 	i = -1;
 	while (temp_strings[++i])
 		free(temp_strings[i]);
@@ -120,8 +121,7 @@ void	replace_dollar(t_data *data)
 	string_storage[4] = NULL;
 	while (search_symbol(&ret[indexes[1]], '$') != -1)
 	{
-		
-
+		printf("%s\n", &ret[indexes[1]]);
 		if (ret[indexes[1]] == '\"')
 			special_case = !special_case;
 		else if (ret[indexes[1]] == '\'' && !special_case)
@@ -136,9 +136,7 @@ void	replace_dollar(t_data *data)
 			break_down(ret, indexes, string_storage);
 			string_storage[3] = access_var(data, string_storage[1]);
 			recombine_parts(&ret, string_storage, indexes);
-			reset_storage(string_storage);
-			special_case = 0;
-			indexes[1] = 0;
+			reset(string_storage, indexes);
 		}
 		++indexes[1];
 	}
