@@ -79,8 +79,6 @@ int	find_token_pos(char *line, int *index_pair)
 }
 
 /*
-i find it hella stupid we cannot put comments in functions
-
 this fucking piece of broken shit will seperate all the tokens in the line of code
 
 each token will follow the following format
@@ -97,9 +95,6 @@ will be expressed as
 
 the expander will convert the spaces into "", and remove the spaces at the words
 the parser will remove the "" nodes, and combine the tokens that should be together
-
-
-i want to die
 */
 int	lexer(t_data *data)
 {

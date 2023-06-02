@@ -20,8 +20,9 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
 			srcs/utils/utils_string_2.c					\
 			srcs/utils/utils_string_itoa.c				\
 			srcs/utils/utils_string_split.c				\
-			srcs/vars/environment.c						\
-			srcs/vars/handle_dollar.c					\
+			srcs/vars/vars_handler.c					\
+			srcs/vars/vars_helpers_1.c					\
+			srcs/vars/vars_helpers_2.c					\
 			srcs/cmd.c									\
 			srcs/lexer.c								\
 			srcs/main.c									\

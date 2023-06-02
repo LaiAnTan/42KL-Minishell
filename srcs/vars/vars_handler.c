@@ -15,35 +15,6 @@ int	get_keyword(char *line, int stop)
 }
 
 /*
-function used in variable substitution = $HOME
-if the keyword given in name begins with a ?, it will immediately return the value of
-the exit value of the last command
-
-else, it will search for the variable in the env variable list, and then return the value
-of the variable using get_val()
-
-if the keyword cannot be found in the list, it returns ""
-
-*/
-char	*access_var(t_data *data, char *name) 
-{
-	t_list	*lst;
-
-	lst = data->vars;
-	if (!name)
-		return (ft_strdup(""));
-	if (name[0] == '?')
-		return (ft_itoa(data->last_exit));
-	while (lst)
-	{
-		if (ft_strcmp_equals(lst->env.str, name) == 0)
-			return(get_val(lst));
-		lst = lst->next;
-	}
-	return (ft_strdup(""));
-}
-
-/*
 function that searches a symbol stated in to_find in a string line
 
 this function is very self-explanatory
