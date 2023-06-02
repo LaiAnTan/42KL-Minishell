@@ -30,10 +30,10 @@ int	handle_line(t_data *data)
 	char	*line;
 
 	line = readline("\x1b[31;1m" "Minishell$ " "\x1b[m");
-	if (line && *line)
+	if (line)
 	{
 		add_history(line);
-		// rl_redisplay();
+		rl_redisplay();
 		data->line = ft_strdup(line);
 		free(line);
 		return (1);
@@ -90,9 +90,7 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		replace_dollar(&data);
 		lexer(&data);
-		// print_double(data.tokens);
 		parser(&data);
-		// print_parsed(data.cmds);
 		run_cmd(&data);
 		dup2(data.stdin_backup, STDIN_FILENO);
 		dup2(data.stdout_backup, STDOUT_FILENO);
