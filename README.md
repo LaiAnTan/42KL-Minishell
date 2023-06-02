@@ -31,4 +31,5 @@ Features:
 
 ## Known issues
 
-1.	```export A="ho hi" export B="$A"``` and then ```echo $B``` does not work, will not fix in the forseeable future
+1.	variables inside variables currently does not work, will not fix in the forseeable future
+	> ```export A="hi" export B="$A"``` and then ```echo $B``` 

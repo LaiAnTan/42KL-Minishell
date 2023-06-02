@@ -20,14 +20,14 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
 			srcs/utils/utils_string_2.c					\
 			srcs/utils/utils_string_itoa.c				\
 			srcs/utils/utils_string_split.c				\
-			srcs/cmd.c					\
-			srcs/environment.c			\
-			srcs/handle_dollar.c		\
-			srcs/lexer.c				\
-			srcs/main.c					\
-			srcs/parser.c				\
-			srcs/path.c					\
-			srcs/signal.c				\
+			srcs/vars/environment.c						\
+			srcs/vars/handle_dollar.c					\
+			srcs/cmd.c									\
+			srcs/lexer.c								\
+			srcs/main.c									\
+			srcs/parser.c								\
+			srcs/path.c									\
+			srcs/signal.c								\
 
 SRCS_H = headers/minishell.h
 

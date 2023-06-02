@@ -196,7 +196,7 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 				{
 					free_2d_array(&cmd_paths);
 					free_2d_array(&args);
-					exit (errno);
+					exit(errno);
 				}
 			}
 			else
