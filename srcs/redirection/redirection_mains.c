@@ -110,8 +110,7 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 		if (redirect_info == NULL)
 			return (-1); // error
 		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
-			return (1); // done
-
+			break;
 		i = redirect_info[1] + 1;
 		if (redirect_info[0] == 1)
 			error = handle_redir_output(args[i], out_fd);
@@ -127,5 +126,7 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 
 		free(redirect_info);
 	}
+	if (redirect_info)
+		free(redirect_info);
 	return (1); // done
 }
