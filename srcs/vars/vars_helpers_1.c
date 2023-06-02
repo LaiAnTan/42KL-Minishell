@@ -1,25 +1,4 @@
-#include "../headers/minishell.h"
-
-/*
-function that converts the envp array of strings into a linked list
-*/
-t_list	*set_env(char **envp)
-{
-	int		i;
-	t_list	*vars;
-	t_list	*node;
-
-
-	i = 1;	
-	vars = ft_lstnew_env(envp[0]);
-	while (envp[i] != NULL)
-	{
-		node = ft_lstnew_env(envp[i]);
-		ft_lstadd_back(&vars, node);
-		i++;
-	}
-	return (vars);
-}
+#include "../../headers/minishell.h"
 
 /*
 function that gets the position of the equal in an env variable
@@ -63,7 +42,7 @@ char	*get_val(t_list *node)
 /*
 function that checks if the variable names are the same
 */
-int	compare_name(char *var, char *name)
+static int	compare_name(char *var, char *name)
 {
 	int	i;
 
@@ -97,28 +76,30 @@ t_list	*find_var(t_list *vars, char *to_find)
 }
 
 /*
-function that converts the linked list of env variables into a 2d array inside data
-*/
-void	rebuild_envp(t_data *data)
-{
-	int		i;
-	int		lst_size;
-	t_list	*lst;
-	t_list	*head;
+function used to access variables
+if the keyword given in name begins with a ?, it will immediately return the value of
+the exit value of the last command
 
-	i = 0;
+else, it will search for the variable in the env variable list, and then return the value
+of the variable using get_val()
+
+if the keyword cannot be found in the list, it returns ""
+
+*/
+char	*access_var(t_data *data, char *name) 
+{
+	t_list	*lst;
+
 	lst = data->vars;
-	lst_size = ft_lstsize(lst);
-	head = lst;
-	if (data->my_envp != NULL)
-		free_2d_array(&data->my_envp);
-	data->my_envp = (char **) malloc(sizeof(char *) * (lst_size + 1));
-	while (lst != NULL)
+	if (!name)
+		return (ft_strdup(""));
+	if (name[0] == '?')
+		return (ft_itoa(data->last_exit));
+	while (lst)
 	{
-		data->my_envp[i] = ft_strdup(lst->env.str);
-		i++;
+		if (ft_strcmp_equals(lst->env.str, name) == 0)
+			return(get_val(lst));
 		lst = lst->next;
 	}
-	data->my_envp[i] = NULL;
-	lst = head;
+	return (ft_strdup(""));
 }
