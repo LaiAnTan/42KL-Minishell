@@ -116,6 +116,7 @@ int	lexer(t_data *data)
 			break ;
 		if (ret_val == 4 || ret_val == 5)
 			data->tokens = realloc_append(data->tokens, "");
+
 		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
 		data->tokens = realloc_append(data->tokens, new_token);
 		if (ret_val > 0)
