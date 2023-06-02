@@ -115,7 +115,7 @@ int	lexer(t_data *data)
 		if (ret_val == -1 || token_pos[1] >= len)
 			break ;
 		if (ret_val == 4 || ret_val == 5)
-			data->tokens = realloc_append(data->tokens, ft_strdup(""));
+			data->tokens = realloc_append(data->tokens, "");
 		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
 		data->tokens = realloc_append(data->tokens, new_token);
 		if (ret_val > 0)
@@ -124,15 +124,15 @@ int	lexer(t_data *data)
 			{
 				if (data->line[token_pos[1] + 1] == ' ')
 				{
-					data->tokens = realloc_append(data->tokens, ft_strdup(""));
+					data->tokens = realloc_append(data->tokens, "");
 					++token_pos[1];
 				}
 			}
 			else if (ret_val == 4 || ret_val == 5)
-				data->tokens = realloc_append(data->tokens, ft_strdup(""));
+				data->tokens = realloc_append(data->tokens, "");
 		}
 		else if (data->line[token_pos[1] + 1] == ' ')
-			data->tokens = realloc_append(data->tokens, ft_strdup(""));
+			data->tokens = realloc_append(data->tokens, "");
 		free(new_token);
 	}
 	return (1);
