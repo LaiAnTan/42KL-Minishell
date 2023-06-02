@@ -25,8 +25,9 @@ function to handle here document input redirection
 uses a pipe which acts as temporary storage for input
 when the delimiter character is found, the whole input except the delimiter is redirected when in_fd is duplicated to open the write end of the pipe
 */
-int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
+int	handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in)
 {
+	int		child_fd;
 	int		storage[2]; // 0 - read 1 - write
 	char	*line;
 
@@ -34,18 +35,27 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 		return (-1);
 	pipe(storage);
 	line = NULL;
-	while (1)
+	child_fd = fork();
+	if (!child_fd)
 	{
-		line = readline("> ");
-		rl_redisplay();
-		if (ft_strcmp(line, delimiter) == 0)
-			break ;
-		write(storage[1], line, ft_strlen(line));
-		write(storage[1], "\n", 1);
-		free(line);
+		close(storage[0]);
+		// reset standard input
+		dup2(std_in, STDIN_FILENO);
+		while (1)
+		{
+			line = readline("> ");
+			rl_redisplay();
+			if (ft_strcmp(line, delimiter) == 0)
+				break ;
+			write(storage[1], line, ft_strlen(line));
+			write(storage[1], "\n", 1);
+			free(line);
+		}
+		exit(1);
 	}
-	dup2(storage[0], *in_fd);
 	close(storage[1]);
+	waitpid(child_fd, 0, 0);
+	dup2(storage[0], *in_fd);
 	return (1);
 }
 

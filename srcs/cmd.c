@@ -104,7 +104,7 @@ void	multiple_commands(t_data *data)
 			// SO PIPE_STORAGE WILL HAVE THE CONTENTS OF THE PREVIOUS PIPE HEHHHHHHHHHHH
 			if (!(dispatched == cmd_count - 1))
 				close(pipe_storage[0]);
-			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
+			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd, data->stdin_backup) == -1)
 			{
 				printf("error happened\n"); // should never happen
 				break ;
@@ -152,7 +152,7 @@ void	run_cmd(t_data *data)
 		multiple_commands(data);
 	else
 	{
-		if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd) == -1)
+		if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd, data->stdin_backup) == -1)
 		{
 			printf("error happened\n");
 			return ;

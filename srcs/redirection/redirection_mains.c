@@ -93,7 +93,7 @@ char	**get_cmd_args_without_redirect(char **args)
 /*
 function that handles redirections
 */
-int		handle_redirect(char **args, int *in_fd, int *out_fd)
+int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 {
 	int		i;
 	int		error;
@@ -120,7 +120,7 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd)
 		else if (redirect_info[0] == 3)
 			error = handle_redir_input(args[i], in_fd);
 		else if (redirect_info[0] == 4)
-			error = handle_redir_input_heredoc(args[i], in_fd);
+			error = handle_redir_input_heredoc(args[i], in_fd, std_in);
 
 		if (error == -1)
 			return (0); // error

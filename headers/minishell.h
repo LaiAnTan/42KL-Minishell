@@ -83,11 +83,11 @@ int		get_keyword(char *line, int stop);
 int		is_redirect(char *arg);
 int		get_redirect_type(char *arg);
 int		contains_redirect(char **args);
-int		handle_redirect(char **args, int *in_fd, int *out_fd);
+int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in);
 
 int		handle_redir_input(char *filename, int *in_fd);
 int		handle_redir_output(char *filename, int *out_fd);
-int		handle_redir_input_heredoc(char *delimiter, int *in_fd);
+int		handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in);
 int		handle_redir_output_append(char *filename, int *out_fd);
 
 char	**get_cmd_args_without_redirect(char **args);

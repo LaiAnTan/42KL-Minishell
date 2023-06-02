@@ -33,7 +33,7 @@ int	handle_line(t_data *data)
 	if (line && *line)
 	{
 		add_history(line);
-		rl_redisplay();
+		// rl_redisplay();
 		data->line = ft_strdup(line);
 		free(line);
 		return (1);
