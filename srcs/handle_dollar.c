@@ -1,6 +1,20 @@
 #include "../headers/minishell.h"
 
 /*
+this function handles the special index searching for variables ($)
+
+the start index would be the dollar sign, the last index would be at the first character 
+that isnt part of token or a space
+*/
+int	get_keyword(char *line, int stop)
+{
+	++stop;
+	while (line[stop] && line[stop] != ' ' && !is_token(line[stop]) && line[stop] != '$')
+		++stop;
+	return (--stop);
+}
+
+/*
 function used in variable substitution = $HOME
 if the keyword given in name begins with a ?, it will immediately return the value of
 the exit value of the last command
@@ -76,20 +90,11 @@ temp_string[0] = 'ls '
 temp_string[1] = 'SHLVL'
 temp_string[2] = ' la'
 */
-void	break_down(char *line, int *indexes, char **temp_strings, t_data *data)
+void	break_down(char *line, int *indexes, char **temp_strings)
 {
 	temp_strings[0] = ft_substr(line, indexes[0], indexes[1] - 1);
 	temp_strings[1] = ft_substr(line, indexes[1] + 1, indexes[2]);
 	temp_strings[2] = ft_substr(line, indexes[2] + 1, ft_strlen(line));
-	if (indexes[2] == indexes[1])
-	{
-		if ((line[indexes[1] + 1] == '\'' || line[indexes[1] + 1] == '\"'))
-			temp_strings[3] = ft_strdup("");
-		else
-			temp_strings[3] = ft_strdup("$");
-	}
-	else
-		temp_strings[3] = access_var(data, temp_strings[1]);
 }
 
 /*
@@ -112,6 +117,20 @@ void	recombine_parts(char **store, char **temp_strings, int *indexes)
 	ret = ft_append(ret, temp_strings[3]);
 	ret = ft_append(ret, temp_strings[2]);
 	(*store) = ret;
+}
+
+// handles the $ disappearing when $"stuff"
+int	one_side(char *line, int i, int in_ears)
+{
+	int	left;
+	int	right;
+
+	left = line[i - 1] != '\'' && line[i - 1] != '\"';
+	if (!in_ears)
+		right = line[i + 1] == '\'' || line[i + 1] == '\"';
+	else
+		right = !is_token(line[i + 1]) && line[i + 1] != ' ';
+	return (left && right);
 }
 
 // i think of a better way tmr morning
@@ -141,7 +160,16 @@ void	replace_dollar(t_data *data)
 		else if (ret[indexes[1]] == '$')
 		{
 			indexes[2] = get_keyword(ret, indexes[1]);
-			break_down(ret, indexes, string_storage, data);
+			break_down(ret, indexes, string_storage);
+			if (indexes[2] == indexes[1])
+			{
+				if (one_side(ret, indexes[2], special_case))
+					string_storage[3] = ft_strdup("");
+				else
+					string_storage[3] = ft_strdup("$");
+			}
+			else
+				string_storage[3] = access_var(data, string_storage[1]);
 			recombine_parts(&ret, string_storage, indexes);
 			reset(string_storage, indexes);
 		}

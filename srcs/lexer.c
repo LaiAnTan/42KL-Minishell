@@ -39,20 +39,6 @@ int	bunny_ears(char *line, int stop, int to_match)
 }
 
 /*
-this function handles the special index searching for variables ($)
-
-the start index would be the dollar sign, the last index would be at the first character 
-that isnt part of token or a space
-*/
-int	get_keyword(char *line, int stop)
-{
-	++stop;
-	while (line[stop] && line[stop] != ' ' && !is_token(line[stop]))
-		++stop;
-	return (--stop);
-}
-
-/*
 this function finds the index start and end for all the token
 
 it will first skip all leading whitespaces from start
@@ -133,6 +119,8 @@ int	lexer(t_data *data)
 		ret_val = find_token_pos(data->line, token_pos);
 		if (ret_val == -1 || token_pos[1] >= len)
 			break ;
+		if (ret_val == 4 || ret_val == 5)
+			data->tokens = realloc_append(data->tokens, ft_strdup(""));
 		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
 		data->tokens = realloc_append(data->tokens, new_token);
 		if (ret_val > 0)
