@@ -15,10 +15,11 @@ int	single_command(t_data *data, t_list *cmds)
 	if (exit_status == -1)
 	{
 		cmd_paths = get_cmd_path(data, cmd);
-		return (exec_cmd(data, cmd_paths, cmds->cmd.cmd, cmd));
+		exit_status = exec_cmd(data, cmd_paths, cmds->cmd.cmd, cmd);
+		free(cmd);
+		free_2d_array(&cmd_paths);
 	}
-	else
-		return (exit_status);
+	return (exit_status);
 }
 
 /*
@@ -97,10 +98,10 @@ void	multiple_commands(t_data *data)
 		last_child_pid = fork();
 		if (last_child_pid == 0)
 		{
-			if (!(dispatched == cmd_count - 1))
-				close(pipe_storage[0]);
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
+			if (!(dispatched == cmd_count - 1))
+				close(pipe_storage[0]);
 			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd, data->stdin_backup) == -1)
 				exit (1);
 			data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
