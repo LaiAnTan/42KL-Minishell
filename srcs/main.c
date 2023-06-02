@@ -10,7 +10,7 @@ int init_data(t_data *data, char **envp)
 {
 	data->stdin_backup = dup(STDIN_FILENO);
 	data->stdout_backup = dup(STDOUT_FILENO);
-	data->cwd = getcwd(NULL, PATH_MAX);
+	data->cwd = getcwd(NULL, 1024);
 	data->vars = set_env(envp);
 	data->cmds = NULL;
 	data->my_envp = NULL;
@@ -38,7 +38,7 @@ int	handle_line(t_data *data)
 			return (0);
 		}
 		add_history(line);
-		// rl_redisplay();
+		rl_redisplay();
 		data->line = ft_strdup(line);
 		free(line);
 		return (1);
@@ -94,9 +94,7 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		replace_dollar(&data);
 		lexer(&data);
-		// print_double(data.tokens);
 		parser(&data);
-		// print_parsed(data.cmds);
 		run_cmd(&data);
 		dup2(data.stdin_backup, STDIN_FILENO);
 		dup2(data.stdout_backup, STDOUT_FILENO);

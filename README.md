@@ -17,7 +17,7 @@ Features:
 ## Dependencies
 - gcc with the readline library
 - GNU make
-## Installation instructions
+## Installation
 
 1. ```git clone https://github.com/LaiAnTan/42KL-Minishell``` to clone this repository
 2. ```make``` to create the executable
@@ -28,3 +28,7 @@ Features:
 
 - cshi-xia (@SphagettiCodes)
 - tlai-an (Myself)
+
+## Known issues
+
+1.	```export A="ho hi" export B="$A"``` and then ```echo $B``` does not work, will not fix in the forseeable future
