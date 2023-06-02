@@ -16,9 +16,10 @@ int	single_command(t_data *data, t_list *cmds)
 	{
 		cmd_paths = get_cmd_path(data, cmd);
 		exit_status = exec_cmd(data, cmd_paths, cmds->cmd.cmd, cmd);
-		free(cmd);
 		free_2d_array(&cmd_paths);
 	}
+	if (cmd)
+		free(cmd);
 	return (exit_status);
 }
 
