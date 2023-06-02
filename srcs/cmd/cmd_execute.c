@@ -1,4 +1,4 @@
-#include "../headers/minishell.h"
+#include "../../headers/minishell.h"
 
 /*
 function that runs a single command in the node cmds

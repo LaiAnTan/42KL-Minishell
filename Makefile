@@ -10,6 +10,8 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
 			srcs/builtins/builtins_export.c				\
 			srcs/builtins/builtins_handler_env_pwd.c	\
 			srcs/builtins/builtins_unset.c				\
+			srcs/cmd/cmd_execute.c						\
+			srcs/cmd/cmd_paths.c						\
 			srcs/redirection/redirection_handlers.c		\
 			srcs/redirection/redirection_helpers.c		\
 			srcs/redirection/redirection_mains.c		\
@@ -23,11 +25,9 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
 			srcs/vars/vars_handler.c					\
 			srcs/vars/vars_helpers_1.c					\
 			srcs/vars/vars_helpers_2.c					\
-			srcs/cmd.c									\
 			srcs/lexer.c								\
 			srcs/main.c									\
 			srcs/parser.c								\
-			srcs/path.c									\
 			srcs/signal.c								\
 
 SRCS_H = headers/minishell.h
