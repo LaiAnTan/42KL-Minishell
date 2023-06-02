@@ -39,20 +39,6 @@ int	bunny_ears(char *line, int stop, int to_match)
 }
 
 /*
-this function handles the special index searching for variables ($)
-
-the start index would be the dollar sign, the last index would be at the first character 
-that isnt part of token or a space
-*/
-int	get_keyword(char *line, int stop)
-{
-	++stop;
-	while (line[stop] && line[stop] != ' ' && !is_token(line[stop]))
-		++stop;
-	return (--stop);
-}
-
-/*
 this function finds the index start and end for all the token
 
 it will first skip all leading whitespaces from start

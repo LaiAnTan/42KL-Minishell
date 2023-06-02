@@ -1,6 +1,20 @@
 #include "../headers/minishell.h"
 
 /*
+this function handles the special index searching for variables ($)
+
+the start index would be the dollar sign, the last index would be at the first character 
+that isnt part of token or a space
+*/
+int	get_keyword(char *line, int stop)
+{
+	++stop;
+	while (line[stop] && line[stop] != ' ' && !is_token(line[stop]) && line[stop] != '$')
+		++stop;
+	return (--stop);
+}
+
+/*
 function used in variable substitution = $HOME
 if the keyword given in name begins with a ?, it will immediately return the value of
 the exit value of the last command
