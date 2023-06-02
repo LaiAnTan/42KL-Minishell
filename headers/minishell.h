@@ -166,4 +166,7 @@ char	*ft_substr(char *s, unsigned int start, unsigned int end);
 char	**ft_split(char *s, char c);
 char	**realloc_append(char **src, char *str);
 
+
+int	is_token(char c);
+
 #endif

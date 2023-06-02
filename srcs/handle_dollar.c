@@ -132,6 +132,11 @@ void	replace_dollar(t_data *data)
 		}
 		else if (ret[indexes[1]] == '$')
 		{
+			if (special_case && is_token(ret[indexes[1] + 1]))
+			{
+				++indexes[1];
+				continue;
+			}
 			indexes[2] = get_keyword(ret, indexes[1]);
 			break_down(ret, indexes, string_storage);
 			string_storage[3] = access_var(data, string_storage[1]);
