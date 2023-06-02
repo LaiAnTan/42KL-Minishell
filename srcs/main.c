@@ -103,6 +103,7 @@ int main(int argc, char **argv, char **envp)
 		if (data.line)
 			free(data.line);
 	}
-	ft_lstfree(&data.vars);
+	if (data.vars)
+		ft_lstfree(&data.vars);
 	return (0);
 }
