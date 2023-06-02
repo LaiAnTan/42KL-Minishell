@@ -36,7 +36,7 @@ SRCS_O = $(SRCS_C:.c=.o)
 
 CFLAG = -Wall -Wextra -Werror
 
-FSAN = -fsanitize=address -g
+# FSAN = -fsanitize=address -g
 
 LIB = -lreadline
 

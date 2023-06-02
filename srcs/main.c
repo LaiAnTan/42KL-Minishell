@@ -93,8 +93,13 @@ int main(int argc, char **argv, char **envp)
 		if (!handle_line(&data))
 			continue;
 		replace_dollar(&data);
+
 		lexer(&data);
+		print_double(data.tokens);
+
 		parser(&data);
+		print_parsed(data.cmds);
+
 		run_cmd(&data);
 		dup2(data.stdin_backup, STDIN_FILENO);
 		dup2(data.stdout_backup, STDOUT_FILENO);
