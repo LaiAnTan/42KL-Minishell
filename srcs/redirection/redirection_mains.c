@@ -123,7 +123,7 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 			error = handle_redir_input_heredoc(args[i], in_fd, std_in);
 
 		if (error == -1)
-			return (0); // error
+			return (-1); // error
 
 		free(redirect_info);
 	}

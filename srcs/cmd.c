@@ -106,8 +106,8 @@ void	multiple_commands(t_data *data)
 				close(pipe_storage[0]);
 			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd, data->stdin_backup) == -1)
 			{
-				printf("error happened\n"); // should never happen
-				break ;
+				printf("whoopsie\n");
+				exit (1);
 			}
 			data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
 			dup2(data->cmds->in_fd, STDIN_FILENO);
@@ -133,6 +133,8 @@ void	multiple_commands(t_data *data)
 			data->cmds = data->cmds->next;
 		}
 	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	while (cmd_count)
 	{
 		waitpid(last_child_pid, &status, 0);

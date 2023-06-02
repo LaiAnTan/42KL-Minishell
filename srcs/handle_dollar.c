@@ -77,11 +77,20 @@ temp_string[0] = 'ls '
 temp_string[1] = 'SHLVL'
 temp_string[2] = ' la'
 */
-void	break_down(char *line, int *indexes, char **temp_strings)
+void	break_down(char *line, int *indexes, char **temp_strings, t_data *data)
 {
 	temp_strings[0] = ft_substr(line, indexes[0], indexes[1] - 1);
 	temp_strings[1] = ft_substr(line, indexes[1] + 1, indexes[2]);
 	temp_strings[2] = ft_substr(line, indexes[2] + 1, ft_strlen(line));
+	if (indexes[2] == indexes[1])
+	{
+		if ((line[indexes[1] + 1] == '\'' || line[indexes[1] + 1] == '\"'))
+			temp_strings[3] = ft_strdup("");
+		else
+			temp_strings[3] = ft_strdup("$");
+	}
+	else
+		temp_strings[3] = access_var(data, temp_strings[1]);
 }
 
 /*
@@ -132,14 +141,8 @@ void	replace_dollar(t_data *data)
 		}
 		else if (ret[indexes[1]] == '$')
 		{
-			if (special_case && is_token(ret[indexes[1] + 1]))
-			{
-				++indexes[1];
-				continue;
-			}
 			indexes[2] = get_keyword(ret, indexes[1]);
-			break_down(ret, indexes, string_storage);
-			string_storage[3] = access_var(data, string_storage[1]);
+			break_down(ret, indexes, string_storage, data);
 			recombine_parts(&ret, string_storage, indexes);
 			reset(string_storage, indexes);
 		}
