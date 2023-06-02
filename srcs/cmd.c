@@ -104,11 +104,10 @@ void	multiple_commands(t_data *data)
 			// SO PIPE_STORAGE WILL HAVE THE CONTENTS OF THE PREVIOUS PIPE HEHHHHHHHHHHH
 			if (!(dispatched == cmd_count - 1))
 				close(pipe_storage[0]);
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd, data->stdin_backup) == -1)
-			{
-				printf("whoopsie\n");
 				exit (1);
-			}
 			data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
 			dup2(data->cmds->in_fd, STDIN_FILENO);
 			dup2(data->cmds->out_fd, STDOUT_FILENO);
@@ -156,7 +155,7 @@ void	run_cmd(t_data *data)
 	{
 		if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd, data->stdin_backup) == -1)
 		{
-			printf("error happened\n");
+			data->last_exit = 1;
 			return ;
 		}
 		data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
