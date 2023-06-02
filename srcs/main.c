@@ -32,6 +32,11 @@ int	handle_line(t_data *data)
 	line = readline("\x1b[31;1m" "Minishell$ " "\x1b[m");
 	if (line)
 	{
+		if (line[0] == '\0')
+		{
+			free(line);
+			return (0);
+		}
 		add_history(line);
 		rl_redisplay();
 		data->line = ft_strdup(line);
@@ -40,7 +45,6 @@ int	handle_line(t_data *data)
 	}
 	else
 		exit(0); // handle ctrl + D
-	return (0);
 }
 
 /*
