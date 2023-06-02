@@ -106,7 +106,6 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 	while (args[i] != NULL)
 	{
 		redirect_info = get_next_redirect(args, i);
-
 		if (redirect_info == NULL)
 			return (-1); // error
 		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
@@ -120,10 +119,8 @@ int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 			error = handle_redir_input(args[i], in_fd);
 		else if (redirect_info[0] == 4)
 			error = handle_redir_input_heredoc(args[i], in_fd, std_in);
-
 		if (error == -1)
 			return (-1); // error
-
 		free(redirect_info);
 	}
 	if (redirect_info)
