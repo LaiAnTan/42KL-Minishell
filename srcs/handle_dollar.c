@@ -130,7 +130,7 @@ void	replace_dollar(t_data *data)
 	string_storage[4] = NULL;
 	while (search_symbol(&ret[indexes[1]], '$') != -1)
 	{
-		printf("%s\n", &ret[indexes[1]]);
+		// printf("%s\n", &ret[indexes[1]]);
 		if (ret[indexes[1]] == '\"')
 			special_case = !special_case;
 		else if (ret[indexes[1]] == '\'' && !special_case)
@@ -148,7 +148,7 @@ void	replace_dollar(t_data *data)
 		}
 		++indexes[1];
 	}
-	printf("done replace --> %s\n", ret);
+	// printf("done replace --> %s\n", ret);
 	free(data->line);
 	data->line = ret;
 }
