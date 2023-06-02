@@ -31,5 +31,4 @@ Features:
 
 ## Known issues
 
-1.	export A="ho hi" export B="$A"
-	echo $B
+1.	```export A="ho hi" export B="$A"``` and then ```echo $B``` does not work, will not fix in the forseeable future
