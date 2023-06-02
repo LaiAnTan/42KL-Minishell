@@ -72,29 +72,31 @@ function that handles the execution of multiple commands, simulating the behavio
 */
 void	multiple_commands(t_data *data)
 {
-	int	dispatched; // shit 6 variables
-	int	cmd_count;
-	int	pipe_storage[2];
-	int	prev_pipe;
-	int	status;
-	int	last_child_pid;
+	t_list	*curr; // make it 7
+	int		dispatched; // shit 6 variables
+	int		cmd_count;
+	int		pipe_storage[2];
+	int		prev_pipe;
+	int		status;
+	int		last_child_pid;
 
 	dispatched = 0;
 	cmd_count = get_command_count(data);
+	curr = data->cmds;
 	while (dispatched < cmd_count)
 	{
 		if (!dispatched)
 		{
 			pipe(pipe_storage);
-			data->cmds->out_fd = pipe_storage[1];
+			curr->out_fd = pipe_storage[1];
 		}
 		else if (dispatched == cmd_count - 1)
-			data->cmds->in_fd = prev_pipe;
+			curr->in_fd = prev_pipe;
 		else
 		{
-			data->cmds->in_fd = prev_pipe;
+			curr->in_fd = prev_pipe;
 			pipe(pipe_storage);
-			data->cmds->out_fd = pipe_storage[1];
+			curr->out_fd = pipe_storage[1];
 		}
 		last_child_pid = fork();
 		if (last_child_pid == 0)
@@ -103,12 +105,12 @@ void	multiple_commands(t_data *data)
 			signal(SIGQUIT, SIG_DFL);
 			if (!(dispatched == cmd_count - 1))
 				close(pipe_storage[0]);
-			if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd, &data->cmds->out_fd, data->stdin_backup) == -1)
+			if (handle_redirect(curr->cmd.cmd, &curr->in_fd, &curr->out_fd, data->stdin_backup) == -1)
 				exit (1);
-			data->cmds->cmd.cmd = get_cmd_args_without_redirect(data->cmds->cmd.cmd);
-			dup2(data->cmds->in_fd, STDIN_FILENO);
-			dup2(data->cmds->out_fd, STDOUT_FILENO);
-			exit (single_command(data, data->cmds));
+			curr->cmd.cmd = get_cmd_args_without_redirect(curr->cmd.cmd);
+			dup2(curr->in_fd, STDIN_FILENO);
+			dup2(curr->out_fd, STDOUT_FILENO);
+			exit (single_command(data, curr));
 		}
 		else
 		{
@@ -126,7 +128,7 @@ void	multiple_commands(t_data *data)
 				prev_pipe = pipe_storage[0];
 			}
 			++dispatched;
-			data->cmds = data->cmds->next;
+			curr = curr->next;
 		}
 	}
 	signal(SIGINT, SIG_IGN);

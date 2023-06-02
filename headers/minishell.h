@@ -62,7 +62,6 @@ typedef struct s_data
 
 	char	*line;
 	char	*cwd;
-	int		token_num; // <-- this records token_num because i officially gave up
 	char	**tokens;
 	char	**my_envp;
 	

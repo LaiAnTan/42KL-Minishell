@@ -13,7 +13,6 @@ void	ft_lstfree(t_list **lst)
 			free(curr->env.str);
 		if(curr->cmd.cmd != NULL)
 			free_2d_array(&curr->cmd.cmd);
-		curr->next = NULL;
 		free(curr);
 		curr = next;
 	}
