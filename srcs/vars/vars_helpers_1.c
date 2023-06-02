@@ -47,7 +47,8 @@ static int	compare_name(char *var, char *name)
 	int	i;
 
 	i = 0;
-	while (name[i] != '\0')
+	// printf("comparing %s with %s\n", var, name);
+	while (name[i] != '\0' && var[i] != '\0')
 	{
 		if (name[i] != var[i])
 			return (0);

@@ -1,19 +1,24 @@
 #include "../../headers/minishell.h"
 
+void	ft_lst_nodefree(t_list *node)
+{
+	if (node->env.str != NULL)
+		free(node->env.str);
+	if(node->cmd.cmd != NULL)
+		free_2d_array(&node->cmd.cmd);
+	free(node);
+}
+
 void	ft_lstfree(t_list **lst)
 {
 	t_list	*curr;
 	t_list	*next;
 
-	curr = *lst;
+	curr = (*lst);
 	while (curr != NULL)
 	{
 		next = curr->next;
-		if (curr->env.str != NULL)
-			free(curr->env.str);
-		if(curr->cmd.cmd != NULL)
-			free_2d_array(&curr->cmd.cmd);
-		free(curr);
+		ft_lst_nodefree(curr);
 		curr = next;
 	}
 	*lst = NULL;
@@ -24,17 +29,18 @@ void	ft_lstdel_env(t_list **lst, t_list *node)
 	t_list	*head;
 	t_list	*prev;
 
-	head = *lst;
-	if (head == node)
+	if ((*lst) == node)
 	{
-		head = head->next;
+		(*lst) = (*lst)->next;
+		ft_lst_nodefree(node);
 		return ;
 	}
+	head = *lst;
 	prev = head;
 	while (prev->next != node)
 		prev = prev->next;
 	prev->next = node->next;
-	free(node);
+	ft_lst_nodefree(node);
 	return ;
 }
 

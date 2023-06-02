@@ -43,21 +43,21 @@ int	builtin_cd(char **args, t_data *data)
 		node = find_var(data->vars, "OLDPWD");
 		if (node == NULL)
 		{
-			node = ft_lstnew_env(ft_strdup(ft_append(ft_strdup("OLDPWD="), data->cwd)));
+			node = ft_lstnew_env(ft_append(ft_strdup("OLDPWD="), data->cwd));
 			ft_lstadd_back(&data->vars, node);
 		}
 		else
-			node->env.str = ft_strdup(ft_append(ft_strdup("OLDPWD="), data->cwd));
+			node->env.str = ft_append(ft_strdup("OLDPWD="), data->cwd);
 		free(data->cwd);
 		data->cwd = getcwd(NULL, PATH_MAX);
 		node = find_var(data->vars, "PWD");
 		if (node == NULL)
 		{
-			node = ft_lstnew_env(ft_strdup(ft_append(ft_strdup("PWD="), data->cwd)));
+			node = ft_lstnew_env(ft_append(ft_strdup("PWD="), data->cwd));
 			ft_lstadd_back(&data->vars, node);
 		}
 		else
-			node->env.str = ft_strdup(ft_append(ft_strdup("PWD="), data->cwd));
+			node->env.str = ft_append(ft_strdup("PWD="), data->cwd);
 		data->last_exit = 0;
 	}
 	else
