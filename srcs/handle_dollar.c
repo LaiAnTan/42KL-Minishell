@@ -10,7 +10,6 @@ of the variable using get_val()
 
 if the keyword cannot be found in the list, it returns ""
 
-why the fuck are we writting documentation, no one is gonna read this other than us
 */
 char	*access_var(t_data *data, char *name) 
 {

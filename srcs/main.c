@@ -10,7 +10,7 @@ int init_data(t_data *data, char **envp)
 {
 	data->stdin_backup = dup(STDIN_FILENO);
 	data->stdout_backup = dup(STDOUT_FILENO);
-	data->cwd = getcwd(NULL, PATH_MAX);
+	data->cwd = getcwd(NULL, 1024);
 	data->vars = set_env(envp);
 	data->cmds = NULL;
 	data->my_envp = NULL;
