@@ -84,11 +84,10 @@ char	*ft_trimstr(char *source, char to_trim)
 	while (source[start] && source[start] == to_trim)
 		++start;
 	if (source[start] == '\0')
+		ret = ft_strdup("");
+	else
 	{
-		free(source);
-		return (ft_strdup(""));
-	}
-	while (end >= 0 && source[end] == to_trim)
+		while (end >= 0 && source[end] == to_trim)
 		--end;
 		ret = ft_substr(source, start, end);
 	}
