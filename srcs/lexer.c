@@ -3,7 +3,7 @@
 /*
 this function checks if the character is part of the token group
 
-token group is ' " | < > $
+token group is ' " | < > $(no need to handle this symbol d)
 if it does, return a non-zero value
 */
 int	is_token(char c)

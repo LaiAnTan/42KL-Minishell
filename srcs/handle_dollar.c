@@ -120,6 +120,8 @@ void	replace_dollar(t_data *data)
 	string_storage[4] = NULL;
 	while (search_symbol(&ret[indexes[1]], '$') != -1)
 	{
+		
+
 		if (ret[indexes[1]] == '\"')
 			special_case = !special_case;
 		else if (ret[indexes[1]] == '\'' && !special_case)
@@ -135,6 +137,7 @@ void	replace_dollar(t_data *data)
 			string_storage[3] = access_var(data, string_storage[1]);
 			recombine_parts(&ret, string_storage, indexes);
 			reset_storage(string_storage);
+			special_case = 0;
 			indexes[1] = 0;
 		}
 		++indexes[1];
