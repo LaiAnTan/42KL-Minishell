@@ -46,7 +46,6 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd)
 	}
 	dup2(storage[0], *in_fd);
 	close(storage[1]);
-	close(storage[2]);
 	return (1);
 }
 

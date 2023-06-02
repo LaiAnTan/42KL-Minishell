@@ -9,7 +9,7 @@ if it does, return a non-zero value
 int	is_token(char c)
 {
 	int		i = 0;
-	char	token[] = "\'\"|><$";
+	char	token[] = "\'\"|><";
 	
 	while (token[i] != '\0')
 	{
@@ -145,6 +145,8 @@ int	lexer(t_data *data)
 					++token_pos[1];
 				}
 			}
+			else if (ret_val == 4 || ret_val == 5)
+				data->tokens = realloc_append(data->tokens, ft_strdup(""));
 		}
 		else if (data->line[token_pos[1] + 1] == ' ')
 			data->tokens = realloc_append(data->tokens, ft_strdup(""));
