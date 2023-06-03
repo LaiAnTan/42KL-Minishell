@@ -130,7 +130,7 @@ int	builtin_export(char **args, t_data *data)
 			free(var_name);
 			if (node == NULL)
 			{
-				node = ft_lstnew_env(args[i]);
+				node = ft_lstnew_env(ft_strdup(args[i]));
 				ft_lstadd_back(&lst, node);
 			}
 			else

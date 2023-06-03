@@ -17,7 +17,10 @@ int builtin_unset(char **args, t_data *data)
 	while (args[i] != NULL)
 	{
 		if (ft_strcmp(args[i], "_") == 0)
+		{
 			i++;
+			continue;
+		}
 		node = find_var(lst, args[i]);
 		if (node != NULL)
 			ft_lstdel_env(&lst, node);

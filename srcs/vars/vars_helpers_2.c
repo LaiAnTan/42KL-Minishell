@@ -37,11 +37,11 @@ t_list	*set_env(char **envp)
 	t_list	*node;
 
 
-	i = 1;	
-	vars = ft_lstnew_env(envp[0]);
+	i = 0;
+	vars = NULL;
 	while (envp[i] != NULL)
 	{
-		node = ft_lstnew_env(envp[i]);
+		node = ft_lstnew_env(ft_strdup(envp[i]));
 		ft_lstadd_back(&vars, node);
 		i++;
 	}
