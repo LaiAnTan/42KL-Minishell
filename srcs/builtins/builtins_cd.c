@@ -49,7 +49,7 @@ int	builtin_cd(char **args, t_data *data)
 		else
 			node->env.str = ft_append(ft_strdup("OLDPWD="), data->cwd);
 		free(data->cwd);
-		data->cwd = getcwd(NULL, PATH_MAX);
+		data->cwd = getcwd(NULL, 1024);
 		node = find_var(data->vars, "PWD");
 		if (node == NULL)
 		{
