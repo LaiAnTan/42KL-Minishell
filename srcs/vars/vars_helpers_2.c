@@ -41,7 +41,7 @@ t_list	*set_env(char **envp)
 	vars = NULL;
 	while (envp[i] != NULL)
 	{
-		printf("%d, %s\n", i, envp[i]);
+		// printf("%d, %s\n", i, envp[i]);
 		node = ft_lstnew_env(ft_strdup(envp[i]));
 		ft_lstadd_back(&vars, node);
 		i++;
