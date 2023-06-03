@@ -47,10 +47,7 @@ int	builtin_cd(char **args, t_data *data)
 			ft_lstadd_back(&data->vars, node);
 		}
 		else
-		{
-			free(node->env.str);
 			node->env.str = ft_append(ft_strdup("OLDPWD="), data->cwd);
-		}
 		free(data->cwd);
 		data->cwd = getcwd(NULL, PATH_MAX);
 		node = find_var(data->vars, "PWD");
@@ -60,10 +57,7 @@ int	builtin_cd(char **args, t_data *data)
 			ft_lstadd_back(&data->vars, node);
 		}
 		else
-		{
-			free(node->env.str);
 			node->env.str = ft_append(ft_strdup("PWD="), data->cwd);
-		}
 		data->last_exit = 0;
 	}
 	else
