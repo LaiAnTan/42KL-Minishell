@@ -23,7 +23,7 @@ int builtin_unset(char **args, t_data *data)
 		}
 		node = find_var(lst, args[i]);
 		if (node != NULL)
-			ft_lstdel_env(&lst, node);
+			ft_lstdel_env(&data->vars, node);
 		i++;
 	}
 	return (0);
