@@ -71,8 +71,9 @@ int	find_token_pos(char *line, int *index_pair)
 	}
 	else
 	{
-		while (line[i + 1] != '\0' && !is_token(line[i + 1]) && line[i + 1] != ' ')
+		while (line[i] != '\0' && !is_token(line[i]) && line[i] != ' ')
 			i++;
+		--i;
 	}
 	index_pair[1] = i;
 	return (tk_type);

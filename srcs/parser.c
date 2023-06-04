@@ -54,7 +54,6 @@ im too lazy to write documentation already
 char	**extract_cmd(char **tokens, int *index_pair)
 {
 	int		j;
-	int		filled;
 	char	**cmd;
 	char	*str;
 
@@ -63,22 +62,19 @@ char	**extract_cmd(char **tokens, int *index_pair)
 	str = NULL;
 	cmd = malloc (sizeof(char *));
 	cmd[0] = NULL;
-	filled = 0;
 	while (j < index_pair[1])
 	{
-		if (ft_strlen(tokens[j]) == 0 && filled)
+		if (ft_strlen(tokens[j]) == 0)
 		{
 			cmd = realloc_append(cmd, str);
 			free(str);
 			str = NULL;
-			filled = 0;
 		}
 		else
 		{
 			if (remove_ears(&tokens[j]) == 0)
 				tokens[j] = ft_trimstr(tokens[j], ' ');
 			str = ft_append(str, tokens[j]);
-			filled = 1;
 		}
 		++j;
 	}
