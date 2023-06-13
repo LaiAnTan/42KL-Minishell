@@ -46,7 +46,7 @@ all : $(NAME) move
 		@gcc $(CFLAG) -c $< -o $(<:.c=.o)
 
 $(NAME): $(SRCS_O)
-		@gcc $(CFLAG) -o $(NAME) $(SRCS_O) $(LIB) ${FSAN}
+		@gcc $(CFLAG) $(SRCS_O) -o $(NAME) $(LIB) ${FSAN}
 
 $(ODIR) :
 	@echo "Folder $(ODIR) does not exist, making a new one..."

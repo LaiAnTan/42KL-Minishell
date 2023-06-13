@@ -1,12 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/13 10:30:54 by tlai-an           #+#    #+#             */
+/*   Updated: 2023/06/13 11:52:06 by tlai-an          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../headers/minishell.h"
 
-/*
-initializes the data structure that stores all the data required by the program
-converts the environment variables into a linked list and stores it
-tores the current working directory
-intializes 2 termios structures for later use
-*/
-int init_data(t_data *data, char **envp)
+int	init_data(t_data *data, char **envp)
 {
 	data->stdin_backup = dup(STDIN_FILENO);
 	data->stdout_backup = dup(STDOUT_FILENO);
@@ -22,9 +28,6 @@ int init_data(t_data *data, char **envp)
 	return (1);
 }
 
-/*
-function that handles reading user input and history
-*/
 int	handle_line(t_data *data)
 {
 	char	*line;
@@ -44,44 +47,50 @@ int	handle_line(t_data *data)
 		return (1);
 	}
 	else
-		exit(0); // handle ctrl + D
+		exit(0);
 }
 
-/*
-debug function for printing commands
-*/
-void	print_parsed(t_list *amogus)
-{
-	t_list *iter;
-	int		iter_count;
+// void	print_parsed(t_list *amogus)
+// {
+// 	int		iter_count;
+// 	t_list	*iter;
 
-	iter_count = 1;
-	iter = amogus;
-	while (iter)
-	{
-		printf("<Cmd %d>\n", iter_count);
-		for (int i = 0; iter->cmd.cmd[i]; ++i)
-			printf("%d | %s | %d\n", i, iter->cmd.cmd[i], ft_strlen(iter->cmd.cmd[i]));
-		iter = iter->next;
-		++iter_count;
-	}
+// 	iter_count = 1;
+// 	iter = amogus;
+// 	while (iter)
+// 	{
+// 		printf("<Cmd %d>\n", iter_count);
+// 		for (int i = 0; iter->cmd.cmd[i]; ++i)
+// 			printf("%d | %s | %d\n", i,
+// 				iter->cmd.cmd[i], ft_strlen(iter->cmd.cmd[i]));
+// 		iter = iter->next;
+// 		++iter_count;
+// 	}
+// }
+
+// void	print_double(char **stuff)
+// {
+// 	for (int i = 0; stuff[i]; ++i)
+// 	{
+// 		printf("%s - len = %d\n", stuff[i], ft_strlen(stuff[i]));
+// 	}
+// }
+
+void	cleanup(t_data *data)
+{
+	dup2(data->stdin_backup, STDIN_FILENO);
+	dup2(data->stdout_backup, STDOUT_FILENO);
+	if (data->cmds)
+		ft_lstfree(&data->cmds);
+	if (data->line)
+		free(data->line);
 }
 
-void	print_double(char **stuff)
+int	main(int argc, char **argv, char **envp)
 {
-	for (int i = 0; stuff[i]; ++i)
-	{
-		printf("%s - len = %d\n", stuff[i], ft_strlen(stuff[i]));
-	}
-}
+	t_data	data;
 
-void	replace_dollar(t_data *data);
-
-int main(int argc, char **argv, char **envp)
-{
-	(void) argv;
-	t_data data;
-
+	(void)argv;
 	if (argc != 1)
 		return (0);
 	init_data(&data, envp);
@@ -91,23 +100,13 @@ int main(int argc, char **argv, char **envp)
 		signal(SIGINT, new_line_handler);
 		signal(SIGQUIT, SIG_IGN);
 		if (!handle_line(&data))
-			continue;
+			continue ;
 		replace_dollar(&data);
-
 		lexer(&data);
-		print_double(data.tokens);
-
 		parser(&data);
-		print_parsed(data.cmds);
-
 		if (data.cmds)
 			run_cmd(&data);
-		dup2(data.stdin_backup, STDIN_FILENO);
-		dup2(data.stdout_backup, STDOUT_FILENO);
-		if (data.cmds)
-			ft_lstfree(&data.cmds);
-		if (data.line)
-			free(data.line);
+		cleanup(&data);
 	}
 	if (data.vars)
 		ft_lstfree(&data.vars);

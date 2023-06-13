@@ -1,13 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_exit.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/13 10:31:52 by tlai-an           #+#    #+#             */
+/*   Updated: 2023/06/13 11:58:05 by tlai-an          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../headers/minishell.h"
 
-/*
-function for the exit command in bash
-handles more than 2 arguments
-handles no arguments exiting with code 0
-handles non numeric arguments
-handles arguments with values larger than 255 (max exit code)
-*/
-int builtin_exit(char **args)
+int	builtin_exit(char **args)
 {
 	int		exit_code;
 

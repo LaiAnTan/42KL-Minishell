@@ -1,9 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection_handlers.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/13 10:36:25 by tlai-an           #+#    #+#             */
+/*   Updated: 2023/06/13 11:34:23 by tlai-an          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../headers/minishell.h"
 
-/*
-function to handle normal input redirection 
-in_fd is duplicated to the file opened as input
-*/
 int	handle_redir_input(char *filename, int *in_fd)
 {
 	int		fd;
@@ -20,15 +28,10 @@ int	handle_redir_input(char *filename, int *in_fd)
 	return (1);
 }
 
-/*
-function to handle here document input redirection
-uses a pipe which acts as temporary storage for input
-when the delimiter character is found, the whole input except the delimiter is redirected when in_fd is duplicated to open the write end of the pipe
-*/
 int	handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in)
 {
 	int		child_fd;
-	int		storage[2]; // 0 - read 1 - write
+	int		storage[2];
 	char	*line;
 
 	if (is_redirect(delimiter))
@@ -39,7 +42,6 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in)
 	if (!child_fd)
 	{
 		close(storage[0]);
-		// reset standard input
 		dup2(std_in, STDIN_FILENO);
 		while (1)
 		{
@@ -59,10 +61,6 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in)
 	return (1);
 }
 
-/*
-function to handle normal output redirection
-out_fd is duplicated to the file opened as output
-*/
 int	handle_redir_output(char *filename, int *out_fd)
 {
 	int	fd;
@@ -80,10 +78,6 @@ int	handle_redir_output(char *filename, int *out_fd)
 	return (1);
 }
 
-/*
-function to handle append output redirection
-out_fd is duplicated to the file opened in append mode as output
-*/
 int	handle_redir_output_append(char *filename, int *out_fd)
 {
 	int	fd;
