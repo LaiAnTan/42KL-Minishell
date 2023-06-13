@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:52 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 11:58:05 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:32:13 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+
+extern struct termios	saved;
+
+void	reset_attr()
+{
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &saved);	
+}
+
+int	reset_and_exit(int exit_code)
+{
+	reset_attr();
+	exit(exit_code);
+}
 
 int	builtin_exit(char **args)
 {
@@ -33,6 +46,5 @@ int	builtin_exit(char **args)
 	while (exit_code >= 256)
 		exit_code = exit_code - 256;
 	printf("process exited with code %d\n", exit_code);
-	exit(exit_code);
-	return (exit_code);
+	return (reset_and_exit(exit_code));
 }

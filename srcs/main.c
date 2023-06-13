@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:54 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 11:52:06 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:34:27 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
+
+struct termios	saved;
 
 int	init_data(t_data *data, char **envp)
 {
@@ -22,8 +24,7 @@ int	init_data(t_data *data, char **envp)
 	data->my_envp = NULL;
 	data->attr = malloc(sizeof(struct termios) * 2);
 	data->last_exit = 0;
-	tcgetattr(STDIN_FILENO, &data->attr->def_attributes);
-	tcgetattr(STDIN_FILENO, &data->attr->mod_attributes);
+	tcgetattr(STDIN_FILENO, &saved);
 	rebuild_envp(data);
 	return (1);
 }
@@ -47,34 +48,34 @@ int	handle_line(t_data *data)
 		return (1);
 	}
 	else
-		exit(0);
+		exit(reset_and_exit(0));
 }
 
-// void	print_parsed(t_list *amogus)
-// {
-// 	int		iter_count;
-// 	t_list	*iter;
+void	print_parsed(t_list *amogus)
+{
+	int		iter_count;
+	t_list	*iter;
 
-// 	iter_count = 1;
-// 	iter = amogus;
-// 	while (iter)
-// 	{
-// 		printf("<Cmd %d>\n", iter_count);
-// 		for (int i = 0; iter->cmd.cmd[i]; ++i)
-// 			printf("%d | %s | %d\n", i,
-// 				iter->cmd.cmd[i], ft_strlen(iter->cmd.cmd[i]));
-// 		iter = iter->next;
-// 		++iter_count;
-// 	}
-// }
+	iter_count = 1;
+	iter = amogus;
+	while (iter)
+	{
+		printf("<Cmd %d>\n", iter_count);
+		for (int i = 0; iter->cmd.cmd[i]; ++i)
+			printf("%d | %s | %d\n", i,
+				iter->cmd.cmd[i], ft_strlen(iter->cmd.cmd[i]));
+		iter = iter->next;
+		++iter_count;
+	}
+}
 
-// void	print_double(char **stuff)
-// {
-// 	for (int i = 0; stuff[i]; ++i)
-// 	{
-// 		printf("%s - len = %d\n", stuff[i], ft_strlen(stuff[i]));
-// 	}
-// }
+void	print_double(char **stuff)
+{
+	for (int i = 0; stuff[i]; ++i)
+	{
+		printf("%s - len = %d\n", stuff[i], ft_strlen(stuff[i]));
+	}
+}
 
 void	cleanup(t_data *data)
 {
@@ -88,13 +89,18 @@ void	cleanup(t_data *data)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	data;
+	t_data			data;
+	struct termios	new_term;
 
 	(void)argv;
 	if (argc != 1)
 		return (0);
 	init_data(&data, envp);
-	modify_attr(&data);
+	// this must be done in main
+	tcgetattr(STDOUT_FILENO, &new_term);
+	new_term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
+	// dont ask me why, i dont know either
 	while (1)
 	{
 		signal(SIGINT, new_line_handler);
@@ -110,5 +116,5 @@ int	main(int argc, char **argv, char **envp)
 	}
 	if (data.vars)
 		ft_lstfree(&data.vars);
-	return (0);
+	return (reset_and_exit(0));
 }

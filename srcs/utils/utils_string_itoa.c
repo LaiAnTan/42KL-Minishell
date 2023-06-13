@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_string_itoa.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:35 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 11:56:18 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:31:11 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static size_t	get_digits(int n)
 	size_t	i;
 
 	i = 0;
+	if (!n)
+		return (1);
 	while (n)
 	{
 		n /= 10;

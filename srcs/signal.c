@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:02 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 15:01:11 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:16 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,8 @@
 
 void	modify_attr(t_data *data)
 {
-	data->attr->mod_attributes.c_iflag &= ~(ICANON | ECHO | ISIG);
-	data->attr->mod_attributes.c_cc[VMIN] = 1;
-	data->attr->mod_attributes.c_cc[VTIME] = 0;
+	data->attr->mod_attributes.c_iflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &data->attr->mod_attributes);
-}
-
-void	reset_attr(t_data *data)
-{
-	tcsetattr(STDIN_FILENO, TCSANOW, &data->attr->def_attributes);
 }
 
 void	new_line_handler(int sig_code)

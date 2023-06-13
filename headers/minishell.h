@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:07:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 14:58:08 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:34:52 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ char	*access_var(t_data *data, char *name);
 
 /* Signals */
 
-void	reset_attr(t_data *data);
+void	reset_attr();
 void	modify_attr(t_data *data);
 void	new_line_handler(int sig_code);
 
@@ -175,5 +175,9 @@ char	*ft_substr(char *s, unsigned int start, unsigned int end);
 
 char	**ft_split(char *s, char c);
 char	**realloc_append(char **src, char *str);
+
+/* Exit */
+
+int		reset_and_exit(int exit_code);
 
 #endif

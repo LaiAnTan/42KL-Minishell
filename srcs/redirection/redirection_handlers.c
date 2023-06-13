@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_handlers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:36:25 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 11:34:23 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:18:11 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in)
 			write(storage[1], "\n", 1);
 			free(line);
 		}
-		exit(1);
+		exit(0);
 	}
 	close(storage[1]);
 	waitpid(child_fd, 0, 0);
