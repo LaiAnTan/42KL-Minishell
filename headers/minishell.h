@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:07:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 12:02:54 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/13 14:58:08 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 # define MINISHELL_H
 
-# include <stdio.h>
-# include <readline/readline.h>
 # include <readline/history.h>
+# include <readline/readline.h>
 # include <sys/wait.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <errno.h>

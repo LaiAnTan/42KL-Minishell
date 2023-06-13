@@ -38,7 +38,7 @@ CFLAG = -Wall -Wextra -Werror
 
 # FSAN = -fsanitize=address -g
 
-LIB = -lreadline
+LIB := -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 
 all : $(NAME) move
 
@@ -46,7 +46,7 @@ all : $(NAME) move
 		@gcc $(CFLAG) -c $< -o $(<:.c=.o)
 
 $(NAME): $(SRCS_O)
-		@gcc $(CFLAG) $(SRCS_O) -o $(NAME) $(LIB) ${FSAN}
+		@gcc $(CFLAG) $(SRCS_O) $(LIB) -o $(NAME) ${FSAN}
 
 $(ODIR) :
 	@echo "Folder $(ODIR) does not exist, making a new one..."
