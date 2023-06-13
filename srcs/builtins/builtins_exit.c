@@ -14,18 +14,13 @@
 
 extern struct termios	saved;
 
-void	reset_attr()
+int	reset_and_exit(struct termios *saved, int exit_code)
 {
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &saved);	
-}
-
-int	reset_and_exit(int exit_code)
-{
-	reset_attr();
+	reset_attr(saved);
 	exit(exit_code);
 }
 
-int	builtin_exit(char **args)
+int	builtin_exit(t_data *data, char **args)
 {
 	int		exit_code;
 
@@ -46,5 +41,5 @@ int	builtin_exit(char **args)
 	while (exit_code >= 256)
 		exit_code = exit_code - 256;
 	printf("process exited with code %d\n", exit_code);
-	return (reset_and_exit(exit_code));
+	return (reset_and_exit(&data->attr->def_attributes, exit_code));
 }

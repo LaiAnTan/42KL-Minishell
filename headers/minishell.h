@@ -127,8 +127,7 @@ char	*access_var(t_data *data, char *name);
 
 /* Signals */
 
-void	reset_attr();
-void	modify_attr(t_data *data);
+void	reset_attr(struct termios *saved);
 void	new_line_handler(int sig_code);
 
 /* Builtin command functions */
@@ -136,8 +135,8 @@ void	new_line_handler(int sig_code);
 int		builtin_echo(char **args);
 int		builtin_pwd(t_data *data);
 int		builtin_env(t_data *data);
-int		builtin_exit(char **args);
 int		builtin_cd(char **args, t_data *data);
+int		builtin_exit(t_data *data, char **args);
 int		builtin_unset(char **args, t_data *data);
 int		builtin_export(char **args, t_data *data);
 int		handle_builtins(char *cmd, char **args, t_data *data);
@@ -178,6 +177,6 @@ char	**realloc_append(char **src, char *str);
 
 /* Exit */
 
-int		reset_and_exit(int exit_code);
+int		reset_and_exit(struct termios *saved, int exit_code);
 
 #endif

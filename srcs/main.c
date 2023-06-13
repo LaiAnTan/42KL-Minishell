@@ -12,8 +12,6 @@
 
 #include "../headers/minishell.h"
 
-struct termios	saved;
-
 int	init_data(t_data *data, char **envp)
 {
 	data->stdin_backup = dup(STDIN_FILENO);
@@ -24,7 +22,7 @@ int	init_data(t_data *data, char **envp)
 	data->my_envp = NULL;
 	data->attr = malloc(sizeof(struct termios) * 2);
 	data->last_exit = 0;
-	tcgetattr(STDIN_FILENO, &saved);
+	tcgetattr(STDIN_FILENO, &data->attr->def_attributes);
 	rebuild_envp(data);
 	return (1);
 }
@@ -48,7 +46,7 @@ int	handle_line(t_data *data)
 		return (1);
 	}
 	else
-		exit(reset_and_exit(0));
+		exit(reset_and_exit(&data->attr->def_attributes, 0));
 }
 
 void	print_parsed(t_list *amogus)
@@ -90,17 +88,14 @@ void	cleanup(t_data *data)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data			data;
-	struct termios	new_term;
 
 	(void)argv;
 	if (argc != 1)
 		return (0);
 	init_data(&data, envp);
-	// this must be done in main
-	tcgetattr(STDOUT_FILENO, &new_term);
-	new_term.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
-	// dont ask me why, i dont know either
+	tcgetattr(STDOUT_FILENO, &data.attr->mod_attributes);
+	data.attr->mod_attributes.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &data.attr->mod_attributes);
 	while (1)
 	{
 		signal(SIGINT, new_line_handler);
@@ -116,5 +111,5 @@ int	main(int argc, char **argv, char **envp)
 	}
 	if (data.vars)
 		ft_lstfree(&data.vars);
-	return (reset_and_exit(0));
+	return (reset_and_exit(&data.attr->def_attributes, 0));
 }

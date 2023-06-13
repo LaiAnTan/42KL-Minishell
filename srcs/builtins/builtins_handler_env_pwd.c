@@ -42,7 +42,7 @@ int	handle_builtins(char *cmd, char **args, t_data *data)
 	else if (ft_strcmp(cmd, "env") == 0)
 		return (builtin_env(data));
 	else if (ft_strcmp(cmd, "exit") == 0)
-		return (builtin_exit(args));
+		return (builtin_exit(data, args));
 	else
 		return (-1);
 }
