@@ -53,8 +53,9 @@ int	remove_ears(char **string)
 char	**extract_cmd(char **tokens, int *index_pair)
 {
 	int		j;
-	char	**cmd;
 	char	*str;
+	char	**cmd;
+
 
 	find_next_cmd(tokens, index_pair);
 	j = index_pair[0];

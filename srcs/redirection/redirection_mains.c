@@ -102,11 +102,6 @@ char	**get_cmd_args_without_redirect(char **args)
 	return (new);
 }
 
-/*
-function that handles redirections
-redirect info is a size 2 int array where 0 - type 1 - index
-*/
-
 int	handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 {
 	int		i;
@@ -141,3 +136,5 @@ int	handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 		free(redirect_info);
 	return (1);
 }
+
+
