@@ -92,6 +92,8 @@ int		is_token(char c);
 int		is_redirect(char *arg);
 int		get_redirect_type(char *arg);
 int		contains_redirect(char **args);
+int		file_not_found_error(char *filename);
+int		file_cant_open_error(char *filename);
 int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in);
 
 int		handle_redir_input(char *filename, int *in_fd);

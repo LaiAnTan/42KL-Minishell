@@ -12,20 +12,6 @@
 
 #include "../../headers/minishell.h"
 
-static int	file_not_found_error(char *filename)
-{
-	write(STDERR_FILENO, filename, ft_strlen(filename));
-	write(STDERR_FILENO, ": No such file or directory\n", 28);
-	return (-1);
-}
-
-static int	file_cant_open_error(char *filename)
-{
-	write(STDERR_FILENO, filename, ft_strlen(filename));
-	write(STDERR_FILENO, ": File could not be opened\n", 28);
-	return (-1);
-}
-
 int	handle_redir_input(char *filename, int *in_fd)
 {
 	int		fd;
