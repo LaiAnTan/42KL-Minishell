@@ -32,6 +32,8 @@ char	*get_val(t_list *node)
 	int		pos;
 	char	*val;
 
+	if (get_equal_pos(node) == -1)
+		return (ft_strdup(""));
 	pos = get_equal_pos(node) + 1;
 	val = (char *) malloc (sizeof(char) * (ft_strlen(node->env.str) - pos + 1));
 	i = 0;
