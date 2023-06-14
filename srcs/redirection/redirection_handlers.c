@@ -93,6 +93,7 @@ int	handle_redir_output_append(char *filename, int *out_fd)
 	if (is_redirect(filename))
 		return (-1);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777);
+	if (fd == -1)
 		return (file_cant_open_error(filename));
 	dup2(fd, *out_fd);
 	close(fd);
