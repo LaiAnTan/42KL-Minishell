@@ -132,6 +132,8 @@ void	new_line_handler(int sig_code);
 
 /* Builtin command functions */
 
+int		builtin_error_msg(char *str);
+
 int		builtin_echo(char **args);
 int		builtin_pwd(t_data *data);
 int		builtin_env(t_data *data);

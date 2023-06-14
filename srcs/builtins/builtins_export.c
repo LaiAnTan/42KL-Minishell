@@ -30,7 +30,10 @@ static void	display_export_line(t_list *node)
 		write(1, "\"\n", 2);
 	}
 	else
+	{
 		write(1, node->env.str, ft_strlen(node->env.str));
+		write(1, "\n", 1);
+	}
 }
 
 static void	reset_printed(t_list *lst)
@@ -80,10 +83,8 @@ static char	*get_var_name(char *str)
 
 	i = 0;
 	j = 0;
-	while (str[i] != '=')
+	while (str[i] != '\0' && str[i] != '=')
 		i++;
-	if (i == ft_strlen(str))
-		return (NULL);
 	var_name = (char *) malloc (sizeof(char) * (i + 1));
 	while (j < i)
 	{
@@ -112,7 +113,7 @@ int	builtin_export(char **args, t_data *data)
 	{
 		if (args[i][0] == '=')
 		{
-			printf("error: %s is not a valid identifier\n", args[i]);
+			printf("export: %s is not a valid identifier\n", args[i]);
 			return (0);
 		}
 		var_name = get_var_name(args[i]);

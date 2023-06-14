@@ -56,9 +56,7 @@ static int	compare_name(char *var, char *name)
 			return (0);
 		++i;
 	}
-	if (var[i] == '=')
-		return (1);
-	return (0);
+	return (1);
 }
 
 t_list	*find_var(t_list *vars, char *to_find)
