@@ -91,11 +91,7 @@ char	**get_cmd_args_without_redirect(char **args)
 		if (is_redirect(args[i]))
 			i += 2;
 		else
-		{
-			new[j] = ft_strdup(args[i]);
-			++i;
-			++j;
-		}
+			new[j++] = ft_strdup(args[i++]);
 	}
 	new[new_len] = NULL;
 	free_2d_array(&args);
