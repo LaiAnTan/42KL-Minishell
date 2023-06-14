@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:52 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 17:32:13 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/14 10:42:26 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-
-extern struct termios	saved;
 
 int	reset_and_exit(struct termios *saved, int exit_code)
 {

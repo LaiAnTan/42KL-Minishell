@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:54 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 17:34:27 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/14 10:44:02 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,32 +47,6 @@ int	handle_line(t_data *data)
 	}
 	else
 		exit(reset_and_exit(&data->attr->def_attributes, 0));
-}
-
-void	print_parsed(t_list *amogus)
-{
-	int		iter_count;
-	t_list	*iter;
-
-	iter_count = 1;
-	iter = amogus;
-	while (iter)
-	{
-		printf("<Cmd %d>\n", iter_count);
-		for (int i = 0; iter->cmd.cmd[i]; ++i)
-			printf("%d | %s | %d\n", i,
-				iter->cmd.cmd[i], ft_strlen(iter->cmd.cmd[i]));
-		iter = iter->next;
-		++iter_count;
-	}
-}
-
-void	print_double(char **stuff)
-{
-	for (int i = 0; stuff[i]; ++i)
-	{
-		printf("%s - len = %d\n", stuff[i], ft_strlen(stuff[i]));
-	}
 }
 
 void	cleanup(t_data *data)

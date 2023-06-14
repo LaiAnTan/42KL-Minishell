@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vars_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:06 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 17:26:17 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/14 10:41:53 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	reset(char **temp_strings, int *indexes)
 	int	i;
 
 	indexes[1] = ft_strlen(temp_strings[0]) + ft_strlen(temp_strings[3]) - 1;
-	// printf("%d, %d\n", ft_strlen(temp_strings[0]), ft_strlen(temp_strings[3]));
 	i = -1;
 	while (temp_strings[++i])
 		free(temp_strings[i]);

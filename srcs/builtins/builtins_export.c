@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:55 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 11:46:29 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/14 11:10:54 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,19 @@ static void	display_export_line(t_list *node)
 		write(1, node->env.str, ft_strlen(node->env.str));
 }
 
+static void	reset_printed(t_list *lst)
+{
+	t_list	*curr_node;
+
+	curr_node = lst;
+	while (curr_node != NULL)
+	{
+		curr_node->env.printed = 0;
+		curr_node = curr_node->next;
+	}
+	return ;
+}
+
 static void	print_asc_export(t_list *lst)
 {
 	int		lst_size;
@@ -40,13 +53,8 @@ static void	print_asc_export(t_list *lst)
 	t_list	*smallest_node;
 
 	lst_size = ft_lstsize(lst);
-	curr_node = lst;
-	while (curr_node != NULL)
-	{
-		curr_node->env.printed = 0;
-		curr_node = curr_node->next;
-	}
-	while (lst_size > 0)
+	reset_printed(lst);
+	while (--lst_size >= 0)
 	{
 		curr_node = lst;
 		smallest_node = lst;
@@ -61,22 +69,7 @@ static void	print_asc_export(t_list *lst)
 		}
 		smallest_node->env.printed = 1;
 		display_export_line(smallest_node);
-		lst_size--;
 	}
-}
-
-static int	valid_assign(char *str)
-{
-	if (str == NULL || *str == '=')
-		return (0);
-	str++;
-	while (*str != '\0')
-	{
-		if (*str == '=')
-			return (1);
-		str++;
-	}
-	return (0);
 }
 
 static char	*get_var_name(char *str)
@@ -117,23 +110,22 @@ int	builtin_export(char **args, t_data *data)
 	}
 	while (args[i] != NULL)
 	{
-		if (valid_assign(args[i]) == 1)
+		if (args[i][0] == '=')
 		{
-			var_name = get_var_name(args[i]);
-			node = find_var(lst, var_name);
-			free(var_name);
-			if (node == NULL)
-			{
-				node = ft_lstnew_env(ft_strdup(args[i]));
-				ft_lstadd_back(&lst, node);
-			}
-			else
-			{
-				free(node->env.str);
-				node->env.str = ft_strdup(args[i]);
-			}
+			printf("error: %s is not a valid identifier\n", args[i]);
+			return (0);
 		}
-		i++;
+		var_name = get_var_name(args[i]);
+		node = find_var(lst, var_name);
+		free(var_name);
+		if (node == NULL)
+			ft_lstadd_back(&lst, ft_lstnew_env(ft_strdup(args[i])));
+		else
+		{
+			free(node->env.str);
+			node->env.str = ft_strdup(args[i]);
+		}
+		++i;
 	}
 	return (0);
 }
