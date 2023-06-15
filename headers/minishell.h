@@ -85,6 +85,7 @@ void	replace_dollar(t_data *data);
 int		is_token(char c);
 int		lexer(t_data *data);
 int		parser(t_data *data);
+int		bunny_ears(char *line, int stop, int to_match);
 
 /* Redirection */
 
@@ -176,8 +177,6 @@ int		count_2d_array(char **e);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strcmp_equals(char *s1, char *s2);
 int		search_symbol(char *line, int to_find);
-
-int		bunny_ears(char *line, int stop, int to_match);
 
 char	*ft_itoa(int n);
 char	*ft_strdup(char *str);
