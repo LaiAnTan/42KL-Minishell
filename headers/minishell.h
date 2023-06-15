@@ -82,10 +82,9 @@ typedef struct s_data
 
 void	replace_dollar(t_data *data);
 
+int		is_token(char c);
 int		lexer(t_data *data);
 int		parser(t_data *data);
-
-int		is_token(char c);
 
 /* Redirection */
 
@@ -106,6 +105,8 @@ char	**get_cmd_args_without_redirect(char **args);
 void	run_cmd(t_data *data);
 void	append_stuff(char **paths, char *cmd);
 
+int		is_absolute(char *str);
+int		is_executable(char *str);
 int		exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd);
 
 char	*trim_path(char *path);
@@ -182,4 +183,5 @@ char	**realloc_append(char **src, char *str);
 int		error_msg(char *cmd, char *context, char *msg, int code);
 
 int		reset_and_exit(struct termios *saved, int exit_code);
+
 #endif

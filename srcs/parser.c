@@ -67,19 +67,6 @@ void	extract_cmd_helper(char ***cmd, char **token, char **str)
 	}
 }
 
-// if (ft_strlen(tokens[j]) == 0)
-// {
-// 	cmd = realloc_append(cmd, str);
-// 	free(str);
-// 	str = NULL;
-// }
-// else
-// {
-// 	if (remove_ears(&tokens[j]) == 0)
-// 		tokens[j] = ft_trimstr(tokens[j], ' ');
-// 	str = ft_append(str, tokens[j]);
-// }
-
 char	**extract_cmd(char **tokens, int *index_pair)
 {
 	int		j;

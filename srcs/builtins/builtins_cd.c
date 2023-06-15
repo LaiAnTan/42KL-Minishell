@@ -12,8 +12,7 @@
 
 #include "../../headers/minishell.h"
 
-// just in case you wanna add more errors
-int		determine_error()
+int	determine_error(void)
 {
 	if (errno == ENOTDIR)
 		error_msg("cd", NULL, "Not a directory", 1);
@@ -45,26 +44,6 @@ void	cd_update_env(t_data *data)
 	else
 		node->env.str = ft_append(ft_strdup("PWD="), data->cwd);
 }
-
-// node = find_var(data->vars, "OLDPWD");
-// if (node == NULL)
-// {
-// 	node = ft_lstnew_env(ft_append(ft_strdup("OLDPWD="), data->cwd));
-// 	ft_lstadd_back(&data->vars, node);
-// }
-// else
-// 	node->env.str = ft_append(ft_strdup("OLDPWD="), data->cwd);
-// free(data->cwd);
-// data->cwd = getcwd(NULL, 1024);
-// node = find_var(data->vars, "PWD");
-// if (node == NULL)
-// {
-// 	node = ft_lstnew_env(ft_append(ft_strdup("PWD="), data->cwd));
-// 	ft_lstadd_back(&data->vars, node);
-// }
-// else
-// 	node->env.str = ft_append(ft_strdup("PWD="), data->cwd);
-// data->last_exit = 0;
 
 char	*cd_get_cd_path(int size, char **args, t_data *data)
 {
