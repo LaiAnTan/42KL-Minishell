@@ -8,6 +8,8 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
             srcs/builtins/builtins_export.c				\
             srcs/builtins/builtins_handler_env_pwd.c	\
             srcs/builtins/builtins_unset.c				\
+            srcs/cmd/cmd_execute_helpers.c				\
+            srcs/cmd/cmd_execute_multiple.c				\
             srcs/cmd/cmd_execute.c						\
             srcs/cmd/cmd_paths_helpers.c				\
             srcs/cmd/cmd_paths.c						\
@@ -21,7 +23,8 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
             srcs/utils/utils_string_2.c					\
             srcs/utils/utils_string_itoa.c				\
             srcs/utils/utils_string_split.c				\
-            srcs/vars/vars_handler.c					\
+            srcs/vars/vars_expansion_helpers.c			\
+            srcs/vars/vars_expansion.c					\
             srcs/vars/vars_helpers_1.c					\
             srcs/vars/vars_helpers_2.c					\
 			srcs/lexer_helpers.c						\

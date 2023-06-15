@@ -95,19 +95,29 @@ int		handle_redirect(char **args, t_list *cur, int std_in);
 
 int		handle_redir_input(char *filename, int *in_fd);
 int		handle_redir_output(char *filename, int *out_fd);
-int		handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in);
 int		handle_redir_output_append(char *filename, int *out_fd);
+int		handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in);
 
 char	**get_cmd_args_without_redirect(char **args);
 
 /* Command Processing */
 
 void	run_cmd(t_data *data);
+void	multiple_commands(t_data *data);
+void	exec_child(char *cmd_path, char **args, char **my_envp);
+
+int		exec_parent(t_data *data, int pid);
+int		get_command_count(t_data *data);
+int		single_command(t_data *data, t_list *cmds);
+int		get_exit_code(t_data *data, int exit_status);
+int		exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd);
+
+/* Command Path Handling */
+
 void	append_stuff(char **paths, char *cmd);
 
 int		is_absolute(char *str);
 int		is_executable(char *str);
-int		exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd);
 
 char	*trim_path(char *path);
 char	*get_path_envp(t_data *data);

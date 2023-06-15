@@ -12,25 +12,6 @@
 
 #include "../../headers/minishell.h"
 
-int	get_keyword(char *line, int stop)
-{
-	++stop;
-	while (line[stop] && line[stop] != ' '
-		&& !is_token(line[stop]) && line[stop] != '$')
-		++stop;
-	return (--stop);
-}
-
-void	reset(char **temp_strings, int *indexes)
-{
-	int	i;
-
-	indexes[1] = ft_strlen(temp_strings[0]) + ft_strlen(temp_strings[3]) - 1;
-	i = -1;
-	while (temp_strings[++i])
-		free(temp_strings[i]);
-}
-
 void	break_down(char *line, int *indexes, char **temp_strings)
 {
 	indexes[2] = get_keyword(line, indexes[1]);
@@ -44,6 +25,7 @@ void	break_down(char *line, int *indexes, char **temp_strings)
 
 void	recombine_and_reset(char **store, char **temp_strings, int *indexes)
 {
+	int		i;
 	char	*ret;
 
 	if ((*store))
@@ -53,41 +35,27 @@ void	recombine_and_reset(char **store, char **temp_strings, int *indexes)
 	ret = ft_append(ret, temp_strings[3]);
 	ret = ft_append(ret, temp_strings[2]);
 	(*store) = ret;
-	reset(temp_strings, indexes);
+	indexes[1] = ft_strlen(temp_strings[0]) + ft_strlen(temp_strings[3]) - 1;
+	i = -1;
+	while (temp_strings[++i])
+		free(temp_strings[i]);
 }
 
-int	one_side(char *line, int i, int in_ears)
+char	*handle_special_case(char *line, int i, int special_case)
 {
 	int	left;
 	int	right;
 
 	left = (line[i - 1] != '\'' && line[i - 1] != '\"');
-	if (!in_ears)
+	if (!special_case)
 		right = (line[i + 1] == '\'' || line[i + 1] == '\"');
 	else
 		right = (!is_token(line[i + 1]) && line[i + 1] != ' ');
-	return (left && right);
-}
-
-char	*handle_special_case(char *line, int index, int special_case)
-{
-	if (one_side(line, index, special_case))
+	if (left && right)
 		return (ft_strdup(""));
 	else
 		return (ft_strdup("$"));
 }
-
-// else if (ret[indexes[1]] == '\'' && !special_case)
-// {
-// 	++indexes[1];
-// 	while (ret[indexes[1]] && ret[indexes[1]] != '\'')
-// 		++indexes[1];
-// }
-
-// if (one_side(ret, indexes[2], special_case))
-// 	string_storage[3] = ft_strdup("");
-// else
-// 	string_storage[3] = ft_strdup("$");
 
 void	rd_init_variables(int *special_case, char **string_storage, int *indexes)
 {

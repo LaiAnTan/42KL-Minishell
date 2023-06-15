@@ -50,7 +50,6 @@ int	remove_ears(char **string)
 	return (ret_val);
 }
 
-// this should be illegal
 void	extract_cmd_helper(char ***cmd, char **token, char **str)
 {
 	if (ft_strlen((*token)) == 0)

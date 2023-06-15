@@ -12,8 +12,6 @@
 
 #include "../headers/minishell.h"
 
-
-
 int	bunny_ears(char *line, int stop, int to_match)
 {
 	++stop;
