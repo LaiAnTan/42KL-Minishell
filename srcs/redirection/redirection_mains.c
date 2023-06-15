@@ -132,5 +132,3 @@ int	handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 		free(redirect_info);
 	return (1);
 }
-
-
