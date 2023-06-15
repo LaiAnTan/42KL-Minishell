@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_mains.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:37:22 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 10:38:22 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/15 21:53:17 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,32 @@ char	**get_cmd_args_without_redirect(char **args)
 	return (new);
 }
 
-int	handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
+// this will never go inside else
+// ...right?
+int    redirect_switcher(int *redirect_info, t_list *cur, char *args, int std_in)
+{
+    if (redirect_info[0] == 1)
+        return (handle_redir_output(args, cur->out_fd));
+    else if (redirect_info[0] == 2)
+        return (handle_redir_output_append(args, cur->out_fd));
+    else if (redirect_info[0] == 3)
+        return (handle_redir_input(args, cur->in_fd));
+    else if (redirect_info[0] == 4)
+        return (handle_redir_input_heredoc(args, cur->in_fd, std_in));
+    else
+        return (1);
+}
+
+// if (redirect_info[0] == 1)
+// 	error = handle_redir_output(args[i], out_fd);
+// else if (redirect_info[0] == 2)
+// 	error = handle_redir_output_append(args[i], out_fd);
+// else if (redirect_info[0] == 3)
+// 	error = handle_redir_input(args[i], in_fd);
+// else if (redirect_info[0] == 4)
+// 	error = handle_redir_input_heredoc(args[i], in_fd, std_in);
+
+int	handle_redirect(char **args, t_list *cur, int std_in)
 {
 	int		i;
 	int		error;
@@ -116,14 +141,7 @@ int	handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
 			break ;
 		i = redirect_info[1] + 1;
-		if (redirect_info[0] == 1)
-			error = handle_redir_output(args[i], out_fd);
-		else if (redirect_info[0] == 2)
-			error = handle_redir_output_append(args[i], out_fd);
-		else if (redirect_info[0] == 3)
-			error = handle_redir_input(args[i], in_fd);
-		else if (redirect_info[0] == 4)
-			error = handle_redir_input_heredoc(args[i], in_fd, std_in);
+		error = redirect_switcher(redirect_info, cur, args, std_in);
 		free(redirect_info);
 		if (error == 1)
 			return (1);

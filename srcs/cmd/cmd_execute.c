@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:34:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 17:04:30 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/15 21:42:07 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ void	exec_child(char *cmd_path, char **args, char **my_envp)
 		exit(errno);
 }
 
-int		exec_parent(t_data *data, int pid)
+int	exec_parent(t_data *data, int pid)
 {
 	int	status;
 

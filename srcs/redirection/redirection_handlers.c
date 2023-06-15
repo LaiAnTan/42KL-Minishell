@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_handlers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:36:25 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/14 11:24:11 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/15 19:49:57 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,33 +25,60 @@ int	handle_redir_input(char *filename, int *in_fd)
 	return (0);
 }
 
+
+// exit can quite literally be anything
+int	heredoc_child(char *delimiter, int *storage, int std_in)
+{
+	char	*line;
+
+	line = NULL;
+	close(storage[0]);
+	dup2(std_in, STDIN_FILENO);
+	while (1)
+	{
+		line = readline("> ");
+		rl_redisplay();
+		if (!line)
+		{
+			error_msg("warning", delimiter, "here-document at line 28 delimited by end-of-file", 0);
+			break ;
+		}
+		if (ft_strcmp(line, delimiter) == 0)
+			break ;
+		write(storage[1], line, ft_strlen(line));
+		write(storage[1], "\n", 1);
+		free(line);
+	}
+	if (line)
+		free(line);
+	exit(69);
+}
+
+// close(storage[0]);
+// dup2(std_in, STDIN_FILENO);
+// while (1)
+// {
+// 	line = readline("> ");
+// 	rl_redisplay();
+// 	if (ft_strcmp(line, delimiter) == 0)
+// 		break ;
+// 	write(storage[1], line, ft_strlen(line));
+// 	write(storage[1], "\n", 1);
+// 	free(line);
+// }
+// exit(0);
+
 int	handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in)
 {
 	int		child_fd;
 	int		storage[2];
-	char	*line;
 
 	if (is_redirect(delimiter))
 		return (-1);
 	pipe(storage);
-	line = NULL;
 	child_fd = fork();
 	if (!child_fd)
-	{
-		close(storage[0]);
-		dup2(std_in, STDIN_FILENO);
-		while (1)
-		{
-			line = readline("> ");
-			rl_redisplay();
-			if (ft_strcmp(line, delimiter) == 0)
-				break ;
-			write(storage[1], line, ft_strlen(line));
-			write(storage[1], "\n", 1);
-			free(line);
-		}
-		exit(0);
-	}
+		heredoc_child(delimiter, storage, std_in);
 	close(storage[1]);
 	waitpid(child_fd, 0, 0);
 	dup2(storage[0], *in_fd);

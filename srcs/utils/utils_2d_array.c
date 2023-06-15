@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2d_array.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:18 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 11:54:28 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/15 19:55:02 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	free_2d_array(char ***arr)
 	int	i;
 
 	i = 0;
+	if (*arr == NULL)
+		return ;
 	while ((*arr)[i] != NULL)
 	{
 		free((*arr)[i]);
