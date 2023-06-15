@@ -53,7 +53,7 @@ all : $(NAME)
 
 $(NAME): $(SRCS_O)
 	@gcc ${CFLAGS} $^ $(LIBS) -o $@
-	@printf "$(L_RESET)$(C_GREEN)Done!$(C_RESET)"
+	@printf "$(L_RESET)$(C_GREEN)Done!$(C_RESET)\n"
 
 $(ODIR) :
 	@mkdir -p $@

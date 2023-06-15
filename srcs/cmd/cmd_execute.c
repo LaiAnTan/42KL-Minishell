@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:34:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 11:08:05 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/15 16:40:44 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	run_cmd(t_data *data)
 	else
 	{
 		if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd,
-				&data->cmds->out_fd, data->stdin_backup) == -1)
+				&data->cmds->out_fd, data->stdin_backup) == 1)
 		{
 			data->last_exit = 1;
 			return ;
@@ -214,10 +214,7 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 	i = 0;
 	rebuild_envp(data);
 	if (!cmd_paths)
-	{
-		printf("%s: No such file or directotry\n", cmd);
-		return (127);
-	}
+		return (error_msg(NULL, cmd, "No such file or directory", 127));
 	while (cmd_paths[i] != NULL)
 	{
 		if (args[0] != NULL)
@@ -233,6 +230,5 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 		}
 		i++;
 	}
-	printf("%s: command not found\n", cmd);
-	return (127);
+return (error_msg(NULL, cmd, "No such file or directory", 127));
 }

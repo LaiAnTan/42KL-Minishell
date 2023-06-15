@@ -125,12 +125,10 @@ int	handle_redirect(char **args, int *in_fd, int *out_fd, int std_in)
 		else if (redirect_info[0] == 4)
 			error = handle_redir_input_heredoc(args[i], in_fd, std_in);
 		free(redirect_info);
-		if (error == -1)
-			return (-1);
+		if (error == 1)
+			return (1);
 	}
 	if (redirect_info)
 		free(redirect_info);
-	return (1);
+	return (0);
 }
-
-

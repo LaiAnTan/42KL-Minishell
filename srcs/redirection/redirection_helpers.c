@@ -50,17 +50,3 @@ int	get_redirect_type(char *arg)
 		return (4);
 	return (-1);
 }
-
-int	file_not_found_error(char *filename)
-{
-	write(STDERR_FILENO, filename, ft_strlen(filename));
-	write(STDERR_FILENO, ": No such file or directory\n", 28);
-	return (-1);
-}
-
-int	file_cant_open_error(char *filename)
-{
-	write(STDERR_FILENO, filename, ft_strlen(filename));
-	write(STDERR_FILENO, ": File could not be opened\n", 28);
-	return (-1);
-}
