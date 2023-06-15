@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:55 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/14 11:10:54 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/15 18:52:32 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ static void	reset_printed(t_list *lst)
 	return ;
 }
 
-static void	print_asc_export(t_list *lst)
+// this doesnt crash and doesnt return 1 for no reason right
+// right?
+static int	print_asc_export(t_list *lst)
 {
 	int		lst_size;
 	t_list	*curr_node;
@@ -73,6 +75,7 @@ static void	print_asc_export(t_list *lst)
 		smallest_node->env.printed = 1;
 		display_export_line(smallest_node);
 	}
+	return (0);
 }
 
 static char	*get_var_name(char *str)
@@ -95,6 +98,7 @@ static char	*get_var_name(char *str)
 	return (var_name);
 }
 
+// disgusting while ++i loop im gonan go cry in a corner now
 int	builtin_export(char **args, t_data *data)
 {
 	int		i;
@@ -102,14 +106,11 @@ int	builtin_export(char **args, t_data *data)
 	t_list	*lst;
 	t_list	*node;
 
-	i = 1;
+	i = 0;
 	lst = data->vars;
 	if (args[1] == NULL)
-	{
-		print_asc_export(lst);
-		return (0);
-	}
-	while (args[i] != NULL)
+		return (print_asc_export(lst));
+	while (args[++i] != NULL)
 	{
 		if (args[i][0] == '=')
 			return (error_msg("export", args[i], 
@@ -124,7 +125,6 @@ int	builtin_export(char **args, t_data *data)
 			free(node->env.str);
 			node->env.str = ft_strdup(args[i]);
 		}
-		++i;
 	}
 	return (0);
 }
