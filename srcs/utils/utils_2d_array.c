@@ -17,6 +17,8 @@ void	free_2d_array(char ***arr)
 	int	i;
 
 	i = 0;
+	if (*arr == NULL)
+		return ;
 	while ((*arr)[i] != NULL)
 	{
 		free((*arr)[i]);
