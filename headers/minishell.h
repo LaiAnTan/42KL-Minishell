@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:07:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/14 10:28:53 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/15 14:31:22 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,8 @@ int		count_2d_array(char **e);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strcmp_equals(char *s1, char *s2);
 int		search_symbol(char *line, int to_find);
+
+int		bunny_ears(char *line, int stop, int to_match);
 
 char	*ft_itoa(int n);
 char	*ft_strdup(char *str);

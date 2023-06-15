@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:34:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 11:58:50 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/15 11:08:05 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,70 +58,25 @@ int	get_exit_code(t_data *data, int exit_status)
 	return (data->last_exit);
 }
 
-void	multiple_commands(t_data *data)
+void	in_child(int last_var, t_data *data, t_list *curr, int to_close)
 {
-	t_list	*curr;
-	int		dispatched;
-	int		cmd_count;
-	int		pipe_storage[2];
-	int		prev_pipe;
-	int		status;
-	int		last_child_pid;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (!(last_var))
+		close(to_close);
+	if (handle_redirect(curr->cmd.cmd, &curr->in_fd,
+			&curr->out_fd, data->stdin_backup) == -1)
+		exit (1);
+	curr->cmd.cmd = get_cmd_args_without_redirect(curr->cmd.cmd);
+	dup2(curr->in_fd, STDIN_FILENO);
+	dup2(curr->out_fd, STDOUT_FILENO);
+	exit (single_command(data, curr));
+}
 
-	dispatched = 0;
-	cmd_count = get_command_count(data);
-	curr = data->cmds;
-	while (dispatched < cmd_count)
-	{
-		if (!dispatched)
-		{
-			pipe(pipe_storage);
-			curr->out_fd = pipe_storage[1];
-		}
-		else if (dispatched == cmd_count - 1)
-			curr->in_fd = prev_pipe;
-		else
-		{
-			curr->in_fd = prev_pipe;
-			pipe(pipe_storage);
-			curr->out_fd = pipe_storage[1];
-		}
-		last_child_pid = fork();
-		if (last_child_pid == 0)
-		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-			if (!(dispatched == cmd_count - 1))
-				close(pipe_storage[0]);
-			if (handle_redirect(curr->cmd.cmd, &curr->in_fd,
-					&curr->out_fd, data->stdin_backup) == -1)
-				exit (1);
-			curr->cmd.cmd = get_cmd_args_without_redirect(curr->cmd.cmd);
-			dup2(curr->in_fd, STDIN_FILENO);
-			dup2(curr->out_fd, STDOUT_FILENO);
-			exit (single_command(data, curr));
-		}
-		else
-		{
-			if (!dispatched)
-			{
-				close(pipe_storage[1]);
-				prev_pipe = pipe_storage[0];
-			}
-			else if (dispatched == cmd_count - 1)
-				close(prev_pipe);
-			else
-			{
-				close(prev_pipe);
-				close(pipe_storage[1]);
-				prev_pipe = pipe_storage[0];
-			}
-			++dispatched;
-			curr = curr->next;
-		}
-	}
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+void	wait_all_commands(int cmd_count, int last_child_pid, t_data *data)
+{
+	int	status;
+
 	while (cmd_count)
 	{
 		waitpid(last_child_pid, &status, 0);
@@ -130,6 +85,86 @@ void	multiple_commands(t_data *data)
 		last_child_pid = 0;
 		--cmd_count;
 	}
+}
+
+// if (!dispatched)
+// {
+// 	pipe(pipe_storage);
+// 	curr->out_fd = pipe_storage[1];
+// }
+// else if (dispatched == cmd_count - 1)
+// 	curr->in_fd = prev_pipe;
+// else
+// {
+// 	curr->in_fd = prev_pipe;
+// 	pipe(pipe_storage);
+// 	curr->out_fd = pipe_storage[1];
+// }
+
+// if (!dispatched)
+// {
+// 	close(pipe_storage[1]);
+// 	prev_pipe = pipe_storage[0];
+// }
+// else if (dispatched == cmd_count - 1)
+// 	close(prev_pipe);
+// else
+// {
+// 	close(prev_pipe);
+// 	close(pipe_storage[1]);
+// 	prev_pipe = pipe_storage[0];
+// }
+
+void	do_pumbling(int dispatched, int cmd_count, int *pipe_storage, int prev_pipe, t_list *cur)
+{
+	if (dispatched != cmd_count - 1)
+	{
+		pipe(pipe_storage);
+		cur->out_fd = pipe_storage[1];
+	}
+	if (dispatched)
+		cur->in_fd = prev_pipe;
+}
+
+void	clean_pipes(int dispatched, int cmd_count, int *pipe_storage, int *prev_pipe)
+{
+	if (dispatched)	
+		close((*prev_pipe));
+	if (dispatched != cmd_count - 1)
+	{
+		close(pipe_storage[1]);
+		(*prev_pipe) = pipe_storage[0];
+	}
+}
+
+void	multiple_commands(t_data *data)
+{
+	t_list	*curr;
+	int		dispatched;
+	int		cmd_count;
+	int		pipe_storage[3];
+	int		last_child_pid;
+
+	dispatched = 0;
+	cmd_count = get_command_count(data);
+	curr = data->cmds;
+	while (dispatched < cmd_count)
+	{
+		do_pumbling(dispatched, cmd_count, &pipe_storage[0], pipe_storage[2], curr);
+		
+		last_child_pid = fork();
+		if (last_child_pid == 0)
+			in_child((dispatched == cmd_count - 1), data, curr, pipe_storage[0]);
+		else
+		{
+			clean_pipes(dispatched, cmd_count, &pipe_storage[0], &pipe_storage[2]);
+			++dispatched;
+			curr = curr->next;
+		}
+	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	wait_all_commands(cmd_count, last_child_pid, data);
 }
 
 void	run_cmd(t_data *data)
@@ -150,10 +185,31 @@ void	run_cmd(t_data *data)
 	}
 }
 
+void	exec_child(char *cmd_path, char **args, char **my_envp)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (execve(cmd_path, args, my_envp) == -1)
+		exit(errno);
+}
+
+int		exec_parent(t_data *data, int pid)
+{
+	int	status;
+
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	waitpid(pid, &status, 0);
+	return (get_exit_code(data, status));
+}
+
+// ONE
+// ONE EXTRA FUCKING WHATS THAT
+// U WOT M8
 int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 {
 	int		i;
-	int		status;
+	int		childpid;
 
 	i = 0;
 	rebuild_envp(data);
@@ -167,27 +223,13 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 		if (args[0] != NULL)
 			free(args[0]);
 		args[0] = ft_strdup(cmd_paths[i]);
-		status = access(args[0], X_OK);
-		if (!status)
+		if (!(access(args[0], X_OK)))
 		{
-			if (!fork())
-			{
-				signal(SIGINT, SIG_DFL);
-				signal(SIGQUIT, SIG_DFL);
-				if (execve(cmd_paths[i], args, data->my_envp) == -1)
-				{
-					free_2d_array(&cmd_paths);
-					free_2d_array(&args);
-					exit(errno);
-				}
-			}
+			childpid = fork();
+			if (!childpid)
+				exec_child(cmd_paths[i], args, data->my_envp);
 			else
-			{
-				signal(SIGINT, SIG_IGN);
-				signal(SIGQUIT, SIG_IGN);
-				waitpid(-1, &status, 0);
-				return (get_exit_code(data, status));
-			}
+				return (exec_parent(data, childpid));
 		}
 		i++;
 	}

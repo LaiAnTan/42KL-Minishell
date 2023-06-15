@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:51 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 11:07:46 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/15 13:13:55 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 int	is_token(char c)
 {
 	int		i;
-	char	*token;
+	char	token[6];
 
 	i = 0;
-	token = (char *) malloc(sizeof(char) * 6);
 	token[0] = '\'';
 	token[1] = '\"';
 	token[2] = '|';
@@ -42,6 +41,18 @@ int	bunny_ears(char *line, int stop, int to_match)
 	return (stop);
 }
 
+int	handle_token(char *line, int tk_type, int i)
+{
+	if (line[i + 1] != '\0' && (tk_type == 4 || tk_type == 5))
+	{
+		if (tk_type == is_token(line[i + 1]))
+			i++;
+	}
+	else if (tk_type == 1 || tk_type == 2)
+		i = bunny_ears(line, i, line[i]);
+	return (i);
+}
+
 int	find_token_pos(char *line, int *index_pair)
 {
 	int		i;
@@ -55,15 +66,7 @@ int	find_token_pos(char *line, int *index_pair)
 	index_pair[0] = i;
 	tk_type = is_token(line[i]);
 	if (tk_type != 0)
-	{
-		if (line[i + 1] != '\0' && (tk_type == 4 || tk_type == 5))
-		{
-			if (tk_type == is_token(line[i + 1]))
-				i++;
-		}
-		else if (tk_type == 1 || tk_type == 2)
-			i = bunny_ears(line, i, line[i]);
-	}
+		i = handle_token(line, tk_type, i);
 	else
 	{
 		while (line[i] != '\0' && !is_token(line[i]) && line[i] != ' ')
@@ -72,6 +75,25 @@ int	find_token_pos(char *line, int *index_pair)
 	}
 	index_pair[1] = i;
 	return (tk_type);
+}
+
+void	pad_blank_tokens(t_data *data, int ret_val, int *token_pos)
+{
+	if (ret_val > 0)
+	{
+		if (ret_val == 1 || ret_val == 2)
+		{
+			if (data->line[token_pos[1] + 1] == ' ')
+			{
+				data->tokens = realloc_append(data->tokens, "");
+				++token_pos[1];
+			}
+		}
+		else if (ret_val == 4 || ret_val == 5)
+			data->tokens = realloc_append(data->tokens, "");
+	}
+	else if (data->line[token_pos[1] + 1] == ' ')
+		data->tokens = realloc_append(data->tokens, "");
 }
 
 int	lexer(t_data *data)
@@ -97,21 +119,7 @@ int	lexer(t_data *data)
 			data->tokens = realloc_append(data->tokens, "");
 		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
 		data->tokens = realloc_append(data->tokens, new_token);
-		if (ret_val > 0)
-		{
-			if (ret_val == 1 || ret_val == 2)
-			{
-				if (data->line[token_pos[1] + 1] == ' ')
-				{
-					data->tokens = realloc_append(data->tokens, "");
-					++token_pos[1];
-				}
-			}
-			else if (ret_val == 4 || ret_val == 5)
-				data->tokens = realloc_append(data->tokens, "");
-		}
-		else if (data->line[token_pos[1] + 1] == ' ')
-			data->tokens = realloc_append(data->tokens, "");
+		pad_blank_tokens(data, ret_val, token_pos);
 		free(new_token);
 	}
 	return (1);

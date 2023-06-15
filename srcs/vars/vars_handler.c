@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vars_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:06 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/14 10:41:53 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/15 15:36:23 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,15 @@ int	one_side(char *line, int i, int in_ears)
 	return (left && right);
 }
 
+
+
+// else if (ret[indexes[1]] == '\'' && !special_case)
+// {
+// 	++indexes[1];
+// 	while (ret[indexes[1]] && ret[indexes[1]] != '\'')
+// 		++indexes[1];
+// }
+
 void	replace_dollar(t_data *data)
 {
 	int		special_case;
@@ -84,15 +93,12 @@ void	replace_dollar(t_data *data)
 		if (ret[indexes[1]] == '\"')
 			special_case = !special_case;
 		else if (ret[indexes[1]] == '\'' && !special_case)
-		{
-			++indexes[1];
-			while (ret[indexes[1]] && ret[indexes[1]] != '\'')
-				++indexes[1];
-		}
+			indexes[1] = bunny_ears(ret, indexes[1], '\'');
 		else if (ret[indexes[1]] == '$')
 		{
 			indexes[2] = get_keyword(ret, indexes[1]);
 			break_down(ret, indexes, string_storage);
+
 			if (indexes[2] == indexes[1])
 			{
 				if (one_side(ret, indexes[2], special_case))
@@ -102,6 +108,7 @@ void	replace_dollar(t_data *data)
 			}
 			else
 				string_storage[3] = access_var(data, string_storage[1]);
+
 			recombine_parts(&ret, string_storage);
 			reset(string_storage, indexes);
 		}
