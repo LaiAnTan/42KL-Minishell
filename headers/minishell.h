@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:07:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 14:31:22 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/15 22:05:04 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int		is_token(char c);
 int		is_redirect(char *arg);
 int		get_redirect_type(char *arg);
 int		contains_redirect(char **args);
-int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in);
+int		handle_redirect(char **args, t_list *cur, int std_in);
 
 int		handle_redir_input(char *filename, int *in_fd);
 int		handle_redir_output(char *filename, int *out_fd);
