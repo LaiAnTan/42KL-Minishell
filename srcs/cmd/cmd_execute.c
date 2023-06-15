@@ -94,7 +94,7 @@ void	multiple_commands(t_data *data)
 			if (!(dispatched == cmd_count - 1))
 				close(pipe_storage[0]);
 			if (handle_redirect(curr->cmd.cmd, &curr->in_fd,
-					&curr->out_fd, data->stdin_backup) == -1)
+					&curr->out_fd, data->stdin_backup) == 1)
 				exit (1);
 			curr->cmd.cmd = get_cmd_args_without_redirect(curr->cmd.cmd);
 			dup2(curr->in_fd, STDIN_FILENO);
@@ -139,7 +139,7 @@ void	run_cmd(t_data *data)
 	else
 	{
 		if (handle_redirect(data->cmds->cmd.cmd, &data->cmds->in_fd,
-				&data->cmds->out_fd, data->stdin_backup) == -1)
+				&data->cmds->out_fd, data->stdin_backup) == 1)
 		{
 			data->last_exit = 1;
 			return ;
@@ -158,10 +158,7 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 	i = 0;
 	rebuild_envp(data);
 	if (!cmd_paths)
-	{
-		printf("%s: No such file or directotry\n", cmd);
-		return (127);
-	}
+		return (error_msg(NULL, cmd, "No such file or directory", 127));
 	while (cmd_paths[i] != NULL)
 	{
 		if (args[0] != NULL)
@@ -191,6 +188,5 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 		}
 		i++;
 	}
-	printf("%s: command not found\n", cmd);
-	return (127);
+return (error_msg(NULL, cmd, "No such file or directory", 127));
 }

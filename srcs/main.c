@@ -59,6 +59,23 @@ void	cleanup(t_data *data)
 		free(data->line);
 }
 
+int	error_msg(char *cmd, char *context, char *msg, int code)
+{
+	if (cmd)
+	{
+		write(STDERR_FILENO, cmd, ft_strlen(cmd));
+		write(STDERR_FILENO, ": ", 2);
+	}
+	if (context)
+	{
+		write(STDERR_FILENO, context, ft_strlen(context));
+		write(STDERR_FILENO, ": ", 2);
+	}
+	write (STDERR_FILENO, msg, ft_strlen(msg));
+	write(STDERR_FILENO, "\n", 1);
+	return (code);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data			data;

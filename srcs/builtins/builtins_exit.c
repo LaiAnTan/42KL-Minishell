@@ -23,17 +23,11 @@ int	builtin_exit(t_data *data, char **args)
 	int		exit_code;
 
 	if (count_2d_array(args) > 2)
-	{
-		printf("exit: too many arguements\n");
-		return (1);
-	}
+		return (error_msg("exit", NULL, "too many arguments", 1));
 	else if (args[1] == NULL)
 		exit_code = 0;
 	else if (!is_numeric(args[1]))
-	{
-		printf("exit: %s: numeric arguement required", args[1]);
-		exit_code = 2;
-	}
+		exit_code = error_msg("exit", args[1], "numeric argument required", 2);
 	else
 		exit_code = ft_atoi(args[1]);
 	while (exit_code >= 256)

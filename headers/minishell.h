@@ -92,8 +92,6 @@ int		is_token(char c);
 int		is_redirect(char *arg);
 int		get_redirect_type(char *arg);
 int		contains_redirect(char **args);
-int		file_not_found_error(char *filename);
-int		file_cant_open_error(char *filename);
 int		handle_redirect(char **args, int *in_fd, int *out_fd, int std_in);
 
 int		handle_redir_input(char *filename, int *in_fd);
@@ -133,8 +131,6 @@ void	reset_attr(struct termios *saved);
 void	new_line_handler(int sig_code);
 
 /* Builtin command functions */
-
-int		builtin_error_msg(char *str);
 
 int		builtin_echo(char **args);
 int		builtin_pwd(t_data *data);
@@ -179,8 +175,9 @@ char	*ft_substr(char *s, unsigned int start, unsigned int end);
 char	**ft_split(char *s, char c);
 char	**realloc_append(char **src, char *str);
 
-/* Exit */
+/* Exit & Errors */
+
+int		error_msg(char *cmd, char *context, char *msg, int code);
 
 int		reset_and_exit(struct termios *saved, int exit_code);
-
 #endif

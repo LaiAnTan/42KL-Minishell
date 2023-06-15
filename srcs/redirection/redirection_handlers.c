@@ -20,9 +20,9 @@ int	handle_redir_input(char *filename, int *in_fd)
 		return (-1);
 	fd = open(filename, O_RDONLY, 0777);
 	if (fd == -1)
-		return (file_not_found_error(filename));
+		return (error_msg(NULL, filename, "No such file or directory", 1));
 	dup2(fd, *in_fd);
-	return (1);
+	return (0);
 }
 
 int	handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in)
@@ -55,7 +55,7 @@ int	handle_redir_input_heredoc(char *delimiter, int *in_fd, int std_in)
 	close(storage[1]);
 	waitpid(child_fd, 0, 0);
 	dup2(storage[0], *in_fd);
-	return (1);
+	return (0);
 }
 
 int	handle_redir_output(char *filename, int *out_fd)
@@ -66,10 +66,10 @@ int	handle_redir_output(char *filename, int *out_fd)
 		return (-1);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
-		return (file_cant_open_error(filename));
+		return (error_msg(NULL, filename, "File could not be opened", 1));
 	dup2(fd, *out_fd);
 	close(fd);
-	return (1);
+	return (0);
 }
 
 int	handle_redir_output_append(char *filename, int *out_fd)
@@ -80,8 +80,8 @@ int	handle_redir_output_append(char *filename, int *out_fd)
 		return (-1);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777);
 	if (fd == -1)
-		return (file_cant_open_error(filename));
+		return (error_msg(NULL, filename, "File could not be opened", 1));
 	dup2(fd, *out_fd);
 	close(fd);
-	return (1);
+	return (0);
 }

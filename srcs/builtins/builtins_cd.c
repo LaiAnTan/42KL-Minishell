@@ -32,10 +32,7 @@ int	builtin_cd(char **args, t_data *data)
 	{
 		cd_path = access_var(data, "OLDPWD");
 		if (ft_strlen(cd_path) == 0)
-		{
-			printf("cd: OLDPWD not set");
-			return (1);
-		}
+			return (error_msg("cd", NULL, "OLDPWD not set", 1));
 		printf("%s\n", cd_path);
 	}
 	else
@@ -63,9 +60,6 @@ int	builtin_cd(char **args, t_data *data)
 		data->last_exit = 0;
 	}
 	else
-	{
-		printf("cd: %s: no such file or directory\n", cd_path);
-		return (1);
-	}
+		return (error_msg("cd", NULL, "No such file or directory", 1));
 	return (0);
 }
