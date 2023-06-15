@@ -113,7 +113,8 @@ int	builtin_export(char **args, t_data *data)
 	while (args[++i] != NULL)
 	{
 		if (args[i][0] == '=')
-			return (error_msg("export", args[i], "is not a valid identifier", 1));
+			return (error_msg("export", args[i], 
+			"is not a valid identifier", 1));
 		var_name = get_var_name(args[i]);
 		node = find_var(lst, var_name);
 		free(var_name);
