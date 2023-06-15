@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:58 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 11:57:07 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/15 18:15:16 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,36 @@ int	remove_ears(char **string)
 	return (ret_val);
 }
 
+// this should be illegal
+void	extract_cmd_helper(char ***cmd, char **token, char **str)
+{
+	if (ft_strlen((*token)) == 0)
+	{
+		(*cmd) = realloc_append((*cmd), (*str));
+		free((*str));
+		(*str) = NULL;
+	}
+	else
+	{
+		if (remove_ears(token) == 0)
+			(*token) = ft_trimstr((*token), ' ');
+		(*str) = ft_append((*str), (*token));
+	}
+}
+
+// if (ft_strlen(tokens[j]) == 0)
+// {
+// 	cmd = realloc_append(cmd, str);
+// 	free(str);
+// 	str = NULL;
+// }
+// else
+// {
+// 	if (remove_ears(&tokens[j]) == 0)
+// 		tokens[j] = ft_trimstr(tokens[j], ' ');
+// 	str = ft_append(str, tokens[j]);
+// }
+
 char	**extract_cmd(char **tokens, int *index_pair)
 {
 	int		j;
@@ -64,18 +94,7 @@ char	**extract_cmd(char **tokens, int *index_pair)
 	cmd[0] = NULL;
 	while (j < index_pair[1])
 	{
-		if (ft_strlen(tokens[j]) == 0)
-		{
-			cmd = realloc_append(cmd, str);
-			free(str);
-			str = NULL;
-		}
-		else
-		{
-			if (remove_ears(&tokens[j]) == 0)
-				tokens[j] = ft_trimstr(tokens[j], ' ');
-			str = ft_append(str, tokens[j]);
-		}
+		extract_cmd_helper(&cmd, &tokens[j], &str);
 		++j;
 	}
 	if (str)

@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:34:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 16:40:44 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/15 17:04:30 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,9 +203,7 @@ int		exec_parent(t_data *data, int pid)
 	return (get_exit_code(data, status));
 }
 
-// ONE
-// ONE EXTRA FUCKING WHATS THAT
-// U WOT M8
+// epic fixed
 int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 {
 	int		i;
@@ -230,5 +228,5 @@ int	exec_cmd(t_data *data, char **cmd_paths, char **args, char *cmd)
 		}
 		i++;
 	}
-return (error_msg(NULL, cmd, "No such file or directory", 127));
+	return (error_msg(NULL, cmd, "No such file or directory", 127));
 }
