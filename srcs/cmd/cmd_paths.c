@@ -33,12 +33,19 @@ int	is_executable(char *str)
 	return (0);
 }
 
+int	is_absolute(char *str)
+{
+	if (ft_strlen(str) > 2 && str[0] == '/')
+		return (1);
+	return (0);
+}
+
 char	**get_cmd_path(t_data *data, char *cmd)
 {
 	char	*full_path;
 	char	**cmd_paths;
 
-	if (is_executable(cmd))
+	if (is_executable(cmd) || is_absolute(cmd))
 	{
 		cmd_paths = (char **) malloc(sizeof(char *) * 2);
 		cmd_paths[0] = ft_strdup(cmd);
