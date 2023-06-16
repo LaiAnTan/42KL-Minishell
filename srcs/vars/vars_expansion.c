@@ -6,13 +6,13 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:06 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/16 10:45:34 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/16 11:29:51 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-void	break_down(char *line, int *indexes, char **temp_strings)
+int	break_down(char *line, int *indexes, char **temp_strings)
 {
 	indexes[2] = get_keyword(line, indexes[1]);
 	if (indexes[1] != indexes[0])
@@ -21,6 +21,7 @@ void	break_down(char *line, int *indexes, char **temp_strings)
 		temp_strings[0] = NULL;
 	temp_strings[1] = ft_substr(line, indexes[1] + 1, indexes[2]);
 	temp_strings[2] = ft_substr(line, indexes[2] + 1, ft_strlen(line));
+	return (indexes[2] == indexes[1]);
 }
 
 void	recombine_and_reset(char **store, char **temp_strings, int *indexes)
@@ -63,35 +64,35 @@ void	rd_init_variables(int *special_case,
 	(*special_case) = 0;
 	indexes[0] = 0;
 	indexes[1] = 0;
+	indexes[2] = 0;
 	string_storage[4] = NULL;
 }
 
+// i have sinned
 void	replace_dollar(t_data *data)
 {
 	int		special_case;
 	char	*ret;
-	char	*string_storage[5];
-	int		indexes[3];
+	char	*strings[5];
+	int		indx[3];
 
-	rd_init_variables(&special_case, string_storage, indexes);
+	rd_init_variables(&special_case, strings, indx);
 	ret = ft_strdup(data->line);
-	while (search_symbol(&ret[indexes[1]], '$') != -1)
+	while (search_symbol(&ret[indx[1]], '$') != -1)
 	{
-		if (ret[indexes[1]] == '\"')
+		if (ret[indx[1]] == '\"')
 			special_case = !special_case;
-		else if (ret[indexes[1]] == '\'' && !special_case)
-			indexes[1] = bunny_ears(ret, indexes[1], '\'');
-		else if (ret[indexes[1]] == '$')
+		else if (ret[indx[1]] == '\'' && !special_case)
+			indx[1] = bunny_ears(ret, indx[1], '\'');
+		else if (ret[indx[1]] == '$')
 		{
-			break_down(ret, indexes, string_storage);
-			if (indexes[2] == indexes[1])
-				string_storage[3] = handle_special_case(ret,
-						indexes[2], special_case);
+			if (break_down(ret, indx, strings))
+				strings[3] = handle_special_case(ret, indx[2], special_case);
 			else
-				string_storage[3] = access_var(data, string_storage[1]);
-			recombine_and_reset(&ret, string_storage, indexes);
+				strings[3] = access_var(data, strings[1]);
+			recombine_and_reset(&ret, strings, indx);
 		}
-		++indexes[1];
+		++indx[1];
 	}
 	free(data->line);
 	data->line = ret;
