@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vars_expansion.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:06 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/16 11:29:51 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/16 11:32:07 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ void	rd_init_variables(int *special_case,
 void	replace_dollar(t_data *data)
 {
 	int		special_case;
+	int		indx[3];
 	char	*ret;
 	char	*strings[5];
-	int		indx[3];
 
 	rd_init_variables(&special_case, strings, indx);
 	ret = ft_strdup(data->line);
