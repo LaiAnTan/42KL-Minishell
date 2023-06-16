@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:34:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 21:42:07 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/16 10:44:59 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	run_cmd(t_data *data)
 		multiple_commands(data);
 	else
 	{
-		if (handle_redirect(data->cmds->cmd.cmd, data->cmds, data->stdin_backup) == 1)
+		if (handle_redirect(data->cmds->cmd.cmd, 
+			data->cmds, data->stdin_backup) == 1)
 		{
 			data->last_exit = 1;
 			return ;
