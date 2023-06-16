@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:55 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/16 10:45:01 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/16 11:07:19 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,28 +98,25 @@ static char	*get_var_name(char *str)
 	return (var_name);
 }
 
-// disgusting while ++i loop im gonan go cry in a corner now
 int	builtin_export(char **args, t_data *data)
 {
 	int		i;
 	char	*var_name;
-	t_list	*lst;
 	t_list	*node;
 
 	i = 0;
-	lst = data->vars;
 	if (args[1] == NULL)
-		return (print_asc_export(lst));
+		return (print_asc_export(data->vars));
 	while (args[++i] != NULL)
 	{
 		if (args[i][0] == '=')
 			return (error_msg("export", args[i],
 					"is not a valid identifier", 1));
 		var_name = get_var_name(args[i]);
-		node = find_var(lst, var_name);
+		node = find_var(data->vars, var_name);
 		free(var_name);
 		if (node == NULL)
-			ft_lstadd_back(&lst, ft_lstnew_env(ft_strdup(args[i])));
+			ft_lstadd_back(&data->vars, ft_lstnew_env(ft_strdup(args[i])));
 		else
 		{
 			free(node->env.str);
