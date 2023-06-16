@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute_multiple.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 10:44:39 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/16 10:48:34 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/16 11:06:49 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static void	wait_all_commands(int cmd_count, int last_child_pid, t_data *data)
 	}
 }
 
-static void	do_pumbling(int dispatched, int cmd_count, int *pipe_storage, int prev_pipe, t_list *cur)
+static void	do_pumbling(int dispatched, int cmd_count,
+	int *pipe_storage, t_list *cur)
 {
 	if (dispatched != cmd_count - 1)
 	{
@@ -48,21 +49,23 @@ static void	do_pumbling(int dispatched, int cmd_count, int *pipe_storage, int pr
 		cur->out_fd = pipe_storage[1];
 	}
 	if (dispatched)
-		cur->in_fd = prev_pipe;
+		cur->in_fd = pipe_storage[2];
 }
 
-static void	clean_pipes(int dispatched, int cmd_count, 
-		int *pipe_storage, int *prev_pipe)
+static void	clean_pipes(int dispatched, int cmd_count,
+		int *pipe_storage)
 {
-	if (dispatched)	
-		close((*prev_pipe));
+	if (dispatched)
+		close(pipe_storage[2]);
 	if (dispatched != cmd_count - 1)
 	{
 		close(pipe_storage[1]);
-		(*prev_pipe) = pipe_storage[0];
+		pipe_storage[2] = pipe_storage[0];
 	}
 }
 
+//0 and 1 - new pipe
+//2 - prev pipe
 void	multiple_commands(t_data *data)
 {
 	t_list	*curr;
@@ -76,13 +79,13 @@ void	multiple_commands(t_data *data)
 	curr = data->cmds;
 	while (disptch < cmd_c)
 	{
-		do_pumbling(disptch, cmd_c, &pipe_storage[0], pipe_storage[2], curr);
+		do_pumbling(disptch, cmd_c, &pipe_storage[0], curr);
 		last_child_pid = fork();
 		if (last_child_pid == 0)
 			in_child((disptch == cmd_c - 1), data, curr, pipe_storage[0]);
 		else
 		{
-			clean_pipes(disptch, cmd_c, &pipe_storage[0], &pipe_storage[2]);
+			clean_pipes(disptch, cmd_c, &pipe_storage[0]);
 			++disptch;
 			curr = curr->next;
 		}
