@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 10:44:39 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/16 10:44:40 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/16 10:48:34 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	do_pumbling(int dispatched, int cmd_count, int *pipe_storage, int pr
 }
 
 static void	clean_pipes(int dispatched, int cmd_count, 
-	int *pipe_storage, int *prev_pipe)
+		int *pipe_storage, int *prev_pipe)
 {
 	if (dispatched)	
 		close((*prev_pipe));
