@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:37:22 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 22:04:37 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/16 10:40:47 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,18 +100,18 @@ char	**get_cmd_args_without_redirect(char **args)
 
 // this will never go inside else
 // ...right?
-int    redirect_switcher(int *redirect_info, t_list *cur, char *args, int std_in)
+int	redirect_switcher(int *redirect_info, t_list *cur, char *args, int std_in)
 {
-    if (redirect_info[0] == 1)
-        return (handle_redir_output(args, &cur->out_fd));
-    else if (redirect_info[0] == 2)
-        return (handle_redir_output_append(args, &cur->out_fd));
-    else if (redirect_info[0] == 3)
-        return (handle_redir_input(args, &cur->in_fd));
-    else if (redirect_info[0] == 4)
-        return (handle_redir_input_heredoc(args, &cur->in_fd, std_in));
-    else
-        return (1);
+	if (redirect_info[0] == 1)
+		return (handle_redir_output(args, &cur->out_fd));
+	else if (redirect_info[0] == 2)
+		return (handle_redir_output_append(args, &cur->out_fd));
+	else if (redirect_info[0] == 3)
+		return (handle_redir_input(args, &cur->in_fd));
+	else if (redirect_info[0] == 4)
+		return (handle_redir_input_heredoc(args, &cur->in_fd, std_in));
+	else
+		return (1);
 }
 
 // if (redirect_info[0] == 1)

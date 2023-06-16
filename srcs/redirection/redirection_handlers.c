@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:36:25 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 19:49:57 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/16 10:44:42 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	handle_redir_input(char *filename, int *in_fd)
 	return (0);
 }
 
-
 // exit can quite literally be anything
 int	heredoc_child(char *delimiter, int *storage, int std_in)
 {
@@ -40,7 +39,8 @@ int	heredoc_child(char *delimiter, int *storage, int std_in)
 		rl_redisplay();
 		if (!line)
 		{
-			error_msg("warning", delimiter, "here-document at line 28 delimited by end-of-file", 0);
+			error_msg("warning", delimiter,
+				"here-document at line 28 delimited by end-of-file", 0);
 			break ;
 		}
 		if (ft_strcmp(line, delimiter) == 0)

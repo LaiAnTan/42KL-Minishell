@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:45 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 18:44:25 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/16 10:37:18 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	cd_update_env(t_data *data)
 char	*cd_get_cd_path(int size, char **args, t_data *data)
 {
 	char	*cd_path;
-	
+
 	cd_path = NULL;
 	if (size == 1 || args[1][0] == '~')
 	{

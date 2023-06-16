@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vars_handler.c                                     :+:      :+:    :+:   */
+/*   vars_expansion.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:06 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 17:02:42 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/16 10:45:34 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ char	*handle_special_case(char *line, int i, int special_case)
 		return (ft_strdup("$"));
 }
 
-void	rd_init_variables(int *special_case, char **string_storage, int *indexes)
+void	rd_init_variables(int *special_case,
+	char **string_storage, int *indexes)
 {
 	(*special_case) = 0;
 	indexes[0] = 0;
@@ -84,7 +85,8 @@ void	replace_dollar(t_data *data)
 		{
 			break_down(ret, indexes, string_storage);
 			if (indexes[2] == indexes[1])
-				string_storage[3] = handle_special_case(ret, indexes[2], special_case);
+				string_storage[3] = handle_special_case(ret,
+						indexes[2], special_case);
 			else
 				string_storage[3] = access_var(data, string_storage[1]);
 			recombine_and_reset(&ret, string_storage, indexes);
