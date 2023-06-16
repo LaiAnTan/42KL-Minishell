@@ -39,7 +39,8 @@ static void	do_pumbling(int dispatched, int cmd_count, int *pipe_storage, int pr
 		cur->in_fd = prev_pipe;
 }
 
-static void	clean_pipes(int dispatched, int cmd_count, int *pipe_storage, int *prev_pipe)
+static void	clean_pipes(int dispatched, int cmd_count, 
+	int *pipe_storage, int *prev_pipe)
 {
 	if (dispatched)	
 		close((*prev_pipe));
@@ -53,29 +54,28 @@ static void	clean_pipes(int dispatched, int cmd_count, int *pipe_storage, int *p
 void	multiple_commands(t_data *data)
 {
 	t_list	*curr;
-	int		dispatched;
-	int		cmd_count;
+	int		disptch;
+	int		cmd_c;
 	int		pipe_storage[3];
 	int		last_child_pid;
 
-	dispatched = 0;
-	cmd_count = get_command_count(data);
+	disptch = 0;
+	cmd_c = get_command_count(data);
 	curr = data->cmds;
-	while (dispatched < cmd_count)
+	while (disptch < cmd_c)
 	{
-		do_pumbling(dispatched, cmd_count, &pipe_storage[0], pipe_storage[2], curr);
-		
+		do_pumbling(disptch, cmd_c, &pipe_storage[0], pipe_storage[2], curr);
 		last_child_pid = fork();
 		if (last_child_pid == 0)
-			in_child((dispatched == cmd_count - 1), data, curr, pipe_storage[0]);
+			in_child((disptch == cmd_c - 1), data, curr, pipe_storage[0]);
 		else
 		{
-			clean_pipes(dispatched, cmd_count, &pipe_storage[0], &pipe_storage[2]);
-			++dispatched;
+			clean_pipes(disptch, cmd_c, &pipe_storage[0], &pipe_storage[2]);
+			++disptch;
 			curr = curr->next;
 		}
 	}
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	wait_all_commands(cmd_count, last_child_pid, data);
+	wait_all_commands(cmd_c, last_child_pid, data);
 }

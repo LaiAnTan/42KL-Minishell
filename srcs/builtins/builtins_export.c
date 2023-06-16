@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:55 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 18:52:32 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/16 10:45:01 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ int	builtin_export(char **args, t_data *data)
 	while (args[++i] != NULL)
 	{
 		if (args[i][0] == '=')
-			return (error_msg("export", args[i], 
-			"is not a valid identifier", 1));
+			return (error_msg("export", args[i],
+					"is not a valid identifier", 1));
 		var_name = get_var_name(args[i]);
 		node = find_var(lst, var_name);
 		free(var_name);
