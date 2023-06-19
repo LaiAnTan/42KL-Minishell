@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vars_helpers_1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:09 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/13 17:24:26 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:40:03 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,28 +47,14 @@ char	*get_val(t_list *node)
 	return (val);
 }
 
-static int	compare_name(char *var, char *name)
-{
-	int	i;
-
-	i = 0;
-	while (name[i] != '\0' && var[i] != '\0')
-	{
-		if (name[i] != var[i])
-			return (0);
-		++i;
-	}
-	return (1);
-}
-
 t_list	*find_var(t_list *vars, char *to_find)
 {
 	t_list	*node;
 
 	node = vars;
-	while (node != NULL)
+	while (node)
 	{
-		if (compare_name(node->env.str, to_find) == 1)
+		if (ft_strcmp_equals(node->env.str, to_find) == 0)
 			return (node);
 		node = node->next;
 	}
