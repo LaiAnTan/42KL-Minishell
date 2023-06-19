@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:54 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 20:00:52 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 20:11:02 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,49 +72,19 @@ int	handle_line(t_data *data)
 		exit(reset_and_exit(&data->attr->def_attributes, 0));
 }
 
-void	print_parsed(t_list *amogus)
-{
-	int		iter_count;
-	t_list	*iter;
-
-	iter_count = 1;
-	iter = amogus;
-	while (iter)
-	{
-		printf("<Cmd %d>\n", iter_count);
-		for (int i = 0; iter->cmd.cmd[i]; ++i)
-			printf("%d | \"%s\" | %d\n", i,
-				iter->cmd.cmd[i], ft_strlen(iter->cmd.cmd[i]));
-		iter = iter->next;
-		++iter_count;
-	}
-}
-
-void	print_double(char **stuff)
-{
-	for (int i = 0; stuff[i]; ++i)
-	{
-		printf("%s - len = %d\n", stuff[i], ft_strlen(stuff[i]));
-	}
-}
-
 int	valid_cmds(t_data *data)
 {
-	int	i;
+	int		i;
 	t_list	*curr;
 
 	i = 0;
 	curr = data->cmds;
-	if (!curr)
-		return (0);
 	while (curr)
 	{
-		print_double(curr->cmd.cmd);
-		while (curr->cmd.cmd[i] != NULL)
+		while (curr->cmd.cmd && curr->cmd.cmd[i] != NULL)
 		{
-			printf("checking %s & %s\n", curr->cmd.cmd[i], curr->cmd.cmd[i + 1]);
-			if (is_redirect(curr->cmd.cmd[i]) == 1 
-				&& (is_redirect(curr->cmd.cmd[i + 1]) == 1 
+			if (is_redirect(curr->cmd.cmd[i]) == 1
+				&& (is_redirect(curr->cmd.cmd[i + 1]) == 1
 					|| curr->cmd.cmd[i + 1] == NULL))
 			{
 				data->last_exit = 2;
@@ -125,7 +95,6 @@ int	valid_cmds(t_data *data)
 		}
 		i = 0;
 		curr = curr->next;
-		// printf("next\n");
 	}
 	return (0);
 }
@@ -150,7 +119,6 @@ int	main(int argc, char **argv, char **envp)
 		replace_dollar(&data);
 		lexer(&data);
 		parser(&data);
-		// print_parsed(data.cmds);
 		if (valid_cmds(&data) == 0)
 			run_cmd(&data);
 		cleanup(&data);

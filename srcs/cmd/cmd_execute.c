@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:34:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 19:40:14 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 20:09:29 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,6 @@ int	single_command(t_data *data, t_list *cmds)
 	return (exit_status);
 }
 
-int	get_command_count(t_data *data)
-{
-	t_list	*counter;
-	int		ret;
-
-	ret = 0;
-	counter = data->cmds;
-	while (counter)
-	{
-		++ret;
-		counter = counter->next;
-	}
-	return (ret);
-}
-
 int	get_exit_code(t_data *data, int exit_status)
 {
 	if (WIFEXITED(exit_status))
@@ -68,7 +53,8 @@ int	check_valid_pipes(t_data *data)
 	{
 		if (!cur->cmd.cmd)
 		{
-			data->last_exit = error_msg("syntax error", "|", "syntax error near unexpected token", 2);
+			data->last_exit = error_msg("minishell", NULL,
+					"syntax error near unexpected token", 2);
 			return (0);
 		}
 		cur = cur->next;
