@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:54 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 19:39:42 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 19:41:18 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ int	valid_cmds(t_data *data)
 		while (curr->cmd.cmd[i] != NULL)
 		{
 			printf("checking %s & %s\n", curr->cmd.cmd[i], curr->cmd.cmd[i + 1]);
-			if (is_redirect(curr->cmd.cmd[i]) == 0 
-				&& (is_redirect(curr->cmd.cmd[i + 1]) == 0 
+			if (is_redirect(curr->cmd.cmd[i]) == 1 
+				&& (is_redirect(curr->cmd.cmd[i + 1]) == 1 
 					|| curr->cmd.cmd[i + 1] == NULL))
 			{
 				data->last_exit = 2;
