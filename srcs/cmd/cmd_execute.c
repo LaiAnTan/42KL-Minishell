@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:34:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 15:48:22 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:42:16 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,18 @@ int	get_exit_code(t_data *data, int exit_status)
 
 void	run_cmd(t_data *data)
 {
+	int exit_status;
+
+	exit_status = 0;
 	if (data->cmds->next)
 		multiple_commands(data);
 	else
 	{
-		if (handle_redirect(data->cmds->cmd.cmd,
-				data->cmds, data->stdin_backup) == 1)
+		exit_status = handle_redirect(data->cmds->cmd.cmd,
+				data->cmds, data->stdin_backup);
+		if (exit_status == 1 || exit_status == 2)
 		{
-			data->last_exit = 1;
+			data->last_exit = exit_status;
 			return ;
 		}
 		data->cmds->cmd.cmd = get_cmd_args_without_redirect

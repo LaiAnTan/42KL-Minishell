@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2d_array.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:18 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 15:49:59 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:33:35 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	count_2d_array(char **e)
 
 	i = 0;
 	if (!e)
-		return 0;
+		return (0);
 	while (e[i])
 		++i;
 	return (i);

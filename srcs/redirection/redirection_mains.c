@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_mains.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:37:22 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/16 10:40:47 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:21:00 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,6 @@ int	*get_next_redirect(char **args, int index)
 	redirect_info[0] = -1;
 	redirect_info[1] = -1;
 	return (redirect_info);
-}
-
-/*
-function that counts the number of arguments that are not part of redirection
-eg. cat < a.txt hello, "< a.txt" are skipped
-*/
-
-int	count_args_without_redirect(char **args)
-{
-	int		i;
-	int		len;
-	int		count;
-
-	i = 0;
-	len = count_2d_array(args);
-	count = 0;
-	while (i < len)
-	{
-		if (is_redirect(args[i]))
-			i += 2;
-		else
-		{
-			++i;
-			++count;
-		}
-	}
-	return (count);
 }
 
 /*
@@ -114,23 +87,14 @@ int	redirect_switcher(int *redirect_info, t_list *cur, char *args, int std_in)
 		return (1);
 }
 
-// if (redirect_info[0] == 1)
-// 	error = handle_redir_output(args[i], out_fd);
-// else if (redirect_info[0] == 2)
-// 	error = handle_redir_output_append(args[i], out_fd);
-// else if (redirect_info[0] == 3)
-// 	error = handle_redir_input(args[i], in_fd);
-// else if (redirect_info[0] == 4)
-// 	error = handle_redir_input_heredoc(args[i], in_fd, std_in);
-
 int	handle_redirect(char **args, t_list *cur, int std_in)
 {
 	int		i;
-	int		error;
+	int		size;
 	int		*redirect_info;
 
 	i = 0;
-	error = 0;
+	size = count_2d_array(args);
 	if (contains_redirect(args) == 0)
 		return (0);
 	while (args[i] != NULL)
@@ -141,10 +105,17 @@ int	handle_redirect(char **args, t_list *cur, int std_in)
 		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
 			break ;
 		i = redirect_info[1] + 1;
-		error = redirect_switcher(redirect_info, cur, args[i], std_in);
-		free(redirect_info);
-		if (error == 1)
+		if (i == size || ft_strcmp(args[i], "|") == 0)
+		{
+			free(redirect_info);
+			return (error_msg(NULL, "minishell",
+				"syntax error near unexpected token", 2));
+		}
+		if (redirect_switcher(redirect_info, cur, args[i], std_in) == 1)
+		{
+			free(redirect_info);
 			return (1);
+		}
 	}
 	if (redirect_info)
 		free(redirect_info);

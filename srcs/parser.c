@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:58 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 15:48:54 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:34:13 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,12 @@ char	**extract_cmd(char **tokens, int *index_pair)
 
 	find_next_cmd(tokens, index_pair);
 	if (index_pair[0] > index_pair[1])
-		return NULL;
+		return (NULL);
 	j = index_pair[0];
 	str = NULL;
 	cmd = NULL;
 	while (j < index_pair[1])
 	{
-		printf("token doing rn = \"%s\"\n", tokens[j]);
 		extract_cmd_helper(&cmd, &tokens[j], &str);
 		++j;
 	}
@@ -112,7 +111,7 @@ int	parser(t_data *data)
 		{
 			cmd = extract_cmd(data->tokens, index_pair);
 			if (!cmd)
-				break;
+				break ;
 			node = ft_lstnew_cmd(cmd);
 			ft_lstadd_back(&lst, node);
 		}

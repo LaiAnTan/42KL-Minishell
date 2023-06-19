@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:07:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 14:33:16 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 16:35:55 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int		bunny_ears(char *line, int stop, int to_match);
 int		is_redirect(char *arg);
 int		get_redirect_type(char *arg);
 int		contains_redirect(char **args);
+int		count_args_without_redirect(char **args);
 int		handle_redirect(char **args, t_list *cur, int std_in);
 
 int		handle_redir_input(char *filename, int *in_fd);
