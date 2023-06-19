@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:52 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/14 10:42:26 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 12:58:59 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ int	builtin_exit(t_data *data, char **args)
 		exit_code = ft_atoi(args[1]);
 	while (exit_code >= 256)
 		exit_code = exit_code - 256;
-	printf("process exited with code %d\n", exit_code);
+	printf("exit\n");
 	return (reset_and_exit(&data->attr->def_attributes, exit_code));
 }
