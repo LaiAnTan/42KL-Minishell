@@ -6,18 +6,20 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:51 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 13:13:55 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 11:57:01 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	bunny_ears(char *line, int stop, int to_match)
+int	bunny_ears(char *line, int start, int to_match)
 {
-	++stop;
-	while (line[stop] && line[stop] != to_match)
-		++stop;
-	return (stop);
+	++start;
+	while (line[start] && line[start] != to_match)
+		++start;
+	if (line[start] == '\0')
+		return (-1);
+	return (start);
 }
 
 int	handle_token(char *line, int tk_type, int i)

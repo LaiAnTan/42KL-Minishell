@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:54 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/16 11:19:34 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 11:59:03 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,28 @@ int	init_data(t_data *data, char **envp)
 	return (1);
 }
 
+int	check_ears(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->line[i])
+	{
+		if (data->line[i] == '\"' || data->line[i] == '\'')
+		{
+			i = bunny_ears(data->line, i, data->line[i]);
+			if (i == -1)
+			{
+				data->last_exit = 2;
+				free(data->line);
+				return (error_msg("syntax error", NULL, "unexpected EOF while looking for matching symbol", 0));
+			}
+		}
+		++i;
+	}
+	return (1);
+}
+
 int	handle_line(t_data *data)
 {
 	char	*line;
@@ -43,7 +65,7 @@ int	handle_line(t_data *data)
 		rl_redisplay();
 		data->line = ft_strdup(line);
 		free(line);
-		return (1);
+		return (check_ears(data));
 	}
 	else
 		exit(reset_and_exit(&data->attr->def_attributes, 0));
