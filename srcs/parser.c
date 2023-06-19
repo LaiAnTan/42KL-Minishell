@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:58 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 19:27:59 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:36:38 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	**extract_cmd(char **tokens, int *index_pair)
 
 	find_next_cmd(tokens, index_pair);
 	if (index_pair[0] > index_pair[1])
-		return NULL;
+		return (NULL);
 	j = index_pair[0];
 	str = NULL;
 	cmd = NULL;

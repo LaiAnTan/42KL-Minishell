@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:34:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 19:25:18 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:36:17 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,9 @@ int	check_valid_pipes(t_data *data)
 
 void	run_cmd(t_data *data)
 {
+	int exit_status;
+
+	exit_status = 0;
 	if (data->cmds->next)
 	{
 		if (check_valid_pipes(data))
@@ -87,10 +90,11 @@ void	run_cmd(t_data *data)
 	{
 		if (!data->cmds->cmd.cmd)
 			return ;
-		if (handle_redirect(data->cmds->cmd.cmd,
-				data->cmds, data->stdin_backup) == 1)
+		exit_status = handle_redirect(data->cmds->cmd.cmd,
+				data->cmds, data->stdin_backup);
+		if (exit_status == 1 || exit_status == 2)
 		{
-			data->last_exit = 1;
+			data->last_exit = exit_status;
 			return ;
 		}
 		data->cmds->cmd.cmd = get_cmd_args_without_redirect
