@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:55 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 13:37:20 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 13:51:06 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,23 @@ static char	*get_var_name(char *str)
 {
 	int		i;
 	int		j;
+	int		flag;
 	char	*var_name;
 
 	i = 0;
 	j = 0;
-	while (str[i] != '\0' && str[i] != '=')
-		i++;
+	flag = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '=')
+		{
+			flag = 1;
+			break ;
+		}
+		++i;
+	}
+	if (!flag)
+		return (NULL);
 	var_name = (char *) malloc (sizeof(char) * (i + 1));
 	while (j < i)
 	{
@@ -113,6 +124,8 @@ int	builtin_export(char **args, t_data *data)
 			return (error_msg("export", args[i],
 					"is not a valid identifier", 1));
 		var_name = get_var_name(args[i]);
+		if (!var_name)
+			continue ;
 		node = find_var(data->vars, var_name);
 		free(var_name);
 		if (node == NULL)

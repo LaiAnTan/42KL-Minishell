@@ -27,6 +27,7 @@ SRCS_C =	srcs/builtins/builtins_cd.c					\
             srcs/vars/vars_expansion.c					\
             srcs/vars/vars_helpers_1.c					\
             srcs/vars/vars_helpers_2.c					\
+			srcs/error_exit.c							\
 			srcs/lexer_helpers.c						\
             srcs/lexer.c								\
             srcs/main.c									\

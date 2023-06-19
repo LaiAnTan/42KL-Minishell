@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:07:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/16 11:19:31 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:48:54 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,8 @@ char	**ft_split(char *s, char c);
 char	**realloc_append(char **src, char *str);
 
 /* Exit & Errors */
+
+void	cleanup(t_data *data);
 
 int		error_msg(char *cmd, char *context, char *msg, int code);
 
