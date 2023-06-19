@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:55 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 14:05:56 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 14:12:28 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ static char	*get_var_name(char *str)
 	return (var_name);
 }
 
+
+
 int	builtin_export(char **args, t_data *data)
 {
 	int		i;
@@ -114,14 +116,16 @@ int	builtin_export(char **args, t_data *data)
 					"is not a valid identifier", 1));
 		var_name = get_var_name(args[i]);
 		node = find_var(data->vars, var_name);
-		free(var_name);
 		if (node == NULL)
 			ft_lstadd_back(&data->vars, ft_lstnew_env(ft_strdup(args[i])));
 		else
 		{
+			if (search_symbol(var_name, '=') == -1)
+				continue ;
 			free(node->env.str);
 			node->env.str = ft_strdup(args[i]);
 		}
+		free(var_name);
 	}
 	return (0);
 }
