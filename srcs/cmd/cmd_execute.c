@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:34:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 16:42:16 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 19:26:48 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	get_exit_code(t_data *data, int exit_status)
 
 void	run_cmd(t_data *data)
 {
-	int exit_status;
+	int	exit_status;
 
 	exit_status = 0;
 	if (data->cmds->next)
@@ -70,7 +70,7 @@ void	run_cmd(t_data *data)
 	{
 		exit_status = handle_redirect(data->cmds->cmd.cmd,
 				data->cmds, data->stdin_backup);
-		if (exit_status == 1 || exit_status == 2)
+		if (exit_status == 1)
 		{
 			data->last_exit = exit_status;
 			return ;

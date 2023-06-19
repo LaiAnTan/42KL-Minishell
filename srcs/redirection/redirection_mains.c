@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:37:22 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 18:21:00 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 19:26:54 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,9 @@ int	redirect_switcher(int *redirect_info, t_list *cur, char *args, int std_in)
 int	handle_redirect(char **args, t_list *cur, int std_in)
 {
 	int		i;
-	int		size;
 	int		*redirect_info;
 
 	i = 0;
-	size = count_2d_array(args);
 	if (contains_redirect(args) == 0)
 		return (0);
 	while (args[i] != NULL)
@@ -105,12 +103,6 @@ int	handle_redirect(char **args, t_list *cur, int std_in)
 		else if (redirect_info[0] == -1 && redirect_info[1] == -1)
 			break ;
 		i = redirect_info[1] + 1;
-		if (i == size || ft_strcmp(args[i], "|") == 0)
-		{
-			free(redirect_info);
-			return (error_msg(NULL, "minishell",
-				"syntax error near unexpected token", 2));
-		}
 		if (redirect_switcher(redirect_info, cur, args[i], std_in) == 1)
 		{
 			free(redirect_info);
