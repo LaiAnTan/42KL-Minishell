@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:54 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 19:41:18 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 20:00:52 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,13 @@ void	print_parsed(t_list *amogus)
 	}
 }
 
+void	print_double(char **stuff)
+{
+	for (int i = 0; stuff[i]; ++i)
+	{
+		printf("%s - len = %d\n", stuff[i], ft_strlen(stuff[i]));
+	}
+}
 
 int	valid_cmds(t_data *data)
 {
@@ -102,6 +109,7 @@ int	valid_cmds(t_data *data)
 		return (0);
 	while (curr)
 	{
+		print_double(curr->cmd.cmd);
 		while (curr->cmd.cmd[i] != NULL)
 		{
 			printf("checking %s & %s\n", curr->cmd.cmd[i], curr->cmd.cmd[i + 1]);
@@ -117,7 +125,7 @@ int	valid_cmds(t_data *data)
 		}
 		i = 0;
 		curr = curr->next;
-		printf("next\n");
+		// printf("next\n");
 	}
 	return (0);
 }
@@ -142,7 +150,7 @@ int	main(int argc, char **argv, char **envp)
 		replace_dollar(&data);
 		lexer(&data);
 		parser(&data);
-		print_parsed(data.cmds);
+		// print_parsed(data.cmds);
 		if (valid_cmds(&data) == 0)
 			run_cmd(&data);
 		cleanup(&data);
