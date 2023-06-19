@@ -6,7 +6,7 @@
 /*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:07:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 13:48:54 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 14:33:16 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ void	reset_attr(struct termios *saved);
 void	new_line_handler(int sig_code);
 
 /* Builtin command functions */
+
+int		print_asc_export(t_list *lst);
 
 int		builtin_echo(char **args);
 int		builtin_pwd(t_data *data);

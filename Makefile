@@ -5,6 +5,7 @@ ODIR = obj
 SRCS_C =	srcs/builtins/builtins_cd.c					\
             srcs/builtins/builtins_echo.c				\
             srcs/builtins/builtins_exit.c				\
+			srcs/builtins/builtins_export_helpers.c		\
             srcs/builtins/builtins_export.c				\
             srcs/builtins/builtins_handler_env_pwd.c	\
             srcs/builtins/builtins_unset.c				\
