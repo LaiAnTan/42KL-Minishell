@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:51 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 11:57:01 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:35:12 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	pad_blank_tokens(t_data *data, int ret_val, int *token_pos)
 		data->tokens = realloc_append(data->tokens, "");
 }
 
+// if ((ret_val == 4 || ret_val == 5)
+// 	&& data->line[token_pos[0] - 1] != ' ')
 int	lexer(t_data *data)
 {
 	int		len;
@@ -95,8 +97,7 @@ int	lexer(t_data *data)
 		ret_val = find_token_pos(data->line, token_pos);
 		if (ret_val == -1 || token_pos[1] >= len)
 			break ;
-		if ((ret_val == 4 || ret_val == 5)
-			&& data->line[token_pos[0] - 1] != ' ')
+		if ((ret_val == 4 || ret_val == 5 || ret_val == 3))
 			data->tokens = realloc_append(data->tokens, "");
 		new_token = ft_substr(data->line, token_pos[0], token_pos[1]);
 		data->tokens = realloc_append(data->tokens, new_token);

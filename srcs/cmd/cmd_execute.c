@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:34:03 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 15:48:22 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:25:18 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,34 @@ int	get_exit_code(t_data *data, int exit_status)
 	return (data->last_exit);
 }
 
+int	check_valid_pipes(t_data *data)
+{
+	t_list	*cur;
+
+	cur = data->cmds;
+	while (cur)
+	{
+		if (!cur->cmd.cmd)
+		{
+			data->last_exit = error_msg("syntax error", "|", "syntax error near unexpected token", 2);
+			return (0);
+		}
+		cur = cur->next;
+	}
+	return (1);
+}
+
 void	run_cmd(t_data *data)
 {
 	if (data->cmds->next)
-		multiple_commands(data);
+	{
+		if (check_valid_pipes(data))
+			multiple_commands(data);
+	}
 	else
 	{
+		if (!data->cmds->cmd.cmd)
+			return ;
 		if (handle_redirect(data->cmds->cmd.cmd,
 				data->cmds, data->stdin_backup) == 1)
 		{

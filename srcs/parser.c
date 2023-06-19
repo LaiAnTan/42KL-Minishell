@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:58 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 15:48:54 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:27:59 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ char	**extract_cmd(char **tokens, int *index_pair)
 	cmd = NULL;
 	while (j < index_pair[1])
 	{
-		printf("token doing rn = \"%s\"\n", tokens[j]);
 		extract_cmd_helper(&cmd, &tokens[j], &str);
 		++j;
 	}
@@ -103,19 +102,13 @@ int	parser(t_data *data)
 	t_list	*node;
 
 	index_pair[1] = 0;
-	lst = NULL;
 	cmd = extract_cmd(data->tokens, index_pair);
-	if (cmd)
+	lst = ft_lstnew_cmd(cmd);
+	while (data->tokens[index_pair[1]])
 	{
-		lst = ft_lstnew_cmd(cmd);
-		while (data->tokens[index_pair[1]])
-		{
-			cmd = extract_cmd(data->tokens, index_pair);
-			if (!cmd)
-				break;
-			node = ft_lstnew_cmd(cmd);
-			ft_lstadd_back(&lst, node);
-		}
+		cmd = extract_cmd(data->tokens, index_pair);
+		node = ft_lstnew_cmd(cmd);
+		ft_lstadd_back(&lst, node);
 	}
 	free_2d_array(&data->tokens);
 	data->cmds = lst;
