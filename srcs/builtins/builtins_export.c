@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:55 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 14:12:28 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 14:20:33 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,13 @@ static char	*get_var_name(char *str)
 	return (var_name);
 }
 
-
+void	replace_variable(char *line, t_list *node)
+{
+	if (search_symbol(line, '=') == -1)
+		return ;
+	free(node->env.str);
+	node->env.str = ft_strdup(line);
+}
 
 int	builtin_export(char **args, t_data *data)
 {
@@ -116,16 +122,11 @@ int	builtin_export(char **args, t_data *data)
 					"is not a valid identifier", 1));
 		var_name = get_var_name(args[i]);
 		node = find_var(data->vars, var_name);
+		free(var_name);
 		if (node == NULL)
 			ft_lstadd_back(&data->vars, ft_lstnew_env(ft_strdup(args[i])));
 		else
-		{
-			if (search_symbol(var_name, '=') == -1)
-				continue ;
-			free(node->env.str);
-			node->env.str = ft_strdup(args[i]);
-		}
-		free(var_name);
+			replace_variable(args[i], node);
 	}
 	return (0);
 }
