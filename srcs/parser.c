@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
+/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:30:58 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/19 16:34:13 by tlai-an          ###   ########.fr       */
+/*   Updated: 2023/06/19 19:36:38 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,19 +102,13 @@ int	parser(t_data *data)
 	t_list	*node;
 
 	index_pair[1] = 0;
-	lst = NULL;
 	cmd = extract_cmd(data->tokens, index_pair);
-	if (cmd)
+	lst = ft_lstnew_cmd(cmd);
+	while (data->tokens[index_pair[1]])
 	{
-		lst = ft_lstnew_cmd(cmd);
-		while (data->tokens[index_pair[1]])
-		{
-			cmd = extract_cmd(data->tokens, index_pair);
-			if (!cmd)
-				break ;
-			node = ft_lstnew_cmd(cmd);
-			ft_lstadd_back(&lst, node);
-		}
+		cmd = extract_cmd(data->tokens, index_pair);
+		node = ft_lstnew_cmd(cmd);
+		ft_lstadd_back(&lst, node);
 	}
 	free_2d_array(&data->tokens);
 	data->cmds = lst;
