@@ -6,7 +6,7 @@
 /*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:31:18 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/15 19:55:02 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 15:49:59 by cshi-xia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	count_2d_array(char **e)
 	int	i;
 
 	i = 0;
+	if (!e)
+		return 0;
 	while (e[i])
 		++i;
 	return (i);
@@ -48,8 +50,7 @@ char	**realloc_append(char **src, char *str)
 	len = 0;
 	if (!str)
 		return (src);
-	while (src[len] != NULL)
-		len++;
+	len = count_2d_array(src);
 	new = (char **) malloc (sizeof(char *) * (len + 2));
 	if (!new)
 		return (NULL);
