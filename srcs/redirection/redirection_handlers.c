@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_handlers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cshi-xia <cshi-xia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlai-an <tlai-an@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:36:25 by tlai-an           #+#    #+#             */
-/*   Updated: 2023/06/16 10:44:42 by cshi-xia         ###   ########.fr       */
+/*   Updated: 2023/06/19 14:59:49 by tlai-an          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	handle_redir_output_append(char *filename, int *out_fd)
 
 	if (is_redirect(filename))
 		return (-1);
-	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777);
+	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	if (fd == -1)
 		return (error_msg(NULL, filename, "File could not be opened", 1));
 	dup2(fd, *out_fd);
